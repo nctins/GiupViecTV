@@ -10,12 +10,13 @@ const styles = (theme) =>
     fill: {
       backgroundColor: theme.colors.Gray[0],
       borderRadius: 5,
+      marginBottom: 10,
       ...theme.shadow,
       ...theme.typography.Text,
     },
     title: {
       color: theme.colors.Gray[0],
-      paddingBottom: 6,
+      paddingBottom: 3,
     },
     placeholder: {
       color: theme.colors.Gray[3],
