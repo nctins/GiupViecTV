@@ -5,6 +5,7 @@ import Step2 from "./Step2";
 const SignUpScreen = {
     Step1,
     Step2,
+    FaceCapture
 }
 
 export default SignUpScreen

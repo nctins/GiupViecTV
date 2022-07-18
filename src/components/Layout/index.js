@@ -1,3 +1,4 @@
 import BgImageLayout from "./BgImageLayout";
+import BlankLayout from "./BlankLayout";
 
-export { BgImageLayout };
+export { BgImageLayout, BlankLayout };
