@@ -9,6 +9,8 @@ import TrashIcon from "./TrashIcon";
 import CancelIcon from "./CancelIcon";
 import BackIcon from "./BackIcon";
 import LogoIcon from "./LogoIcon";
+import FacebookIcon from "./FacebookIcon";
+import GoogleIcon from "./GoogleIcon";
 
 export {
   HomeIcon,
@@ -22,4 +24,6 @@ export {
   CancelIcon,
   BackIcon,
   LogoIcon,
+  FacebookIcon,
+  GoogleIcon,
 };
