@@ -18,14 +18,14 @@ const Step2 = () => {
       <View style={{ flex: 1, alignItems: "flex-start" }}>
         <IconButton style={{ margin: 20 }} icon={<BackIcon color="Gray.0" />} />
       </View>
-      <View style={[{ flex: 4 }, styled.centerBox]}>
+      <View style={[{ flex: 5 }, styled.centerBox]}>
         <TextInput placeholder="Nhập mật khẩu" title={"Mật khẩu"} />
         <TextInput
           placeholder="Nhập lại mật khẩu"
           title={"Xác nhận mật khẩu"}
         />
       </View>
-      <View style={{ flex: 3 }}>
+      <View style={{ flex: 2 }}>
         <View style={[{ flex: 3 }, styled.centerBox]}>
           <Button size="lg" isShadow>
             Tiếp theo
