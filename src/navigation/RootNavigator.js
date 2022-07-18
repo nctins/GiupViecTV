@@ -3,7 +3,7 @@ import SignUpScreen from "~screens/SignUpScreen";
 
 const RootComponent = () => {
   return (
-    <SignUpScreen.Step1/>
+    <SignUpScreen.Step2/>
   );
 };
 

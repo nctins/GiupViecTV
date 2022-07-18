@@ -1,6 +1,5 @@
 import React from "react";
 import { BgImageLayout } from "~components/Layout";
-import * as Icons from "~components/Icons";
 import { SIGNUP_BG } from "assets/images";
 import { StyleSheet, View } from "react-native";
 import { TextInput } from "~components/Inputs";
