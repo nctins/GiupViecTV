@@ -78,7 +78,7 @@ const styles = (theme) =>
     },
     card: {
       width: 255,
-      height: 108,
+      height: 120,
       borderRadius: 12,
       backgroundColor: ObjMapper.getKeyValue(theme.colors, "Gray.2"),
     },
