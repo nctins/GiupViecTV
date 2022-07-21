@@ -1,16 +1,33 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+// import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import useTheme from "~hooks/useTheme";
-import Typography from "~components/Typography";
-import Button from "~components/Button";
+import HomeScreen from "~screens/HomeScreen";
+import CartScreen from "~screens/Cart/CartScreen";
+import MessageScreen from "~screens/MessageScreen";
+import CouponScreen from "~screens/couponScreen";
+import AccountScreen from "~screens/AccountScreen";
+
+const TAB_NAV = createBottomTabNavigator();
+// const TAB_NAV = createMaterialTopTabNavigator();
 
 const RootComponent = () => {
   const theme = useTheme();
   return (
-    <View style={styles.container}>
-      <Typography variant="H1">hello</Typography>
-      <Button isShadow>demo</Button>
-    </View>
+    <TAB_NAV.Navigator 
+      screenOptions={{
+        headerShown: false
+      }}
+
+      initialRouteName = "Đơn hàng"
+    >
+      <TAB_NAV.Screen name="Trang chủ" component={HomeScreen} />
+      <TAB_NAV.Screen name="Đơn hàng" component={CartScreen} />
+      <TAB_NAV.Screen name="Tin nhắn" component={MessageScreen} />
+      <TAB_NAV.Screen name="Ưu đãi" component={CouponScreen} />
+      <TAB_NAV.Screen name="Tài khoản" component={AccountScreen} />
+    </TAB_NAV.Navigator>
   );
 };
 

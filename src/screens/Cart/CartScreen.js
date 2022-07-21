@@ -1,7 +1,10 @@
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import React from 'react'
 import { StyleSheet, View, SafeAreaView,StatusBar } from "react-native";
 // import Svg, { Path } from "react-native-svg"
+import Header from '~components/Header';
 import useThemeStyles from '~hooks/useThemeStyles';
+import TabNavigator from './TabNavigator';
 
 // const WaveLine = (props) => (
 //   <View>
@@ -30,15 +33,37 @@ import useThemeStyles from '~hooks/useThemeStyles';
 const styles = (theme) => StyleSheet.create({
   default:{
     flex:1,
+  },
+  statusBar:{
+    backgroundColor: theme.colors.BackgroundBlue,
+  },
+  header:{
+    default: {
+      width: "100%",
+      height: "15%" ,
+      backgroundColor: theme.colors.BackgroundBlue,
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center"
+    },
+    title:{
+      color: "white",
+    }
+    
   }
 })
 
-const StartScreen = () => {
+const Tab = createMaterialTopTabNavigator();
+
+const CartScreen = () => {
   const style = useThemeStyles(styles);
 
   return (
     <SafeAreaView  style={{flex:1}}>
+        <StatusBar backgroundColor={style.statusBar.backgroundColor}/>
+        <Header style={style.header} title="Đơn hàng" />
+        <TabNavigator />
     </SafeAreaView >
   )
 }
-export default StartScreen
+export default CartScreen
