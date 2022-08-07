@@ -1,7 +1,5 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import React from 'react'
-import { StyleSheet, View, SafeAreaView,StatusBar } from "react-native";
-import useThemeStyles from '~hooks/useThemeStyles';
 import CartTab1 from './CartTab1';
 import CartTab2 from './CartTab2';
 import CartTab3 from './CartTab3';
@@ -9,7 +7,7 @@ import CartTab4 from './CartTab4';
 
 const Tab = createMaterialTopTabNavigator();
 
-const TabNavigator = () => {
+const TabNavigatorCart = () => {
     return ( 
         <Tab.Navigator>
             <Tab.Screen name='Chờ xử lý' component={CartTab1}></Tab.Screen>
@@ -19,5 +17,4 @@ const TabNavigator = () => {
         </Tab.Navigator>
      );
 }
-
-export default TabNavigator;
+export default TabNavigatorCart;

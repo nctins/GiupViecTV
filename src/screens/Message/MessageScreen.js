@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, View, SafeAreaView,StatusBar } from "react-native";
 import Header from '~components/Header';
 import useThemeStyles from '~hooks/useThemeStyles';
+import TabNavigatorMessage from './TabNavigatorMessage';
 
 const styles = (theme) => StyleSheet.create({
   default:{
@@ -33,6 +34,7 @@ const MessageScreen = () => {
     <SafeAreaView  style={{flex:1}}>
       <StatusBar backgroundColor={style.statusBar.backgroundColor}/>
       <Header style={style.header} title="Message" />
+      <TabNavigatorMessage />
     </SafeAreaView >
   )
 }

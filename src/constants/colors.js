@@ -12,6 +12,20 @@ export const Gray = {
   10: "#16161E",
   11: "#07070C",
 };
+export const DarkGray = {
+  0: "#ffffff",
+  1: "#F5F5FF",
+  2: "#D0D0DA",
+  3: "#A9A9B7",
+  4: "#8A8A98",
+  5: "#70707C",
+  6: "#5B5B65",
+  7: "#40404A",
+  8: "#2C2C35",
+  9: "#1E1E24",
+  10: "#0F0F13",
+  11: "#000000",
+};
 export const BackgroundBlue = "#4DABF5";
 export const Azure = "#0062FF"
 export const  SpringGreen = "#62F783";

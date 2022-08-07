@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, ScrollView,TextInput } from "react-native";
-import CartItem from '~components/CartItem';
+import MessageItem from '~components/MessageItem';
 import useThemeStyles from '~hooks/useThemeStyles';
 
 const styles = (theme) => StyleSheet.create({
@@ -34,7 +34,7 @@ const styles = (theme) => StyleSheet.create({
   },
 })
 
-const CartTab1 = () => {
+const MessageTab = () => {
   const style = useThemeStyles(styles);
 
   return (
@@ -46,11 +46,10 @@ const CartTab1 = () => {
         />
       </View>
       <ScrollView  contentContainerStyle={style.content}>
-        <CartItem type = {1}></CartItem>
-        <CartItem type = {1}></CartItem>
-        <CartItem type = {1}></CartItem>
+        <MessageItem />
+        <MessageItem />
       </ScrollView>
     </View >
   )
 }
-export default CartTab1
+export default MessageTab
