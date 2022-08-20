@@ -4,8 +4,8 @@ import RootNavigator from '~navigation/RootNavigator';
 import { NavigationContainer } from '@react-navigation/native';
 
 import { ThemeProvider } from '~contexts/ThemeContext';
-import StartScreen from '~screens/StartScreen';
 import MessageDetail from '~screens/Message/MessageDetail';
+import HomeScreen from '~screens/HomeScreen';
 
 export default function App() {
   return (

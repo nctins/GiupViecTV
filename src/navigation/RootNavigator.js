@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from "~screens/HomeScreen";
 import CartScreen from "~screens/Cart/CartScreen";
 import MessageScreen from "~screens/Message/MessageScreen";
-import CouponScreen from "~screens/couponScreen";
+import CouponScreen from "~screens/CouponScreen";
 import AccountScreen from "~screens/AccountScreen";
 
 const TAB_NAV = createBottomTabNavigator();
