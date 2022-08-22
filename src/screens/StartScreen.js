@@ -1,44 +1,29 @@
 import React from 'react'
-import { StyleSheet, View, SafeAreaView,StatusBar } from "react-native";
-// import Svg, { Path } from "react-native-svg"
+import { StyleSheet, View, SafeAreaView, StatusBar, Image } from "react-native";
+import { BgImageLayout } from '~components/Layout';
+import { START_BG, START_IMG } from 'assets/images';
 import useThemeStyles from '~hooks/useThemeStyles';
-
-// const WaveLine = (props) => (
-//   <View>
-//     <Svg height="100%" width="100%" viewBox="0 0 500 700" preserveAspectRatio="xMinYMin meet" {...props}>
-//       <Path transform="translate(500,100), scale(-1, 1)"
-//         d="M0 150c100 50 350-170 500 0V-400H0Z"
-//         style={{
-//           stroke: "none",
-//           fill: props.color,
-//         }}
-//       />
-
-//       <Path transform="translate(0,750), scale(1, -1)"
-//         d="M0 150c100 50 350-170 500 0V-250H0Z"
-//         style={{
-//           stroke: "none",
-//           fill: props.color,
-//         }}
-//       >
-//         <Typography variant = "h2"color="red">abc</Typography>
-//       </Path>
-//     </Svg>
-//   </View>
-// )
-
-const styles = (theme) => StyleSheet.create({
-  default:{
-    flex:1,
-  }
-})
+import Button from '~components/Button';
+import Typography from '~components/Typography';
 
 const StartScreen = () => {
-  const style = useThemeStyles(styles);
-
   return (
-    <SafeAreaView  style={{flex:1}}>
-    </SafeAreaView >
+    <BgImageLayout background={START_BG}>
+      <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
+        <Typography variant='H2' color='Gray.0'>Giúp việc T&V</Typography>
+      </View>
+      <View style={{flex:4, alignItems:'center'}}>
+        <Image source={START_IMG}/>
+      </View>
+      <View style={{flex:2, alignItems:'center', justifyContent:'center'}}>
+        <Button size='lg' isShadow variant='secondary'>
+          Đăng nhập
+        </Button>
+        <Button size='lg' isShadow variant='secondary' style={{marginTop: 10}}>
+          Đăng ký ngay
+        </Button>
+      </View>
+    </BgImageLayout>
   )
 }
 export default StartScreen

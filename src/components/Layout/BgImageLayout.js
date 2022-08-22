@@ -14,7 +14,7 @@ const BgImageLayout = ({ background = DEFAULT_BG, children }) => {
       <View
         style={{
           width: "100%",
-          height: Dimensions.get("window").height,
+          height: Dimensions.get("window").height - StatusBarHeight,
           marginTop: StatusBarHeight,
         }}
       >
