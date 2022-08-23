@@ -21,6 +21,10 @@ const styles = (theme) =>
     placeholder: {
       color: theme.colors.Gray[3],
     },
+    blackTitle: {
+      color: theme.colors.Gray[8],
+      paddingBottom: 3,
+    },
   });
 
 export default styles;

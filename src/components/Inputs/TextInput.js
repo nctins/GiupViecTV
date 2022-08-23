@@ -9,13 +9,14 @@ const TextInput = ({
   theme = "fill",
   isPassword = false,
   title,
+  titleStyle = "title",
   style,
   ...otherProps
 }) => {
   const styled = useThemeStyles(styles);
   return (
     <View>
-      <Typography style={[styled.title]}>{title}</Typography>
+      <Typography style={[styled[titleStyle]]}>{title}</Typography>
       <DefaultTextInput
         style={[styled[variant], styled[theme], style]}
         secureTextEntry={isPassword}
