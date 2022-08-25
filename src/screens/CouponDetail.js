@@ -44,8 +44,7 @@ const styles = (theme) => StyleSheet.create({
     marginTop: 10,
   },
   detail: {
-    width: "100%",
-    height: "100%",
+    flexGrow: 1,
     flexDirection:"column",
     paddingHorizontal: 20,
     paddingVertical: 10,
@@ -108,7 +107,7 @@ const CouponDetail = () => {
                 <Typography variant = "Description" style={{}}>Giảm ngay 100.000đ cho đơn hàng tối thiểu 300.000đ. Áp dụng đến 30/08/2022. Mỗi tài khoản chỉ được sử dụng một lần duy nhất. Mã giảm giá được phát hành bởi công ty abc và sẽ không được hoàn lại với bất kỳ lý do gì.</Typography>
             </ScrollView>
             <View style={style.viewButton}>
-                <Button style={style.button}>Sử dụng</Button>
+                <Button style={style.button} radius={5}>Sử dụng</Button>
             </View>
         </View>
     </View >

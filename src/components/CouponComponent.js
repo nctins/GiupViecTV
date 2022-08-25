@@ -63,7 +63,7 @@ const CouponComponent = (props) => {
                     <Typography variant="Description" style={{}}>Hạn dùng: {props.deadline}</Typography>
                 </View>
                 <View style={style.viewButton}>
-                    <Button style={style.button}>Dùng ngay</Button>
+                    <Button style={style.button} radius={5}>Dùng ngay</Button>
                 </View>
             </View>           
         </View>
