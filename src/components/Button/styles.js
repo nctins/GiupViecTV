@@ -19,7 +19,7 @@ const styles = (theme) =>
       padding: 15,
     },
     sm: {
-      width: 200,
+      width: 150,
       padding: 15,
     },
     shadow: theme.shadow,
