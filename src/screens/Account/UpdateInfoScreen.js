@@ -5,6 +5,7 @@ import Typography from "~components/Typography";
 import { BackIcon } from "~components/Icons";
 import { TextInput } from "~components/Inputs";
 import Button from "~components/Button";
+import AvatarComponent from "~components/AvatarComponent";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -24,11 +25,15 @@ const styles = (theme) =>
     },
     title: {
       marginLeft: 15,
-      color: "white",
+      color: theme.colors.Gray[0],
     },
     statusBar: {
       backgroundColor: theme.colors.BackgroundBlue,
     },
+    avatar:{
+      // width: 110,
+      // height:110,
+    }
   });
 
 const UpdateInfoScreen = () => {
@@ -44,7 +49,9 @@ const UpdateInfoScreen = () => {
         </Typography>
       </View>
       <View style={{flex: 7}}>
-        <View style={{flex:2}}></View>
+        <View style={{flex:2}}>
+          <AvatarComponent size="llg" avatarStyle={style.avatar} />
+        </View>
         <View style={{flex:3, justifyContent: 'center', alignItems: 'center'}}>
           <TextInput
               style={{ marginBottom: 20 }}

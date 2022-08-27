@@ -3,24 +3,28 @@ import { Image, View,StyleSheet } from "react-native";
 import useThemeStyles from '~hooks/useThemeStyles';
 
 const styles = (theme) => StyleSheet.create({
+    llg: {
+        width: 120,
+        height: 120,
+    },
     lg: {
         width: 60,
         height: 60,
     },
     md: {
         width: 40,
-        padding: 40,
+        height: 40,
     },
     sm: {
         width: 20,
-        padding: 20,
+        height: 20,
     },
     ssm:{
         width: 15,
-        padding: 15,
+        height: 15,
     },
     circle:{
-        borderRadius: 50,
+        borderRadius: 120,
     },
     square:{
         borderRadius: 5,
