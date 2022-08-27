@@ -19,7 +19,7 @@ const styles = (theme) => StyleSheet.create({
     backgroundColor: theme.colors.BackgroundBlue,
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 15,
+    paddingHorizontal: 20,
   },
   title:{
     marginLeft: 15,
@@ -47,15 +47,6 @@ const styles = (theme) => StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
   },
-  avatarStyle: {
-    default: {
-        width: 50,
-        height: 50,
-        borderRadius: 50,
-        borderWidth: 1,      
-        backgroundColor: "grey",
-    },
-},
 })
 
 const MessageDetail = () => {
@@ -65,7 +56,7 @@ const MessageDetail = () => {
     <View style={style.default}>
         <View style={style.header}>
             <BackIcon color='white' />
-            <AvatarComponent style = {style.avatarStyle}/>
+            <AvatarComponent containerAvatarStyle={{marginLeft:10}} avatarStyle={{}} size={"sm"} style={"circle"}/>
             <Typography variant = "H5" style={style.title}>Thái Duy Vũ</Typography>
         </View>
         <ScrollView  contentContainerStyle={style.content}>

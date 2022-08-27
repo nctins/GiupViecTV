@@ -52,19 +52,17 @@ const styles = (theme) => StyleSheet.create({
     }
 })
 
-const CouponComponent = (props) => {
+const CouponComponent = ({containerStyle,isHome = false,title,deadline,...props}) => {
     const style = useThemeStyles(styles);
 
     return ( 
-        <View style={style.default}>
+        <View style={[style.default,containerStyle]}>
             <View style={style.viewTitle}>
-                <View style={style.title}>
-                    <Typography variant="TextBold">{props.title}</Typography>
-                    <Typography variant="Description" style={{}}>Hạn dùng: {props.deadline}</Typography>
+                <View style={[style.title,isHome?{width:"100%"}:null]}>
+                    <Typography variant="TextBold">{title}</Typography>
+                    {!isHome? <Typography variant="Description" style={{}}>Hạn dùng:{deadline}</Typography>:null} 
                 </View>
-                <View style={style.viewButton}>
-                    <Button style={style.button} radius={5}>Dùng ngay</Button>
-                </View>
+                {!isHome?<View style={style.viewButton}><Button style={style.button} radius={5}>Dùng ngay</Button></View> : null}
             </View>           
         </View>
      );
