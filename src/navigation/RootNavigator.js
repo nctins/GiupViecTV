@@ -4,7 +4,7 @@ import HomeScreen from "~screens/HomeScreen";
 import CartScreen from "~screens/Cart/CartScreen";
 import MessageScreen from "~screens/Message/MessageScreen";
 import CouponScreen from "~screens/CouponScreen";
-import AccountScreen from "~screens/AccountScreen";
+import AccountScreen from "~screens/Account/AccountScreen";
 
 const TAB_NAV = createBottomTabNavigator();
 // const TAB_NAV = createMaterialTopTabNavigator();

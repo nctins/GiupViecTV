@@ -10,6 +10,7 @@ import Header from "~components/Header";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
 import { FacebookIcon, GoogleIcon, RightArrowIcon } from "~components/Icons";
+import AvatarComponent from "~components/AvatarComponent";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -32,6 +33,31 @@ const styles = (theme) =>
         color: "white",
       },
     },
+    setting: settingStyle(theme),
+    userInfo: userInfoStyle(theme),
+  });
+
+const userInfoStyle = (theme) => {
+  return {
+    wrapper: {
+      display: "flex",
+      flexDirection: "row",
+      alignContent: "center",
+      justifyContent: "center",
+    },
+    avatar: {
+      alignSelf: "center",
+      borderWidth: 3,
+      borderRadius: 50,
+      marginRight: 10,
+      borderColor: theme.colors.BackgroundBlue,
+    },
+    account: { marginLeft: 10, alignSelf: "center" },
+  };
+};
+
+const settingStyle = (theme) => {
+  return {
     settingItem: {
       display: "flex",
       flexDirection: "row",
@@ -54,11 +80,12 @@ const styles = (theme) =>
       },
       thumbColor: theme.colors.Gray[0],
     },
-    settingMenu:{
-      marginHorizontal: 30, 
-      marginVertical:10,
-    }
-  });
+    settingMenu: {
+      marginHorizontal: 30,
+      marginVertical: 10,
+    },
+  };
+};
 
 const AccountScreen = () => {
   const style = useThemeStyles(styles);
@@ -70,13 +97,19 @@ const AccountScreen = () => {
       <Header style={style.header} title="Tài khoản" />
 
       {/* user info */}
-      <View style={{ flex: 1 }}>
-
+      <View style={[{ flex: 1 }, style.userInfo.wrapper]}>
+        <AvatarComponent size="lg" containerAvatarStyle ={style.userInfo.avatar} />
+        <View style={style.userInfo.account}>
+          <Typography variant="SubTitle">Nguyễn Văn Tèo</Typography>
+          <Typography variant="Description" color="Gray.3">
+            teo.nguyenvan@gmail.com
+          </Typography>
+        </View>
       </View>
 
       {/* setting menu */}
       <View style={{ flex: 3 }}>
-        <View style={style.settingMenu}>
+        <View style={style.setting.settingMenu}>
           <Typography variant="TextBold">Tài khoản của tôi</Typography>
           <SettingItem
             title={"Chỉnh sửa thông tin cá nhân"}
@@ -86,7 +119,7 @@ const AccountScreen = () => {
           <SettingItem title={"Liên kết tài khoản"} onTouch={() => {}} />
           <SettingItem title={"Đăng xuất"} onTouch={() => {}} />
         </View>
-        <View style={style.settingMenu}>
+        <View style={style.setting.settingMenu}>
           <Typography variant="TextBold">Tổng quát</Typography>
           <SwitchSettingItem
             title="Thông báo"
@@ -98,7 +131,6 @@ const AccountScreen = () => {
           <SettingItem title={"Phản hồi"} onTouch={() => {}} />
         </View>
       </View>
-
     </SafeAreaView>
   );
 };
@@ -106,16 +138,14 @@ const AccountScreen = () => {
 const SwitchSettingItem = ({ icon, title, onToggle, value }) => {
   const style = useThemeStyles(styles);
   return (
-    <View style={style.settingItem}>
-      <View style={style.settingItemTitle}>
-        <Typography variant="Description" >
-          {title}
-        </Typography>
+    <View style={style.setting.settingItem}>
+      <View style={style.setting.settingItemTitle}>
+        <Typography variant="Description">{title}</Typography>
       </View>
       <Switch
-        trackColor={style.switch.trackColor}
-        thumbColor={style.switch.thumbColor}
-        ios_backgroundColor={style.switch.FalseColor}
+        trackColor={style.setting.switch.trackColor}
+        thumbColor={style.setting.switch.thumbColor}
+        ios_backgroundColor={style.setting.switch.FalseColor}
         onValueChange={onToggle}
         value={value}
       />
@@ -126,11 +156,9 @@ const SwitchSettingItem = ({ icon, title, onToggle, value }) => {
 const SettingItem = ({ title, onTouch }) => {
   const style = useThemeStyles(styles);
   return (
-    <View style={style.settingItem}>
-      <View style={style.settingItemTitle}>
-        <Typography variant="Description" >
-          {title}
-        </Typography>
+    <View style={style.setting.settingItem}>
+      <View style={style.setting.settingItemTitle}>
+        <Typography variant="Description">{title}</Typography>
       </View>
       <RightArrowIcon />
     </View>
