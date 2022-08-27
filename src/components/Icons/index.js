@@ -12,6 +12,7 @@ import LogoIcon from "./LogoIcon";
 import FacebookIcon from "./FacebookIcon";
 import GoogleIcon from "./GoogleIcon";
 import RightArrowIcon from "./RightArrowIcon";
+import EditIcon from "./EditIcon";
 
 export {
   HomeIcon,
@@ -28,4 +29,5 @@ export {
   FacebookIcon,
   GoogleIcon,
   RightArrowIcon,
+  EditIcon,
 };
