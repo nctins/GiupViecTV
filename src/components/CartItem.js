@@ -13,15 +13,6 @@ const styles = (theme) => StyleSheet.create({
         alignItems: "center",
         marginTop: 5,
     },
-    avatarStyle: {
-        default: {
-            width: 60,
-            height: 60,
-            borderRadius: 50,
-            borderWidth: 1,      
-            backgroundColor: "grey",
-        },
-    },
     infoView: {
         width: "50%",
         height: 80,
@@ -73,15 +64,6 @@ const rightInfoStyle2 = (theme) => StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-    avatarSmallStyle: {
-        default: {
-            width: 25,
-            height: 25,
-            borderRadius: 50,
-            borderWidth: 1,      
-            backgroundColor: "red",
-        },
-    },
 });
 const RightInfoCartItem2 = () => {
     const rightStyle = useThemeStyles(rightInfoStyle2);
@@ -90,7 +72,7 @@ const RightInfoCartItem2 = () => {
         <View style={rightStyle.default}>
             <View style={rightStyle.viewItem1}>
                 <Typography variant="TextBold">Thái Duy Vũ</Typography>
-                <AvatarComponent style={rightStyle.avatarSmallStyle} />
+                <AvatarComponent containerAvatarStyle={{}} avatarStyle={{}} size={"ssm"} style={"circle"}/>
             </View>
             <View style={rightStyle.viewItem2} >
                 <Typography variant="TextBold">300.000 VNĐ</Typography>
@@ -119,15 +101,6 @@ const rightInfoStyle3 = (theme) => StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-    avatarSmallStyle: {
-        default: {
-            width: 25,
-            height: 25,
-            borderRadius: 50,
-            borderWidth: 1,      
-            backgroundColor: "red",
-        },
-    },
 });
 const RightInfoCartItem3 = () => {
     const rightStyle = useThemeStyles(rightInfoStyle3);
@@ -136,7 +109,7 @@ const RightInfoCartItem3 = () => {
         <View style={rightStyle.default}>
             <View style={rightStyle.viewItem1}>
                 <Typography variant="TextBold">Thái Duy Vũ</Typography>
-                <AvatarComponent style={rightStyle.avatarSmallStyle} />
+                <AvatarComponent containerAvatarStyle={{}} avatarStyle={{}} size={"ssm"} style={"circle"}/>
             </View>
             <View style={rightStyle.viewItem2} >
                 <Typography variant="TextBold">300.000 VNĐ</Typography>
@@ -166,15 +139,6 @@ const rightInfoStyle4 = (theme) => StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-    avatarSmallStyle: {
-        default: {
-            width: 25,
-            height: 25,
-            borderRadius: 50,
-            borderWidth: 1,      
-            backgroundColor: "red",
-        },
-    },
 });
 const RightInfoCartItem4 = () => {
     const rightStyle = useThemeStyles(rightInfoStyle4);
@@ -183,7 +147,7 @@ const RightInfoCartItem4 = () => {
         <View style={rightStyle.default}>
             <View style={rightStyle.viewItem1}>
                 <Typography variant="TextBold">Thái Duy Vũ</Typography>
-                <AvatarComponent style={rightStyle.avatarSmallStyle} />
+                <AvatarComponent containerAvatarStyle={{}} avatarStyle={{}} size={"ssm"} style={"circle"}/>
             </View>
             <View style={rightStyle.viewItem2} >
                 <Typography variant="Description" style={{color: "red"}}>Đàm phán giá không thành công</Typography>
@@ -212,7 +176,7 @@ const CartItem = (props) => {
 
     return ( 
         <View style={style.default}>
-            <AvatarComponent style = {style.avatarStyle} />
+        <AvatarComponent containerAvatarStyle={{}} avatarStyle={{}} size={"lg"} style={"circle"}/>
             <View style={style.infoView}>
                 <Typography variant="Text">Giúp việc tức thì</Typography>
                 <Typography variant="MiniDescription" style={{marginLeft: 5}}>KTX khu B, Đông Hòa, Dĩ An, Bình Dương</Typography>

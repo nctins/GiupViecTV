@@ -13,15 +13,6 @@ const styles = (theme) => StyleSheet.create({
         alignItems: "center",
         marginTop: 10,
     },
-    avatarStyle: {
-        default: {
-            width: 60,
-            height: 60,
-            borderRadius: 50,
-            borderWidth: 1,      
-            backgroundColor: "grey",
-        },
-    },
     infoView: {
         width: "50%",
         height: 60,
@@ -46,7 +37,7 @@ const MessageItem = (props) => {
 
     return ( 
         <View style={style.default}>
-            <AvatarComponent style = {style.avatarStyle} />
+            <AvatarComponent containerAvatarStyle={{}} avatarStyle={{}} size={"lg"} style={"circle"}/>
             <View style={style.infoView}>
                 <Typography variant="TextBold">Nguyễn Văn Tèo</Typography>
                 <Typography variant="MiniDescription" style={{marginLeft: 0}}>Chào anh chị, em là người giúp việc nhận đơn hàng abc</Typography>
