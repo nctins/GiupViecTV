@@ -20,7 +20,7 @@ const styles = (theme) =>
       flexDirection: "row",
       alignItems: "center",
       paddingHorizontal: 15,
-      flex:1,
+      flex: 1,
     },
     title: {
       marginLeft: 15,
@@ -28,6 +28,13 @@ const styles = (theme) =>
     },
     statusBar: {
       backgroundColor: theme.colors.BackgroundBlue,
+    },
+    textArea: {
+      marginTop: 10,
+      padding: 10,
+      width: 350,
+      borderWidth: 1,
+      borderColor: theme.colors.BackgroundBlue,
     },
   });
 
@@ -43,21 +50,31 @@ const FeedbackScreen = () => {
           Phản hồi
         </Typography>
       </View>
-      <View style={{flex: 7}}>
-        <View style={{flex:1}}></View>
-        <View style={{flex:3, justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{ flex: 7 }}>
+        <View style={{ flex: 1 }}></View>
+        <View
+          style={{ flex: 3, justifyContent: "center", alignItems: "center" }}
+        >
           <TextInput
-              style={{ marginTop: 10, padding:10, width: 350}}
-              placeholder="Vui lòng nhập phản hồi của bạn. Chúng tôi sẽ trả lời sớm nhất có thể."
-              title={"Phản hồi của bạn"}
-              titleStyle="blackTitle"
-              multiline
-              numberOfLines={10}
-              textAlignVertical= "top"
-            />
+            style={style.textArea}
+            placeholder="Vui lòng nhập phản hồi của bạn. Chúng tôi sẽ trả lời sớm nhất có thể."
+            title={"Phản hồi của bạn"}
+            titleStyle="blackTitle"
+            multiline
+            numberOfLines={10}
+            textAlignVertical="top"
+          />
         </View>
-        <View style={{flex:2, justifyContent: 'flex-start', alignItems: 'center'}}>
-          <Button size="sm" radius={4} style={{width:130, padding:10}}>Lưu</Button>
+        <View
+          style={{
+            flex: 2,
+            justifyContent: "flex-start",
+            alignItems: "center",
+          }}
+        >
+          <Button size="sm" radius={4} style={{ width: 130, padding: 10 }}>
+            Lưu
+          </Button>
         </View>
       </View>
     </View>

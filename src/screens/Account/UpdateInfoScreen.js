@@ -1,5 +1,11 @@
 import React from "react";
-import { StyleSheet, View, ScrollView, StatusBar } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  StatusBar,
+  Touchable,
+} from "react-native";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
 import { BackIcon } from "~components/Icons";
@@ -21,7 +27,7 @@ const styles = (theme) =>
       flexDirection: "row",
       alignItems: "center",
       paddingHorizontal: 15,
-      flex:1,
+      flex: 1,
     },
     title: {
       marginLeft: 15,
@@ -30,10 +36,39 @@ const styles = (theme) =>
     statusBar: {
       backgroundColor: theme.colors.BackgroundBlue,
     },
-    avatar:{
-      // width: 110,
-      // height:110,
-    }
+    avatar: {
+      wrapper: {
+        display: "flex",
+        flexDirection: "column",
+        alignContent: "center",
+        justifyContent: "center",
+      },
+      border: {
+        alignSelf: "center",
+        borderWidth: 3,
+        borderColor: theme.colors.BackgroundBlue,
+        borderRadius: 120,
+      },
+      textButton: {
+        alignSelf: "center",
+        marginTop: 8,
+      },
+    },
+    form: {
+      field: {
+        marginBottom: 20,
+        borderWidth: 1,
+        borderColor: theme.colors.BackgroundBlue,
+      },
+      wrapper: {
+        justifyContent: "center",
+        alignItems: "center",
+      },
+      button: {
+        justifyContent: "center",
+        alignItems: "center",
+      },
+    },
   });
 
 const UpdateInfoScreen = () => {
@@ -48,35 +83,47 @@ const UpdateInfoScreen = () => {
           Chỉnh sửa thông tin cá nhân
         </Typography>
       </View>
-      <View style={{flex: 7}}>
-        <View style={{flex:2}}>
-          <AvatarComponent size="llg" avatarStyle={style.avatar} />
+      <View style={{ flex: 7 }}>
+        {/* avatar */}
+        <View style={[{ flex: 2 }, style.avatar.wrapper]}>
+          <AvatarComponent
+            size="llg"
+            containerAvatarStyle={style.avatar.border}
+          />
+          <View style={style.avatar.textButton}>
+            <Typography color="Gray.5">Thay đổi</Typography>
+          </View>
         </View>
-        <View style={{flex:3, justifyContent: 'center', alignItems: 'center'}}>
+
+        {/* form */}
+        <View style={[{ flex: 3 }, style.form.wrapper]}>
           <TextInput
-              style={{ marginBottom: 20 }}
-              placeholder=""
-              title={"Email"}
-              titleStyle="blackTitle"
-              value = "teo.nguyenvan@gmail.com"
-            />
+            style={style.form.field}
+            placeholder=""
+            title={"Email"}
+            titleStyle="blackTitle"
+            value="teo.nguyenvan@gmail.com"
+          />
           <TextInput
-              style={{ marginBottom: 20 }}
-              placeholder=""
-              title={"Họ và tên"}
-              titleStyle="blackTitle"
-              value = "Nguyễn Văn Tèo"
-            />
+            style={style.form.field}
+            placeholder=""
+            title={"Họ và tên"}
+            titleStyle="blackTitle"
+            value="Nguyễn Văn Tèo"
+          />
           <TextInput
-              style={{ marginBottom: 20 }}
-              placeholder=""
-              title={"Số điện thoại"}
-              titleStyle="blackTitle"
-              value = "0564564231"
-            />
+            style={style.form.field}
+            placeholder=""
+            title={"Số điện thoại"}
+            titleStyle="blackTitle"
+            value="0564564231"
+          />
         </View>
-        <View style={{flex:2, justifyContent: 'center', alignItems: 'center'}}>
-          <Button size="sm" radius={4} style={{width:130, padding:10}}>Lưu</Button>
+
+        <View style={[{ flex: 2 }, style.form.button]}>
+          <Button size="sm" radius={4} style={{ width: 130, padding: 10 }}>
+            Lưu
+          </Button>
         </View>
       </View>
     </View>

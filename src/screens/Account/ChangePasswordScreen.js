@@ -20,7 +20,7 @@ const styles = (theme) =>
       flexDirection: "row",
       alignItems: "center",
       paddingHorizontal: 15,
-      flex:1,
+      flex: 1,
     },
     title: {
       marginLeft: 15,
@@ -28,6 +28,21 @@ const styles = (theme) =>
     },
     statusBar: {
       backgroundColor: theme.colors.BackgroundBlue,
+    },
+    form: {
+      field: {
+        marginBottom: 20,
+        borderWidth: 1,
+        borderColor: theme.colors.BackgroundBlue,
+      },
+      wrapper: {
+        justifyContent: "center",
+        alignItems: "center",
+      },
+      button: {
+        justifyContent: "center",
+        alignItems: "center",
+      },
     },
   });
 
@@ -43,33 +58,35 @@ const ChangePasswordScreen = () => {
           Thay đổi mật khẩu
         </Typography>
       </View>
-      <View style={{flex: 7}}>
-        <View style={{flex:1}}></View>
-        <View style={{flex:3, justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{ flex: 7 }}>
+        <View style={{ flex: 1 }}></View>
+        <View style={[{ flex: 3 }, style.form.wrapper]}>
           <TextInput
-              style={{ marginBottom: 20 }}
-              placeholder="Nhập mật khẩu cũ"
-              title={"Mật khẩu cũ"}
-              titleStyle="blackTitle"
-              isPassword
-            />
+            style={style.form.field}
+            placeholder="Nhập mật khẩu cũ"
+            title={"Mật khẩu cũ"}
+            titleStyle="blackTitle"
+            isPassword
+          />
           <TextInput
-              style={{ marginBottom: 20 }}
-              placeholder="Nhập mật khẩu mới"
-              title={"Mật khẩu mới"}
-              titleStyle="blackTitle"
-              isPassword
-            />
+            style={style.form.field}
+            placeholder="Nhập mật khẩu mới"
+            title={"Mật khẩu mới"}
+            titleStyle="blackTitle"
+            isPassword
+          />
           <TextInput
-              style={{ marginBottom: 20 }}
-              placeholder="Nhập lại mật khẩu"
-              title={"Nhập lại mật khẩu mới"}
-              titleStyle="blackTitle"
-              isPassword
-            />
+            style={style.form.field}
+            placeholder="Nhập lại mật khẩu"
+            title={"Nhập lại mật khẩu mới"}
+            titleStyle="blackTitle"
+            isPassword
+          />
         </View>
-        <View style={{flex:2, justifyContent: 'center', alignItems: 'center'}}>
-          <Button size="sm" radius={4} style={{width:130, padding:10}}>Lưu</Button>
+        <View style={[{ flex: 2 }, style.form.button]}>
+          <Button size="sm" radius={4} style={{ width: 130, padding: 10 }}>
+            Lưu
+          </Button>
         </View>
       </View>
     </View>
