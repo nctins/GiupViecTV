@@ -11,8 +11,8 @@ export default function App() {
   return (
     <ThemeProvider>
       <NavigationContainer>
-        {/* <RootNavigator /> */}
-        <AccountLinkScreen />
+        <RootNavigator />
+        {/* <AccountLinkScreen /> */}
       </NavigationContainer>
     </ThemeProvider>
   );
