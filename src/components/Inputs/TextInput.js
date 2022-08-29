@@ -14,17 +14,30 @@ const TextInput = ({
   ...otherProps
 }) => {
   const styled = useThemeStyles(styles);
-  return (
-    <View>
-      <Typography style={[styled[titleStyle]]}>{title}</Typography>
-      <DefaultTextInput
-        style={[styled[variant], styled[theme], style]}
-        secureTextEntry={isPassword}
-        placeholderTextColor={styled.placeholder.color}
-        {...otherProps}
-      />
-    </View>
-  );
+  if(title != ""|| title != null){
+    return (
+      <View>
+        <DefaultTextInput
+          style={[styled[variant], styled[theme], style]}
+          secureTextEntry={isPassword}
+          placeholderTextColor={styled.placeholder.color}
+          {...otherProps}
+        />
+      </View>
+    );
+  } else {
+    return (
+      <View>
+        <Typography style={[styled[titleStyle]]}>{title}</Typography>
+        <DefaultTextInput
+          style={[styled[variant], styled[theme], style]}
+          secureTextEntry={isPassword}
+          placeholderTextColor={styled.placeholder.color}
+          {...otherProps}
+        />
+      </View>
+    );
+  }
 };
 
 export default TextInput;

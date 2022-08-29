@@ -13,6 +13,9 @@ import FacebookIcon from "./FacebookIcon";
 import GoogleIcon from "./GoogleIcon";
 import RightArrowIcon from "./RightArrowIcon";
 import EditIcon from "./EditIcon";
+import PlusIcon from "./PlusIcon";
+import CalendarIcon from "./CalendarIcon";
+import ClockIcon from "./ClockIcon";
 
 export {
   HomeIcon,
@@ -30,4 +33,7 @@ export {
   GoogleIcon,
   RightArrowIcon,
   EditIcon,
+  PlusIcon,
+  CalendarIcon,
+  ClockIcon
 };

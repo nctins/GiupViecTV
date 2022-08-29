@@ -7,6 +7,10 @@ const styles = (theme) =>
       width: 270,
       padding: 10,
     },
+    sm: {
+      height: 25,
+      padding: 5,
+    },
     fill: {
       backgroundColor: theme.colors.Gray[0],
       borderRadius: 5,
