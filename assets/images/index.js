@@ -9,6 +9,7 @@ export const DEFAULT_BG = require("./backgrounds/default.png");
 export const LOGO = require("./icons/logo.png");
 export const TRANS_LOGO = require("./icons/transLogo.png");
 export const START_LOGO = require("./icons/startLogo.png");
+export const VNPAY_LOGO = require("./icons/vnpay.png");
 
 // Illustrations
 export const START_IMG = require("./illustrations/startScreen.png");

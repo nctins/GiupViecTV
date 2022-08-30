@@ -16,6 +16,8 @@ import EditIcon from "./EditIcon";
 import PlusIcon from "./PlusIcon";
 import CalendarIcon from "./CalendarIcon";
 import ClockIcon from "./ClockIcon";
+import CashIcon from "./CashIcon";
+import VNPayIcon from "./VNPayIcon";
 
 export {
   HomeIcon,
@@ -35,5 +37,7 @@ export {
   EditIcon,
   PlusIcon,
   CalendarIcon,
-  ClockIcon
+  ClockIcon,
+  CashIcon,
+  VNPayIcon
 };
