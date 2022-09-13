@@ -34,7 +34,7 @@ const styles = (theme) => StyleSheet.create({
   },
 })
 
-const CartTab4 = () => {
+const HistoryTab1 = () => {
   const style = useThemeStyles(styles);
 
   return (
@@ -46,11 +46,11 @@ const CartTab4 = () => {
         />
       </View>
       <ScrollView  contentContainerStyle={style.content}>
-        <CartItem type = {4}></CartItem>
-        <CartItem type = {4}></CartItem>
-        <CartItem type = {4}></CartItem>
+        <CartItem type = {2}></CartItem>
+        <CartItem type = {2}></CartItem>
+        <CartItem type = {2}></CartItem>
       </ScrollView>
     </View >
   )
 }
-export default CartTab4
+export default HistoryTab1

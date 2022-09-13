@@ -34,7 +34,7 @@ const styles = (theme) => StyleSheet.create({
   },
 })
 
-const CartTab3 = () => {
+const HistoryTab2 = () => {
   const style = useThemeStyles(styles);
 
   return (
@@ -53,4 +53,4 @@ const CartTab3 = () => {
     </View >
   )
 }
-export default CartTab3
+export default HistoryTab2

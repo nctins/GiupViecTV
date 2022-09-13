@@ -9,8 +9,7 @@ export default function App() {
   return (
     <ThemeProvider>
       <NavigationContainer>
-        {/* <RootNavigator /> */}
-        <PaymentScreen/>
+        <RootNavigator />
       </NavigationContainer>
     </ThemeProvider>
   );

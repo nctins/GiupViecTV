@@ -46,9 +46,9 @@ const CartTab1 = () => {
         />
       </View>
       <ScrollView  contentContainerStyle={style.content}>
-        <CartItem type = {1}></CartItem>
-        <CartItem type = {1}></CartItem>
-        <CartItem type = {1}></CartItem>
+        <CartItem type = {2}></CartItem>
+        <CartItem type = {2}></CartItem>
+        <CartItem type = {2}></CartItem>
       </ScrollView>
     </View >
   )
