@@ -9,6 +9,7 @@ const styles = (theme) => StyleSheet.create({
   	default:{
     	flex:1,
     	flexDirection: "column",
+		backgroundColor: theme.colors.BackgroundBlue,
   	},
   	statusBar:{
     	backgroundColor: theme.colors.BackgroundBlue,

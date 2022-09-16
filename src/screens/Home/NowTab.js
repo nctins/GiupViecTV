@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import { StyleSheet, View, Pressable , ScrollView,TextInput, Easing } from "react-native";
+import React, { useRef, useEffect, useState } from 'react';
+import { StyleSheet, View, Pressable , ScrollView,TextInput,Animated, Easing } from "react-native";
 import useThemeStyles from '~hooks/useThemeStyles';
 import Typography from "~components/Typography";
-import { MotiView } from 'moti';
+import StateNowComponent from '~components/StateNowComponent';
 
 const styles = (theme) => StyleSheet.create({
   	default: {
@@ -39,35 +39,10 @@ const styles = (theme) => StyleSheet.create({
 
 const NowTab = () => {
   	const style = useThemeStyles(styles);
-  	const [stateWork,setStateWord] = useState(true);
-
-	const changeStateWord = () => {
-		setStateWord(!stateWork);
-  	}
-
+  	
   	return (
 		<View style={style.default}>
-			<View style={style.animationView}>
-				{[...Array(3).keys()].map(index => {
-					return ( 
-						<MotiView>
-							from={{opacity: 1, scale: 1}}
-							animation={{opacity:0, scale: 3}}
-							transition={{
-								type: 'timing',
-								duration: 2000,
-								easing: Easing.out(Easing.ease),
-								loop: true,
-							}}
-							key={index}
-							style={[StyleSheet.absoluteFillObject,style.animation]}
-						</MotiView>
-					)
-				})}
-				<Pressable style={style.circleView} onPress={changeStateWord}>
-					<Typography color='BackgroundBlue' variant="H1">{stateWork?"ON":"OFF"}</Typography>
-				</Pressable>
-			</View>
+			<StateNowComponent />
 		</View >
   	)
 }
