@@ -46,9 +46,9 @@ const OrderTab2 = () => {
         />
       </View>
       <ScrollView  contentContainerStyle={style.content}>
-        <CartItem type = {2}></CartItem>
-        <CartItem type = {2}></CartItem>
-        <CartItem type = {2}></CartItem>
+        <CartItem type = {3}></CartItem>
+        <CartItem type = {3}></CartItem>
+        <CartItem type = {3}></CartItem>
       </ScrollView>
     </View >
   )
