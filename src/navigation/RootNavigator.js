@@ -1,6 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeScreen from "~screens/HomeScreen";
+import HomeScreen from "~screens/Home/HomeScreen";
 import MessageScreen from "~screens/Message/MessageScreen";
 import AccountScreen from "~screens/Account/AccountScreen";
 import OrderScreen from "~screens/Order/OrderScreen";
@@ -15,7 +15,6 @@ const RootComponent = () => {
       screenOptions={{
         headerShown: false
       }}
-
       initialRouteName = "Đơn hàng"
     >
       <TAB_NAV.Screen name="Trang chủ" component={HomeScreen} />
