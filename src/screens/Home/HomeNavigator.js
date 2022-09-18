@@ -16,8 +16,8 @@ const styles = (theme) => StyleSheet.create({
         padding: 10,
     },
     item:{
-        width: 80, 
-        height: 80,
+        width: 70, 
+        height: 70,
         backgroundColor: "white",
         borderRadius: 10,
         shadowColor: theme.colors.Gray[1],
