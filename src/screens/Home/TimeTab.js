@@ -40,14 +40,13 @@ const styles = (theme) => StyleSheet.create({
 
 const TimeTab = () => {
   const style = useThemeStyles(styles);
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   return (
     <View style={style.default}>
       <View style={style.viewItem}>
         <View style={style.titleView}>
           <Typography variant="Description" style={{marginLeft: 0}}>50 đơn hàng</Typography>
-          <TouchableOpacity onPress={handlePresentModalPress}>
+          <TouchableOpacity onPress={() => {}}>
             <EditIcon />
           </TouchableOpacity>
         </View>
