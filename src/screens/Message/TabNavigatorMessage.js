@@ -5,8 +5,7 @@ import NotificationTab from './NotificationTab';
 
 const Tab = createMaterialTopTabNavigator();
 
-const TabNavigatorMessage
- = () => {
+const TabNavigatorMessage = () => {
     return ( 
         <Tab.Navigator>
             <Tab.Screen name='Trò chuyện' component={MessageTab}></Tab.Screen>

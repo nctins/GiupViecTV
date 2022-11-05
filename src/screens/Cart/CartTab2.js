@@ -34,7 +34,7 @@ const styles = (theme) => StyleSheet.create({
   },
 })
 
-const CartTab2 = () => {
+const CartTab2 = ({navigation}) => {
   const style = useThemeStyles(styles);
 
   return (
@@ -46,9 +46,9 @@ const CartTab2 = () => {
         />
       </View>
       <ScrollView  contentContainerStyle={style.content}>
-        <CartItem type = {2}></CartItem>
-        <CartItem type = {2}></CartItem>
-        <CartItem type = {2}></CartItem>
+        <CartItem navigation={navigation} type = {2}></CartItem>
+        <CartItem navigation={navigation} type = {2}></CartItem>
+        <CartItem navigation={navigation} type = {2}></CartItem>
       </ScrollView>
     </View >
   )

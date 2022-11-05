@@ -61,7 +61,7 @@ const styles = (theme) => StyleSheet.create({
   },
 })
 
-const CouponScreen = () => {
+const CouponScreen = ({navigation}) => {
   const style = useThemeStyles(styles);
 
   return (
@@ -76,10 +76,10 @@ const CouponScreen = () => {
         <Button style = {style.button} radius={5}>Áp dụng</Button>
       </View>
       <ScrollView contentContainerStyle={style.content}>
-        <CouponComponent title="Ưu đãi voucher 100.000 VNĐ" deadline="30 Thg 8, 2022"/>
-        <CouponComponent title="Ưu đãi voucher 50.000 VNĐ" deadline="10 Thg 9, 2022"/>
-        <CouponComponent title="Ưu đãi voucher 30% hóa đơn" deadline="20 Thg 10, 2022"/>
-        <CouponComponent title="Ưu đãi voucher 30% hóa đơn" deadline="20 Thg 10, 2022"/>
+        <CouponComponent navigation={navigation} title="Ưu đãi voucher 100.000 VNĐ" deadline="30 Thg 8, 2022"/>
+        <CouponComponent navigation={navigation} title="Ưu đãi voucher 50.000 VNĐ" deadline="10 Thg 9, 2022"/>
+        <CouponComponent navigation={navigation} title="Ưu đãi voucher 30% hóa đơn" deadline="20 Thg 10, 2022"/>
+        <CouponComponent navigation={navigation} title="Ưu đãi voucher 30% hóa đơn" deadline="20 Thg 10, 2022"/>
       </ScrollView>
     </SafeAreaView >
   )

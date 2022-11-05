@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet,TouchableOpacity } from "react-native";
 import useThemeStyles from '~hooks/useThemeStyles';
 import Typography from "~components/Typography";
 import AvatarComponent from './AvatarComponent';
@@ -34,8 +34,12 @@ const styles = (theme) => StyleSheet.create({
 
 const MessageItem = (props) => {
     const style = useThemeStyles(styles);
-
+    const navigation = props.navigation;
+    const onPressMessageBox = () => {
+        navigation.navigate("MessageDetail");
+    }
     return ( 
+        <TouchableOpacity onPress={onPressMessageBox}>
         <View style={style.default}>
             <AvatarComponent containerAvatarStyle={{}} avatarStyle={{}} size={"lg"} style={"circle"}/>
             <View style={style.infoView}>
@@ -46,6 +50,7 @@ const MessageItem = (props) => {
             <Typography variant="Text">11/6/2022</Typography>
             </View>
         </View>
+        </TouchableOpacity>
      );
 }
 export default MessageItem;
