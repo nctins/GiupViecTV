@@ -2,17 +2,20 @@ import React from 'react';
 import RootNavigator from '~navigation/RootNavigator';
 import { NavigationContainer } from '@react-navigation/native';
 import { ThemeProvider } from '~contexts/ThemeContext';
-import ServiceScreen from '~screens/Service/ServiceScreen';
-import PaymentScreen from '~screens/Service/PaymentScreen';
+import { AuthProvider } from '~contexts/AuthContext';
+import { AxiosProvider } from '~contexts/AxiosContext';
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <NavigationContainer>
-        {/* <RootNavigator /> */}
-        <PaymentScreen/>
-      </NavigationContainer>
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider>
+        <AxiosProvider>
+          <NavigationContainer>
+            <RootNavigator />
+          </NavigationContainer>
+        </AxiosProvider>
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
 

@@ -53,3 +53,12 @@ buck-out/
 .expo/
 web-build/
 dist/
+
+# env
+.env
+
+# vscode
+.vscode
+
+# http test
+/http
