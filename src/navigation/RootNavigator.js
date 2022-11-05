@@ -16,7 +16,7 @@ const RootComponent = () => {
         headerShown: false
       }}
 
-      initialRouteName = "Đơn hàng"
+      initialRouteName = "Trang chủ"
     >
       <TAB_NAV.Screen name="Trang chủ" component={HomeScreen} />
       <TAB_NAV.Screen name="Đơn hàng" component={CartScreen} />

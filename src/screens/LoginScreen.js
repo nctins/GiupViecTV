@@ -6,7 +6,7 @@ import Typography from "~components/Typography";
 import { TextInput } from "~components/Inputs";
 import { View } from "react-native";
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}) => {
   return (
     <BgImageLayout background={LOGIN_BG}>
       <View style={{ flex: 3 }}></View>
@@ -31,14 +31,14 @@ const LoginScreen = () => {
             Quên mật khẩu?
           </Typography>
         </View>
-        <Button variant="primary" size="sm">
+        <Button variant="primary" size="sm" onPress={() => {navigation.push('HomeScreen', { params: 'example' })}}>
           Đăng nhập
         </Button>
       </View>
       <View style={{ flex: 2, alignItems: "center", justifyContent: "center" }}>
         <Typography>
           Bạn chưa có tài khoản? 
-          <Typography variant="TextBold"> Đăng ký ngay!</Typography>
+          <Typography variant="TextBold" onPress={() => {navigation.push('Step1', { params: 'example' })}}> Đăng ký ngay!</Typography>
         </Typography>
       </View>
     </BgImageLayout>
