@@ -31,8 +31,8 @@ const LoginScreen = ({navigation}) => {
           refreshToken,
           authenticated: true,
         });
-        await SecureStore.setItemAsync("token", JSON.stringify({ token, refreshToken }));
-        setUser("");
+        // await SecureStore.setItemAsync("token", JSON.stringify({ token, refreshToken }));
+        setEmail("");
         setPassword("")
         // navigation.navigate("DrawerNavigation");
         navigation.push('HomeScreen', { params: 'example' })
