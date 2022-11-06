@@ -39,7 +39,7 @@ const AxiosProvider = ({ children }) => {
     const options = {
       method: "POST",
       data,
-      url: `${API_URL}` + "/refreshToken",
+      url: `${API_URL}/auth/refresh-token`,
     };
 
     return axios(options)

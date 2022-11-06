@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { ThemeProvider } from '~contexts/ThemeContext';
 import { AuthProvider } from '~contexts/AuthContext';
 import { AxiosProvider } from '~contexts/AxiosContext';
+import LoginScreen from '~screens/LoginScreen';
 
 export default function App() {
   return (
@@ -11,7 +12,8 @@ export default function App() {
       <ThemeProvider>
         <AxiosProvider>
           <NavigationContainer>
-            <RootNavigator />
+            {/* <RootNavigator /> */}
+            <LoginScreen/>
           </NavigationContainer>
         </AxiosProvider>
       </ThemeProvider>
