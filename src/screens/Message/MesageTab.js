@@ -34,7 +34,7 @@ const styles = (theme) => StyleSheet.create({
   },
 })
 
-const MessageTab = () => {
+const MessageTab = ({navigation}) => {
   const style = useThemeStyles(styles);
 
   return (
@@ -46,8 +46,8 @@ const MessageTab = () => {
         />
       </View>
       <ScrollView  contentContainerStyle={style.content}>
-        <MessageItem />
-        <MessageItem />
+        <MessageItem navigation={navigation} />
+        <MessageItem navigation={navigation} />
       </ScrollView>
     </View >
   )

@@ -73,7 +73,7 @@ const styles = (theme) => StyleSheet.create({
   }
 })
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
   const style = useThemeStyles(styles);
 
   const images = useState(["https://reactnative.dev/img/tiny_logo.png"])
@@ -89,7 +89,7 @@ const HomeScreen = () => {
         </View>
       </View>
       <View style={style.ItemView} >
-        <BoxItemComponent />
+        <BoxItemComponent navigation={navigation} />
       </View>
       <View style={style.AdsView} >
       </View>
@@ -98,9 +98,9 @@ const HomeScreen = () => {
           <Typography variant="H7">Ưu đãi</Typography>
         </View> 
         <ScrollView horizontal={true} style={style.couponContentView}>
-          <CouponComponent isHome={true} containerStyle={style.couponItemStyle} title = "Giảm 100k cho đơn hàng từ 500k tại ABC"/> 
-          <CouponComponent isHome={true} containerStyle={style.couponItemStyle} title = "Giảm 100k cho đơn hàng từ 500k tại ABC"/> 
-          <CouponComponent isHome={true} containerStyle={style.couponItemStyle} title = "Giảm 100k cho đơn hàng từ 500k tại ABC"/> 
+          <CouponComponent navigation={navigation} isHome={true} containerStyle={style.couponItemStyle} title = "Giảm 100k cho đơn hàng từ 500k tại ABC"/> 
+          <CouponComponent navigation={navigation} isHome={true} containerStyle={style.couponItemStyle} title = "Giảm 100k cho đơn hàng từ 500k tại ABC"/> 
+          <CouponComponent navigation={navigation} isHome={true} containerStyle={style.couponItemStyle} title = "Giảm 100k cho đơn hàng từ 500k tại ABC"/> 
         </ScrollView>
       </View>
     </BgImageLayout>

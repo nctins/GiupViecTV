@@ -38,8 +38,9 @@ const styles = (theme) =>
     },
   });
 
-const AddressScreen = () => {
+const AddressScreen = ({route,navigation}) => {
   const style = useThemeStyles(styles);
+  const {param1,param2} = route.params;
 
   return (
     <View style={style.default}>

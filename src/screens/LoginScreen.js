@@ -10,7 +10,7 @@ import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
 import * as SecureStore from "expo-secure-store";
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}) => {
   const authContext = useContext(AuthContext);
   const { publicAxios } = useContext(AxiosContext);
   const [email, setEmail] = useState("");
@@ -35,14 +35,13 @@ const LoginScreen = () => {
         setUser("");
         setPassword("")
         // navigation.navigate("DrawerNavigation");
+        navigation.push('HomeScreen', { params: 'example' })
       })
       .catch(async (error) => {
         // console.log(error);
         // Alert.alert("ERROR", JSON.stringify(error?.response?.data?.errors));
         if (error.response) {
           console.log(error.response.data);
-          // console.log(error.response.status);
-          // console.log(error.response.headers);
         }
       });
   };
@@ -82,7 +81,7 @@ const LoginScreen = () => {
       <View style={{ flex: 2, alignItems: "center", justifyContent: "center" }}>
         <Typography>
           Bạn chưa có tài khoản? 
-          <Typography variant="TextBold"> Đăng ký ngay!</Typography>
+          <Typography variant="TextBold" onPress={() => {navigation.push('Step1', { params: 'example' })}}> Đăng ký ngay!</Typography>
         </Typography>
       </View>
     </BgImageLayout>

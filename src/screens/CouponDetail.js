@@ -75,14 +75,14 @@ const styles = (theme) => StyleSheet.create({
     },
 })
 
-const CouponDetail = () => {
+const CouponDetail = ({navigation}) => {
   const style = useThemeStyles(styles);
 
   return (
     <View style={style.default}>
         <StatusBar backgroundColor={style.statusBar.backgroundColor}/>
         <View style={style.header}>
-            <BackIcon color='white' />
+            <BackIcon color='white' onPress={() => {navigation.navigate("CartScreen")}} />
             <Typography variant = "H5" style={style.title}>Chi tiết quà tặng</Typography>
         </View>
         <View style={style.viewMainContent}>
@@ -107,7 +107,7 @@ const CouponDetail = () => {
                 <Typography variant = "Description" style={{}}>Giảm ngay 100.000đ cho đơn hàng tối thiểu 300.000đ. Áp dụng đến 30/08/2022. Mỗi tài khoản chỉ được sử dụng một lần duy nhất. Mã giảm giá được phát hành bởi công ty abc và sẽ không được hoàn lại với bất kỳ lý do gì.</Typography>
             </ScrollView>
             <View style={style.viewButton}>
-                <Button style={style.button} radius={5}>Sử dụng</Button>
+                <Button style={style.button} radius={5} onPress={() => {navigation.navigate("Trang chủ")}}>Sử dụng</Button>
             </View>
         </View>
     </View >

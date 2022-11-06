@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import useThemeStyles from '~hooks/useThemeStyles';
 import Typography from "~components/Typography";
 import AvatarComponent from './AvatarComponent';
@@ -173,17 +173,22 @@ const setRightItem = (type) => {
 const CartItem = (props) => {
     const style = useThemeStyles(styles);
     const type = props.type;
-
+    const navigation = props.navigation;
+    const onPressCart = () => {
+        navigation.navigate("CartDetail");
+    }
     return ( 
-        <View style={style.default}>
-        <AvatarComponent containerAvatarStyle={{}} avatarStyle={{}} size={"lg"} style={"circle"}/>
-            <View style={style.infoView}>
-                <Typography variant="Text">Giúp việc tức thì</Typography>
-                <Typography variant="MiniDescription" style={{marginLeft: 5}}>KTX khu B, Đông Hòa, Dĩ An, Bình Dương</Typography>
-                <Typography variant="Description">16:30, 11/6/2022</Typography>
+        <TouchableOpacity onPress={onPressCart}>
+            <View style={style.default}>
+            <AvatarComponent containerAvatarStyle={{}} avatarStyle={{}} size={"lg"} style={"circle"}/>
+                <View style={style.infoView}>
+                    <Typography variant="Text">Giúp việc tức thì</Typography>
+                    <Typography variant="MiniDescription" style={{marginLeft: 5}}>KTX khu B, Đông Hòa, Dĩ An, Bình Dương</Typography>
+                    <Typography variant="Description">16:30, 11/6/2022</Typography>
+                </View>
+                {setRightItem(type)}
             </View>
-            {setRightItem(type)}
-        </View>
+        </TouchableOpacity>
      );
 }
 export default CartItem;

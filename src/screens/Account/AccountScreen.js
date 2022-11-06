@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   StatusBar,
   Switch,
+  TouchableOpacity
 } from "react-native";
 import Header from "~components/Header";
 import useThemeStyles from "~hooks/useThemeStyles";
@@ -87,7 +88,7 @@ const settingStyle = (theme) => {
   };
 };
 
-const AccountScreen = () => {
+const AccountScreen = ({navigation}) => {
   const style = useThemeStyles(styles);
   const [isNotice, setIsNotice] = useState(false);
 
@@ -113,10 +114,10 @@ const AccountScreen = () => {
           <Typography variant="TextBold">Tài khoản của tôi</Typography>
           <SettingItem
             title={"Chỉnh sửa thông tin cá nhân"}
-            onTouch={() => {}}
+            onTouch={() => {navigation.navigate("UpdateInfoScreen")}}
           />
-          <SettingItem title={"Thay đổi mật khẩu"} onTouch={() => {}} />
-          <SettingItem title={"Liên kết tài khoản"} onTouch={() => {}} />
+          <SettingItem title={"Thay đổi mật khẩu"} onTouch={() => {navigation.navigate("ChangePasswordScreen")}} />
+          <SettingItem title={"Liên kết tài khoản"} onTouch={() => {navigation.navigate("AccountLinkScreen")}} />
           <SettingItem title={"Đăng xuất"} onTouch={() => {}} />
         </View>
         <View style={style.setting.settingMenu}>
@@ -128,7 +129,7 @@ const AccountScreen = () => {
           />
           <SettingItem title={"Đánh giá chúng tôi"} onTouch={() => {}} />
           <SettingItem title={"Thay đổi mật khẩu"} onTouch={() => {}} />
-          <SettingItem title={"Phản hồi"} onTouch={() => {}} />
+          <SettingItem title={"Phản hồi"} onTouch={() => {navigation.navigate("FeedbackScreen")}} />
         </View>
       </View>
     </SafeAreaView>
@@ -155,13 +156,16 @@ const SwitchSettingItem = ({ icon, title, onToggle, value }) => {
 
 const SettingItem = ({ title, onTouch }) => {
   const style = useThemeStyles(styles);
+  
   return (
+    <TouchableOpacity onPress={onTouch}>
     <View style={style.setting.settingItem}>
       <View style={style.setting.settingItemTitle}>
         <Typography variant="Description">{title}</Typography>
       </View>
       <RightArrowIcon />
     </View>
+    </TouchableOpacity>
   );
 };
 

@@ -10,13 +10,13 @@ import useTheme from "~hooks/useTheme";
 import ObjMapper from "object-mapper";
 import useThemeStyles from "~hooks/useThemeStyles";
 
-const Step2 = () => {
+const Step2 = ({navigation}) => {
   const theme = useTheme();
   const styled = useThemeStyles(styles);
   return (
     <BgImageLayout background={SIGNUP_BG}>
       <View style={{ flex: 1, alignItems: "flex-start" }}>
-        <IconButton style={{ margin: 20 }} icon={<BackIcon color="Gray.0" />} />
+        <IconButton style={{ margin: 20 }} icon={<BackIcon color="Gray.0" onPress={() => {navigation.pop()}} />} />
       </View>
       <View style={[{ flex: 5 }, styled.centerBox]}>
         <TextInput placeholder="Nhập mật khẩu" title={"Mật khẩu"} />
@@ -27,7 +27,7 @@ const Step2 = () => {
       </View>
       <View style={{ flex: 2 }}>
         <View style={[{ flex: 3 }, styled.centerBox]}>
-          <Button size="lg" isShadow>
+          <Button size="lg" isShadow onPress={() => {navigation.popToTop()}}>
             Tiếp theo
           </Button>
         </View>
