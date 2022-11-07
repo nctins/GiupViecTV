@@ -6,7 +6,7 @@ import useThemeStyles from '~hooks/useThemeStyles';
 import Button from '~components/Button';
 import Typography from '~components/Typography';
 
-const StartScreen = () => {
+const StartScreen = ({navigation}) => {
   return (
     <BgImageLayout background={START_BG}>
       <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
@@ -16,10 +16,10 @@ const StartScreen = () => {
         <Image source={START_IMG}/>
       </View>
       <View style={{flex:2, alignItems:'center', justifyContent:'center'}}>
-        <Button size='lg' isShadow variant='secondary'>
+        <Button size='lg' isShadow variant='secondary' onPress={() => {navigation.push('LoginScreen', { params: 'example' })}} >
           Đăng nhập
         </Button>
-        <Button size='lg' isShadow variant='secondary' style={{marginTop: 10}}>
+        <Button size='lg' isShadow variant='secondary' style={{marginTop: 10}} onPress={() => {navigation.push('Step1', { params: 'example' })}} >
           Đăng ký ngay
         </Button>
       </View>
