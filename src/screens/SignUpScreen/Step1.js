@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { BgImageLayout } from "~components/Layout";
 import { SIGNUP_BG } from "assets/images";
 import { StyleSheet, View } from "react-native";
@@ -13,6 +13,10 @@ import useThemeStyles from "~hooks/useThemeStyles";
 const Step1 = ({navigation}) => {
   const theme = useTheme();
   const styled = useThemeStyles(styles);
+
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [name, setName] = useState("");
   
   return (
     <BgImageLayout background={SIGNUP_BG}>
@@ -25,14 +29,20 @@ const Step1 = ({navigation}) => {
         </Typography>
       </View>
       <View style={{ alignItems: "center", marginTop:30 }}>
-        <TextInput placeholder="Hứa không gửi email spam" title={"Email"} />
+        <TextInput 
+          placeholder="Hứa không gửi email spam" 
+          title={"Email"} 
+          onChangeText={(value) => {setEmail(value)}}
+        />
         <TextInput
           placeholder="Mọi người liên lạc bạn theo số này nè"
           title={"Số điện thoại"}
+          onChangeText={(value) => {setPhone(value)}}
         />
         <TextInput
           placeholder="Bạn thích mọi người gọi bạn là gì ?"
           title={"Tên"}
+          onChangeText={(value) => {setName(value)}}
         />
       </View>
       <View style={{ alignItems: "center", marginTop:50 }}>
@@ -51,7 +61,7 @@ const Step1 = ({navigation}) => {
         </View>
       </View>
       <View style={{ alignItems: "center", marginTop:50 }}>
-        <Button size="lg" isShadow onPress={() => {navigation.push('Step2', { params: 'example' })}}>
+        <Button size="lg" isShadow onPress={() => {navigation.push('Step2', { email: email, phone: phone, name:name })}}>
           Tiếp theo
         </Button>
       </View>

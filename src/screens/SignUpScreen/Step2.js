@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { BgImageLayout } from "~components/Layout";
 import { SIGNUP_BG } from "assets/images";
 import { StyleSheet, View } from "react-native";
@@ -9,10 +9,37 @@ import Typography from "~components/Typography";
 import useTheme from "~hooks/useTheme";
 import ObjMapper from "object-mapper";
 import useThemeStyles from "~hooks/useThemeStyles";
+import { AuthContext } from "~contexts/AuthContext";
+import { AxiosContext } from "~contexts/AxiosContext";
 
-const Step2 = ({navigation}) => {
+const Step2 = ({route,navigation}) => {
+  const authContext = useContext(AuthContext);
+  const { publicAxios } = useContext(AxiosContext);
   const theme = useTheme();
   const styled = useThemeStyles(styles);
+  const [password, setPassword] = useState("");
+  const { email, phone, name } = route.params;   
+
+  const onSignUp = async () => {
+    publicAxios
+      .post("http://10.0.2.2:6969/auth/customer/signup", {
+        email: email,
+        phone: phone,
+        name: name,
+        password: password,
+      })
+      .then(async (response) => {
+        console.log("sign Up");
+        console.log(response.data);
+        navigation.popToTop();
+      })
+      .catch(async (error) => {
+        if (error.response) {
+          console.log(error.response.data);
+        }
+      });
+  };
+
   return (
     <BgImageLayout background={SIGNUP_BG}>
       <View style={{ flex: 1, alignItems: "flex-start" }}>
@@ -23,11 +50,12 @@ const Step2 = ({navigation}) => {
         <TextInput
           placeholder="Nhập lại mật khẩu"
           title={"Xác nhận mật khẩu"}
+          onChangeText={(value) => {setPassword(value)}}
         />
       </View>
       <View style={{ flex: 2 }}>
         <View style={[{ flex: 3 }, styled.centerBox]}>
-          <Button size="lg" isShadow onPress={() => {navigation.popToTop()}}>
+          <Button size="lg" isShadow onPress={onSignUp}>
             Tiếp theo
           </Button>
         </View>
