@@ -29,7 +29,6 @@ const LoginScreen = ({navigation}) => {
           refreshToken,
           authenticated: true,
         });
-        console.log(token);
         // await SecureStore.setItemAsync("token", JSON.stringify({ token, refreshToken }));
         setEmail("");
         setPassword("")
