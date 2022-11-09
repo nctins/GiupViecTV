@@ -23,23 +23,19 @@ const LoginScreen = ({navigation}) => {
         password: password,
       })
       .then(async (response) => {
-        console.log("hello");
-        console.log(response.data);
         const { token, refreshToken } = response.data;
         authContext.setAuthState({
-          token,
+          accessToken: token,
           refreshToken,
           authenticated: true,
         });
+        console.log(token);
         // await SecureStore.setItemAsync("token", JSON.stringify({ token, refreshToken }));
         setEmail("");
         setPassword("")
-        // navigation.navigate("DrawerNavigation");
         navigation.push('HomeScreen', { params: 'example' })
       })
       .catch(async (error) => {
-        // console.log(error);
-        // Alert.alert("ERROR", JSON.stringify(error?.response?.data?.errors));
         if (error.response) {
           console.log(error.response.data);
         }
