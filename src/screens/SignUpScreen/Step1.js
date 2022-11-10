@@ -13,7 +13,6 @@ import useThemeStyles from "~hooks/useThemeStyles";
 const Step1 = ({navigation}) => {
   const theme = useTheme();
   const styled = useThemeStyles(styles);
-
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
@@ -29,21 +28,33 @@ const Step1 = ({navigation}) => {
         </Typography>
       </View>
       <View style={{ alignItems: "center", marginTop:30 }}>
+        <View>
+        <Typography style={styled.label}>Email:</Typography>
         <TextInput 
           placeholder="Hứa không gửi email spam" 
           title={"Email"} 
+          value={email}
           onChangeText={(value) => {setEmail(value)}}
         />
+        </View>
+        <View>
+        <Typography style={styled.label}>Phone:</Typography>
         <TextInput
           placeholder="Mọi người liên lạc bạn theo số này nè"
           title={"Số điện thoại"}
+          value={phone}
           onChangeText={(value) => {setPhone(value)}}
         />
+        </View>
+        <View>
+        <Typography style={styled.label}>Họ và tên:</Typography>
         <TextInput
           placeholder="Bạn thích mọi người gọi bạn là gì ?"
           title={"Tên"}
+          value={name}
           onChangeText={(value) => {setName(value)}}
         />
+        </View>
       </View>
       <View style={{ alignItems: "center", marginTop:50 }}>
         <View style={styled.card}>
@@ -61,7 +72,7 @@ const Step1 = ({navigation}) => {
         </View>
       </View>
       <View style={{ alignItems: "center", marginTop:50 }}>
-        <Button size="lg" isShadow onPress={() => {navigation.push('Step2', { email: email, phone: phone, name:name })}}>
+        <Button size="lg" isShadow onPress={() => {navigation.push('Step2', {email: email, phone: phone, name: name})}}>
           Tiếp theo
         </Button>
       </View>
@@ -92,6 +103,10 @@ const styles = (theme) =>
       borderRadius: 12,
       backgroundColor: ObjMapper.getKeyValue(theme.colors, "Gray.2"),
     },
+    label: {
+      color: ObjMapper.getKeyValue(theme.colors, "Gray.0"),
+      marginBottom: 5
+    }
   });
 
 export default Step1;

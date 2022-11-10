@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { BgImageLayout } from "~components/Layout";
 import { SIGNUP_BG } from "assets/images";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Alert } from "react-native";
 import { TextInput } from "~components/Inputs";
 import Button, { IconButton } from "~components/Button";
 import { BackIcon } from "~components/Icons";
@@ -18,9 +18,21 @@ const Step2 = ({route,navigation}) => {
   const theme = useTheme();
   const styled = useThemeStyles(styles);
   const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
   const { email, phone, name } = route.params;   
 
   const onSignUp = async () => {
+    if(password !== passwordConfirm){
+      Alert.alert(
+        "Đăng ký tài khoản không thành công!",
+        "Xác nhận mật khẩu không đúng!",
+        [
+          { text: "OK"}
+        ]
+      );
+      setPasswordConfirm("");
+      return;
+    }
     publicAxios
       .post("http://10.0.2.2:6969/auth/customer/signup", {
         email: email,
@@ -35,7 +47,31 @@ const Step2 = ({route,navigation}) => {
       })
       .catch(async (error) => {
         if (error.response) {
-          console.log(error.response.data);
+          console.log("sign Up error");
+          let {msg} = error.response.data;
+          let msgAlert = "";
+          if(msg.length == 1){
+            if(msg[0].includes("password")){
+              Alert.alert(
+                "Đăng ký tài khoản không thành công!",
+                msg[0].replace("body",""),
+                [
+                  { text: "OK"}
+                ]
+              );
+              return;
+            }
+          }
+          msg.map(e => {
+            msgAlert = msgAlert + e.replace("body","") + '\n';
+          })
+          Alert.alert(
+            "Đăng ký tài khoản không thành công!",
+            msgAlert,
+            [
+              { text: "OK", onPress: () => navigation.pop() }
+            ]
+          );
         }
       });
   };
@@ -46,12 +82,26 @@ const Step2 = ({route,navigation}) => {
         <IconButton style={{ margin: 20 }} icon={<BackIcon color="Gray.0" onPress={() => {navigation.pop()}} />} />
       </View>
       <View style={[{ flex: 5 }, styled.centerBox]}>
-        <TextInput placeholder="Nhập mật khẩu" title={"Mật khẩu"} />
-        <TextInput
-          placeholder="Nhập lại mật khẩu"
-          title={"Xác nhận mật khẩu"}
-          onChangeText={(value) => {setPassword(value)}}
-        />
+        <View>
+          <Typography style={styled.label}>Password:</Typography>
+          <TextInput 
+            secureTextEntry={true}
+            placeholder="Nhập mật khẩu" 
+            title={"Mật khẩu"} 
+            value = {password}
+            onChangeText={(value) => {setPassword(value)}}
+          />
+        </View>
+        <View>
+          <Typography style={styled.label}>Confim Password:</Typography>
+          <TextInput
+            secureTextEntry={true}
+            placeholder="Nhập lại mật khẩu"
+            title={"Xác nhận mật khẩu"}
+            value={passwordConfirm}
+            onChangeText={(value) => {setPasswordConfirm(value)}}
+          />
+        </View>
       </View>
       <View style={{ flex: 2 }}>
         <View style={[{ flex: 3 }, styled.centerBox]}>
@@ -96,6 +146,10 @@ const styles = (theme) =>
       justifyContent: "center",
       alignItems: "center",
     },
+    label: {
+      color: ObjMapper.getKeyValue(theme.colors, "Gray.0"),
+      marginBottom: 5
+    }
   });
 
 export default Step2;

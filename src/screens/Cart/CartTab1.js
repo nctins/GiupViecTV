@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect}  from 'react'
 import { StyleSheet, View, ScrollView,TextInput } from "react-native";
 import CartItem from '~components/CartItem';
 import useThemeStyles from '~hooks/useThemeStyles';
@@ -36,6 +36,31 @@ const styles = (theme) => StyleSheet.create({
 
 const CartTab1 = ({navigation}) => {
   const style = useThemeStyles(styles);
+  const [lstCart,setLstCart] = useState([]);
+    useEffect(() => {
+    //   publicAxios
+    //     .post("http://10.0.2.2:6969/auth/customer/signin", {
+    //       email: email,
+    //       password: password,
+    //     })
+    //     .then(async (response) => {
+    //       const { token, refreshToken } = response.data;
+    //       authContext.setAuthState({
+    //         accessToken: token,
+    //         refreshToken,
+    //         authenticated: true,
+    //       });
+    //       // await SecureStore.setItemAsync("token", JSON.stringify({ token, refreshToken }));
+    //       setEmail("");
+    //       setPassword("")
+    //       navigation.push('HomeScreen', { params: 'example' })
+    //     })
+    //     .catch(async (error) => {
+    //       if (error.response) {
+    //         console.log(error.response.data);
+    //       }
+    //     });
+  });
 
   return (
     <View style={style.default}>

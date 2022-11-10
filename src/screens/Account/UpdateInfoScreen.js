@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   View,
@@ -12,6 +12,8 @@ import { BackIcon } from "~components/Icons";
 import { TextInput } from "~components/Inputs";
 import Button from "~components/Button";
 import AvatarComponent from "~components/AvatarComponent";
+import { AuthContext } from "~contexts/AuthContext";
+import { AxiosContext } from "~contexts/AxiosContext";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -73,6 +75,24 @@ const styles = (theme) =>
 
 const UpdateInfoScreen = () => {
   const style = useThemeStyles(styles);
+  const authContext = useContext(AuthContext);
+  const { publicAxios } = useContext(AxiosContext);
+  const [email,setEmail] = useState("");
+  const [name,setName] = useState("");
+  const [phone,setPhone] = useState("");
+
+  useEffect(() => {
+    publicAxios
+      .get("http://10.0.2.2:6969/customer/CUS_1kh9x4e68la8f1e0o")
+      .then(async (response) => {
+        console.log(response.data);
+      })
+      .catch(async (error) => {
+        if (error.response) {
+          console.log(error.response.data);
+        }
+      });
+  })
 
   return (
     <View style={style.default}>
