@@ -23,13 +23,14 @@ const LoginScreen = ({navigation}) => {
         password: password,
       })
       .then(async (response) => {
-        const { token, refreshToken } = response.data;
+        const { token, refreshToken, user } = response.data;
         authContext.setAuthState({
-          accessToken: token,
+          token,
           refreshToken,
           authenticated: true,
+          user
         });
-        // await SecureStore.setItemAsync("token", JSON.stringify({ token, refreshToken }));
+        await SecureStore.setItemAsync("auth_info", JSON.stringify({ token, refreshToken, user }));
         setEmail("");
         setPassword("")
         navigation.push('HomeScreen', { params: 'example' })
