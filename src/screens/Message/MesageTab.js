@@ -1,7 +1,8 @@
-import React from 'react'
-import { StyleSheet, View, ScrollView,TextInput } from "react-native";
+import React, {useContext} from 'react'
+import { StyleSheet, View, ScrollView, TextInput } from "react-native";
 import MessageItem from '~components/MessageItem';
 import useThemeStyles from '~hooks/useThemeStyles';
+import { AxiosContext } from '~contexts/AxiosContext';
 
 const styles = (theme) => StyleSheet.create({
   default: {
@@ -36,6 +37,16 @@ const styles = (theme) => StyleSheet.create({
 
 const MessageTab = ({navigation}) => {
   const style = useThemeStyles(styles);
+  const {authAxios} = useContext(AxiosContext);
+
+  const box_chats = authAxios.get("/box-chats").then((res)=>{
+    console.log(res.data);
+    return res.data;
+  }).catch((err)=>{
+    console.log(err.response.data);
+    return [];
+  })
+
 
   return (
     <View style={style.default}>
