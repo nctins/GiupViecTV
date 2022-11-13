@@ -89,7 +89,7 @@ const CouponDetail = ({route,navigation}) => {
     <View style={style.default}>
         <StatusBar backgroundColor={style.statusBar.backgroundColor}/>
         <View style={style.header}>
-            <BackIcon color='white' onPress={() => {navigation.navigate("CartScreen")}} />
+            <BackIcon color='white' onPress={() => {navigation.navigate("CouponScreen")}} />
             <Typography variant = "H5" style={style.title}>Chi tiết quà tặng</Typography>
         </View>
         <View style={style.viewMainContent}>

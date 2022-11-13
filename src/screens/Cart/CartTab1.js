@@ -1,7 +1,10 @@
-import React, {useState, useEffect}  from 'react'
-import { StyleSheet, View, ScrollView,TextInput } from "react-native";
+import React, {useState, useEffect, useContext}  from 'react'
+import { StyleSheet, View, ScrollView,TextInput, Alert } from "react-native";
 import CartItem from '~components/CartItem';
 import useThemeStyles from '~hooks/useThemeStyles';
+import { AuthContext } from "~contexts/AuthContext";
+import { AxiosContext } from "~contexts/AxiosContext";
+import {POST_STATE} from "../../constants/app_contants";
 
 const styles = (theme) => StyleSheet.create({
   default: {
@@ -36,31 +39,36 @@ const styles = (theme) => StyleSheet.create({
 
 const CartTab1 = ({navigation}) => {
   const style = useThemeStyles(styles);
-  const [lstCart,setLstCart] = useState([]);
-    useEffect(() => {
-    //   publicAxios
-    //     .post("http://10.0.2.2:6969/auth/customer/signin", {
-    //       email: email,
-    //       password: password,
-    //     })
-    //     .then(async (response) => {
-    //       const { token, refreshToken } = response.data;
-    //       authContext.setAuthState({
-    //         accessToken: token,
-    //         refreshToken,
-    //         authenticated: true,
-    //       });
-    //       // await SecureStore.setItemAsync("token", JSON.stringify({ token, refreshToken }));
-    //       setEmail("");
-    //       setPassword("")
-    //       navigation.push('HomeScreen', { params: 'example' })
-    //     })
-    //     .catch(async (error) => {
-    //       if (error.response) {
-    //         console.log(error.response.data);
-    //       }
-    //     });
-  });
+  const authContext = useContext(AuthContext);
+  const {authAxios} = useContext(AxiosContext);
+  const [posts,setPosts] = useState([]);
+
+  useEffect(() => {
+    getPosts();
+  },[]);
+
+  const getPosts = () => {
+    authAxios
+      .get("http://10.0.2.2:6969/posts")
+      .then(async (response) => {
+        let arrPost = response.data.data;
+        arrPost = arrPost.filter(e => {
+          return e.post_state === POST_STATE.PROCESSING
+        })
+        setPosts(arrPost);
+      })
+      .catch(async (error) => {
+        if (error.response) {
+          console.log(error.response.data);
+        }
+      });
+  }
+
+  const displayPost = () => {
+    return posts.map((e,index) => {
+      return <CartItem key={index} navigation={navigation} type = {e.post_state}></CartItem>
+    })
+  }
 
   return (
     <View style={style.default}>
@@ -71,9 +79,7 @@ const CartTab1 = ({navigation}) => {
         />
       </View>
       <ScrollView  contentContainerStyle={style.content}>
-        <CartItem navigation={navigation} type = {1}></CartItem>
-        <CartItem navigation={navigation} type = {1}></CartItem>
-        <CartItem navigation={navigation} type = {1}></CartItem>
+        {displayPost()}
       </ScrollView>
     </View >
   )

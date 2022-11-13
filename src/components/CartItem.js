@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import useThemeStyles from '~hooks/useThemeStyles';
 import Typography from "~components/Typography";
 import AvatarComponent from './AvatarComponent';
+import {POST_STATE} from "../constants/app_contants";
 
 const styles = (theme) => StyleSheet.create({
     default: {
@@ -157,13 +158,13 @@ const RightInfoCartItem4 = () => {
 }
 
 const setRightItem = (type) => {
-    if(type === 1){
+    if(type === POST_STATE.PROCESSING){
         return <RightInfoCartItem1 />
-    }else if(type === 2){
+    }else if(type === POST_STATE.INCOMPLETE){
         return <RightInfoCartItem2 />
-    }else if(type === 3){
+    }else if(type === POST_STATE.COMPLETE){
         return <RightInfoCartItem3 />
-    }else if(type === 4){
+    }else if(type === POST_STATE.CANCEL){
         return <RightInfoCartItem4 />
     }else{
         return null;
