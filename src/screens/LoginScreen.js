@@ -15,6 +15,10 @@ const LoginScreen = ({navigation}) => {
   const { publicAxios } = useContext(AxiosContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const setToken = async (value) => {
+    await SecureStore.setItemAsync("auth_info", value);
+  };
   
   const onLogin = async () => {
     publicAxios
@@ -23,15 +27,16 @@ const LoginScreen = ({navigation}) => {
         password: password,
       })
       .then(async (response) => {
-        const { token, refreshToken } = response.data;
+        const { token, refreshToken, user } = response.data;
         authContext.setAuthState({
-          accessToken: token,
+          token,
           refreshToken,
           authenticated: true,
+          user
         });
-        // await SecureStore.setItemAsync("token", JSON.stringify({ token, refreshToken }));
+        await setToken(JSON.stringify({ token, refreshToken, user }));
         setEmail("");
-        setPassword("")
+        setPassword("");
         navigation.push('HomeScreen', { params: 'example' })
       })
       .catch(async (error) => {
