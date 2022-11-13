@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { BgImageLayout } from "~components/Layout";
 import { SIGNUP_BG } from "assets/images";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Alert } from "react-native";
 import { TextInput } from "~components/Inputs";
 import Button, { IconButton } from "~components/Button";
 import { BackIcon, FacebookIcon, GoogleIcon } from "~components/Icons";
@@ -16,6 +16,20 @@ const Step1 = ({navigation}) => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
+
+  const onPressNextButton = () => {
+    if(email.length > 0 && phone.length > 0 && name.length > 0){
+      navigation.push('Step2', {email: email, phone: phone, name: name})
+    }else{
+      Alert.alert(
+        "Thông báo!",
+        "Cần nhập đầy đủ các mục để tiếp tục!",
+        [
+          { text: "OK"}
+        ]
+      );
+    }
+  }
   
   return (
     <BgImageLayout background={SIGNUP_BG}>
@@ -72,7 +86,7 @@ const Step1 = ({navigation}) => {
         </View>
       </View>
       <View style={{ alignItems: "center", marginTop:50 }}>
-        <Button size="lg" isShadow onPress={() => {navigation.push('Step2', {email: email, phone: phone, name: name})}}>
+        <Button size="lg" isShadow onPress={onPressNextButton}>
           Tiếp theo
         </Button>
       </View>

@@ -97,7 +97,7 @@ const UpdateInfoScreen = () => {
 
   const getAccount = async () => {
     authAxios
-      .get("http://10.0.2.2:6969/customer/CUS_1kh9x4e68la8f1e0o")
+      .get("http://10.0.2.2:6969/customer/CUS_g2pcl14wl8rlwhcv")
       .then(async (response) => {
         // console.log(response.data);
         let customer = response.data.data;
@@ -114,7 +114,7 @@ const UpdateInfoScreen = () => {
 
   const updateAccount = () => {
     authAxios
-      .put("http://10.0.2.2:6969/customer/CUS_1kh9x4e68la8f1e0o",{
+      .put("http://10.0.2.2:6969/customer/CUS_g2pcl14wl8rlwhcv",{
         email: email,
         name: name,
         phone: phone

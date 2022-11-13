@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { StyleSheet, View, SafeAreaView,StatusBar,ScrollView,TextInput } from "react-native";
 import Button from '~components/Button';
 import CouponComponent from '~components/CouponComponent';
 import Header from '~components/Header';
 import useThemeStyles from '~hooks/useThemeStyles';
+import { AuthContext } from "~contexts/AuthContext";
+import { AxiosContext } from "~contexts/AxiosContext";
 
 const styles = (theme) => StyleSheet.create({
   default:{
@@ -63,6 +65,42 @@ const styles = (theme) => StyleSheet.create({
 
 const CouponScreen = ({navigation}) => {
   const style = useThemeStyles(styles);
+  const authContext = useContext(AuthContext);
+  const {authAxios} = useContext(AxiosContext);
+  const [vouchers,setVouchers] = useState([]);
+
+  useEffect(() => {
+    getCoupon();
+  },[])
+
+  const getCoupon = async () => {
+    authAxios
+      .get("http://10.0.2.2:6969/customer/CUS_g2pcl14wl8rlwhcv/vouchers")
+      .then(async (response) => {
+        setVouchers(response.data.data);
+        // console.log(vouchers);
+      })
+      .catch(async (error) => {
+        if (error.response) {
+          console.log(error.response.data);
+        }
+      });
+  }
+
+  const limitLengthName = (voucher_name) => {
+    if(voucher_name.length > 100){
+      return voucher_name.substring(0,100).concat("...");
+    }else{
+      return voucher_name;
+    }
+  }
+
+  const displayListCoupon = () => {
+    return vouchers.map((e,index) => {
+      console.log(e);
+      return <CouponComponent key={index} voucher_info={e} navigation={navigation} title={limitLengthName(e.voucher_name)} deadline={e.end_date.substring(0,10)} />
+    })
+  }
 
   return (
     <SafeAreaView  style={{flex:1}}>
@@ -76,10 +114,7 @@ const CouponScreen = ({navigation}) => {
         <Button style = {style.button} radius={5}>Áp dụng</Button>
       </View>
       <ScrollView contentContainerStyle={style.content}>
-        <CouponComponent navigation={navigation} title="Ưu đãi voucher 100.000 VNĐ" deadline="30 Thg 8, 2022"/>
-        <CouponComponent navigation={navigation} title="Ưu đãi voucher 50.000 VNĐ" deadline="10 Thg 9, 2022"/>
-        <CouponComponent navigation={navigation} title="Ưu đãi voucher 30% hóa đơn" deadline="20 Thg 10, 2022"/>
-        <CouponComponent navigation={navigation} title="Ưu đãi voucher 30% hóa đơn" deadline="20 Thg 10, 2022"/>
+        {displayListCoupon()}
       </ScrollView>
     </SafeAreaView >
   )

@@ -52,7 +52,7 @@ const styles = (theme) => StyleSheet.create({
     }
 })
 
-const CouponComponent = ({navigation,containerStyle,isHome = false,title,deadline,...props}) => {
+const CouponComponent = ({navigation,voucher_info, containerStyle,isHome = false,title,deadline,...props}) => {
     const style = useThemeStyles(styles);
     const onPressCoupon = () => {
         if(isHome){
@@ -60,7 +60,9 @@ const CouponComponent = ({navigation,containerStyle,isHome = false,title,deadlin
                 screen: "CouponDetail",
             });
         }else{
-            navigation.navigate("CouponDetail");
+            navigation.navigate("CouponDetail",{
+                voucher_info: voucher_info
+            });
         }
     }
 

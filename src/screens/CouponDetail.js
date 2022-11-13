@@ -75,8 +75,15 @@ const styles = (theme) => StyleSheet.create({
     },
 })
 
-const CouponDetail = ({navigation}) => {
+const CouponDetail = ({route,navigation}) => {
   const style = useThemeStyles(styles);
+  const { voucher_info } = route.params;  
+
+  const formatDate = (date) => {
+    date = date.replace("T", " ");
+    date = date.replace("Z", "");
+    return date.substring(0, date.length - 4);
+  }
 
   return (
     <View style={style.default}>
@@ -87,24 +94,20 @@ const CouponDetail = ({navigation}) => {
         </View>
         <View style={style.viewMainContent}>
             <View style={style.content}>
-                <Typography variant = "TextBold" style={style.title}>Ưu đãi voucher 100.000 VNĐ</Typography>
-                <Typography variant = "Description" style={style.title}>HSD: 30/08/2022</Typography>
+                <Typography variant = "TextBold" style={style.title}>{voucher_info.voucher_name}</Typography>
+                <Typography variant = "Description" style={style.title}>{voucher_info.end_date.substring(0,10)}</Typography>
             </View>
         </View>
         <View style={style.viewDetail}>
             <ScrollView  contentContainerStyle={style.detail}>
                 <Typography variant = "TextBold" style={style.detailHeader}>Ưu đãi</Typography>
-                <Typography variant = "Description" style={{}}>Giảm ngay 100.000đ cho đơn tối thiểu 300.000đ</Typography>
+                <Typography variant = "Description" style={{}}>{voucher_info.voucher_name}</Typography>
                 <Typography variant = "TextBold" style={style.detailHeader}>Có hiệu lực</Typography>
-                <Typography variant = "Description" style={{}}>01-08-2022 00:00 - 30-8-2022 23:59</Typography>
+                <Typography variant = "Description" style={{}}>{formatDate(voucher_info.start_date)} - {formatDate(voucher_info.end_date)}</Typography>
                 <Typography variant = "TextBold" style={style.detailHeader}>Phương thức thanh toán</Typography>
                 <Typography variant = "Description" style={{}}>Mọi hình thức thanh toán</Typography>
                 <Typography variant = "TextBold" style={style.detailHeader}>Điều kiện</Typography>
-                <Typography variant = "Description" style={{}}>Giảm ngay 100.000đ cho đơn hàng tối thiểu 300.000đ. Áp dụng đến 30/08/2022. Mỗi tài khoản chỉ được sử dụng một lần duy nhất. Mã giảm giá được phát hành bởi công ty abc và sẽ không được hoàn lại với bất kỳ lý do gì.</Typography>
-                <Typography variant = "TextBold" style={style.detailHeader}>Điều kiện</Typography>
-                <Typography variant = "Description" style={{}}>Giảm ngay 100.000đ cho đơn hàng tối thiểu 300.000đ. Áp dụng đến 30/08/2022. Mỗi tài khoản chỉ được sử dụng một lần duy nhất. Mã giảm giá được phát hành bởi công ty abc và sẽ không được hoàn lại với bất kỳ lý do gì.</Typography>
-                <Typography variant = "TextBold" style={style.detailHeader}>Điều kiện</Typography>
-                <Typography variant = "Description" style={{}}>Giảm ngay 100.000đ cho đơn hàng tối thiểu 300.000đ. Áp dụng đến 30/08/2022. Mỗi tài khoản chỉ được sử dụng một lần duy nhất. Mã giảm giá được phát hành bởi công ty abc và sẽ không được hoàn lại với bất kỳ lý do gì.</Typography>
+                <Typography variant = "Description" style={{}}>{voucher_info.voucher_description}</Typography>
             </ScrollView>
             <View style={style.viewButton}>
                 <Button style={style.button} radius={5} onPress={() => {navigation.navigate("Trang chủ")}}>Sử dụng</Button>

@@ -80,7 +80,7 @@ const ChangePasswordScreen = () => {
     }
 
     authAxios
-      .put("http://10.0.2.2:6969/customer/CUS_1kh9x4e68la8f1e0o/updatePassword",{
+      .put("http://10.0.2.2:6969/customer/CUS_g2pcl14wl8rlwhcv/updatePassword",{
         oldPassword: oldPassword,
         newPassword: newPassword,
       })
