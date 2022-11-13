@@ -3,7 +3,7 @@ import axios from "axios";
 import { AuthContext } from "./AuthContext";
 import createAuthRefreshInterceptor from "axios-auth-refresh";
 import * as SecureStore from "expo-secure-store";
-import { API_URL } from "@env";
+import { API_URL } from "../constants/api";
 
 const AxiosContext = createContext();
 const { Provider } = AxiosContext;
