@@ -10,9 +10,9 @@ const AuthProvider = ({ children }) => {
     refeshToken: null,
     authenticated: null,
     user: {
-      "id": null,
-      "name": null,
-      "email": null
+      id: null,
+      name: null,
+      email: null
     }
   });
 
@@ -23,9 +23,9 @@ const AuthProvider = ({ children }) => {
       refeshToken: null,
       authenticated: false,
       user: {
-        "id": null,
-        "name": null,
-        "email": null
+        id: null,
+        name: null,
+        email: null
       }
     });
   };
