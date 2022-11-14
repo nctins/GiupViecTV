@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react'
-import { StyleSheet, View, ScrollView,TextInput } from "react-native";
+import { StyleSheet, View, ScrollView,TextInput, RefreshControl } from "react-native";
 import CartItem from '~components/CartItem';
 import useThemeStyles from '~hooks/useThemeStyles';
 import { AuthContext } from "~contexts/AuthContext";
@@ -37,11 +37,25 @@ const styles = (theme) => StyleSheet.create({
   },
 })
 
+const wait = (timeout) => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
+
+
 const CartTab3 = ({navigation}) => {
   const style = useThemeStyles(styles);
   const authContext = useContext(AuthContext);
   const {authAxios} = useContext(AxiosContext);
   const [posts,setPosts] = useState([]);
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => {
+      setRefreshing(false);
+      getPosts();
+    });
+  }, []);
 
   useEffect(() => {
     getPosts();
@@ -53,7 +67,7 @@ const CartTab3 = ({navigation}) => {
       .then(async (response) => {
         let arrPost = response.data.data;
         arrPost = arrPost.filter(e => {
-          return e.post_state === POST_STATE.INCOMPLETE
+          return e.post_state === POST_STATE.COMPLETE
         })
         setPosts(arrPost);
       })
@@ -66,7 +80,7 @@ const CartTab3 = ({navigation}) => {
 
   const displayPost = () => {
     return posts.map((e,index) => {
-      return <CartItem key={index} navigation={navigation} type = {e.post_state}></CartItem>
+      return <CartItem key={index} post={e} navigation={navigation} type = {e.post_state}></CartItem>
     })
   }
 
@@ -78,7 +92,15 @@ const CartTab3 = ({navigation}) => {
           placeholder="Search"
         />
       </View>
-      <ScrollView  contentContainerStyle={style.content}>
+      <ScrollView  
+        contentContainerStyle={style.content}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
+      >
       {displayPost()}
       </ScrollView>
     </View >

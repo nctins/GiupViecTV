@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext}  from 'react'
-import { StyleSheet, View, ScrollView,TextInput, Alert } from "react-native";
+import { StyleSheet, View, ScrollView,TextInput, Alert, RefreshControl } from "react-native";
 import CartItem from '~components/CartItem';
 import useThemeStyles from '~hooks/useThemeStyles';
 import { AuthContext } from "~contexts/AuthContext";
@@ -37,11 +37,24 @@ const styles = (theme) => StyleSheet.create({
   },
 })
 
+const wait = (timeout) => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
+
 const CartTab1 = ({navigation}) => {
   const style = useThemeStyles(styles);
   const authContext = useContext(AuthContext);
   const {authAxios} = useContext(AxiosContext);
   const [posts,setPosts] = useState([]);
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => {
+      setRefreshing(false);
+      getPosts();
+    });
+  }, []);
 
   useEffect(() => {
     getPosts();
@@ -56,6 +69,7 @@ const CartTab1 = ({navigation}) => {
           return e.post_state === POST_STATE.PROCESSING
         })
         setPosts(arrPost);
+        console.log(arrPost);
       })
       .catch(async (error) => {
         if (error.response) {
@@ -66,7 +80,7 @@ const CartTab1 = ({navigation}) => {
 
   const displayPost = () => {
     return posts.map((e,index) => {
-      return <CartItem key={index} navigation={navigation} type = {e.post_state}></CartItem>
+      return <CartItem key={index} post={e} navigation={navigation} type = {e.post_state}></CartItem>
     })
   }
 
@@ -78,7 +92,15 @@ const CartTab1 = ({navigation}) => {
           placeholder="Search"
         />
       </View>
-      <ScrollView  contentContainerStyle={style.content}>
+      <ScrollView  
+        contentContainerStyle={style.content}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
+      >
         {displayPost()}
       </ScrollView>
     </View >

@@ -1,9 +1,16 @@
-import React from 'react'
+import React, {useState, useEffect, useContext}  from 'react'
 import { StyleSheet, View, ScrollView,StatusBar } from "react-native";
 import useThemeStyles from '~hooks/useThemeStyles';
 import Typography from "~components/Typography";
 import { BackIcon } from '~components/Icons';
 import Button from '~components/Button';
+import { AuthContext } from "~contexts/AuthContext";
+import { AxiosContext } from "~contexts/AxiosContext";
+import  {  POST_STATE, POST_TYPE, 
+          LIMIT_ADDRESS_LENGTH, 
+          PAYMENT_METHOD_CONDITION
+        } 
+from "../constants/app_contants";
 
 const styles = (theme) => StyleSheet.create({
   default: {
@@ -75,21 +82,60 @@ const styles = (theme) => StyleSheet.create({
     }
 })
 
-const CartDetail = () => {
+const CartDetail = (props) => {
   const style = useThemeStyles(styles);
+  const authContext = useContext(AuthContext);
+  const {authAxios} = useContext(AxiosContext);
+  const navigation = props.navigation;
+  const route = props.route;
+  const { post } = route.params;  
+
+  useEffect(() => {
+    getPostDetail();
+  },[]);
+
+  const getPostDetail = () => {
+    // authAxios
+    //   .get("http://10.0.2.2:6969/posts")
+    //   .then(async (response) => {
+    //     let arrPost = response.data.data;
+    //     arrPost = arrPost.filter(e => {
+    //       return e.post_state === POST_STATE.PROCESSING
+    //     })
+    //     setPosts(arrPost);
+    //     console.log(arrPost);
+    //   })
+    //   .catch(async (error) => {
+    //     if (error.response) {
+    //       console.log(error.response.data);
+    //     }
+    //   });
+  }
+
+  const displayPostState = () => {
+    if(post.post_state === POST_STATE.PROCESSING){
+      return POST_STATE.PROCESSING_NA;
+    } else if(post.post_state === POST_STATE.INCOMPLETE){
+      return POST_STATE.INCOMPLETE_NA;
+    } else if(post.post_state === POST_STATE.COMPLETE){
+      return POST_STATE.COMPLETE_NA;
+    }else{
+      return POST_STATE.CANCEL_NA;
+    }
+  }
 
   return (
     <View style={style.default}>
         <StatusBar backgroundColor={style.statusBar.backgroundColor}/>
         <View style={style.header}>
-            <BackIcon color='white' />
+            <BackIcon color='white' onPress={() => {navigation.navigate("CartScreen")}}/>
             <Typography variant = "H5" style={style.titleHeader}>Chi tiết đơn hàng</Typography>
         </View>
         <ScrollView style={style.viewContent}>
             <View style = {style.viewItemContent1}>
                 <Typography variant = "TextBold" style={style.title}>Tình trạng đơn hàng</Typography>
                 <View style={style.label}>
-                    <Typography variant = "Description" style={{}}>Đang chờ xử lý</Typography>
+                    <Typography variant = "Description" style={{}}>{displayPostState()}</Typography>
                 </View>
             </View>
             <View style = {[style.viewItemContent2]}>

@@ -6,9 +6,15 @@ const CartStack = createNativeStackNavigator();
 
 const CartNavigator = () => {
     return (
-        <CartStack.Navigator initialRouteName="CartScreen" >
-            <CartStack.Screen name="CartScreen" component={CartScreen} options={{ headerShown: false }} />
-            <CartStack.Screen name="CartDetail" component={CartDetail} options={{ headerShown: false }} />
+        <CartStack.Navigator 
+            screenOptions={{
+                headerShown: false,
+                unmountOnBlur: true,
+            }}
+            initialRouteName="CartScreen" 
+        >
+            <CartStack.Screen name="CartScreen" component={CartScreen} />
+            <CartStack.Screen name="CartDetail" component={CartDetail} />
         </CartStack.Navigator>
     );
 }

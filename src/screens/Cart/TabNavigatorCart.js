@@ -9,7 +9,11 @@ const Tab = createMaterialTopTabNavigator();
 
 const TabNavigatorCart = () => {
     return ( 
-        <Tab.Navigator>
+        <Tab.Navigator 
+            screenOptions={{
+                unmountOnBlur: true,
+            }}
+        >
             <Tab.Screen name='Chờ xử lý' component={CartTab1}></Tab.Screen>
             <Tab.Screen name='Chưa hoàn thành' component={CartTab2}></Tab.Screen>
             <Tab.Screen name='Đã hoàn thành' component={CartTab3}></Tab.Screen>
