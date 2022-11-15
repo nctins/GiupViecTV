@@ -22,7 +22,7 @@ const LoginScreen = ({navigation}) => {
   
   const onLogin = async () => {
     publicAxios
-      .post("auth/customer/signin", {
+      .post("http://10.0.2.2:6969/auth/customer/signin", {
         email: email,
         password: password,
       })

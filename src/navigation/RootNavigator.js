@@ -13,7 +13,8 @@ const RootComponent = () => {
   return (
     <TAB_NAV.Navigator 
       screenOptions={{
-        headerShown: false
+        headerShown: false,
+        unmountOnBlur: true,
       }}
       initialRouteName = "Trang chủ"
     >

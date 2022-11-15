@@ -23,18 +23,31 @@ export const VOUCHER_TYPE = {
 export const PAYMENT_METHOD_CONDITION = {
     ALL: 0,
     COD: 1, // áp dụng cho đơn hàng có payment method COD
-    VNPAY: 2, // áp dụng cho đơn hàng có payment method VNPAY
+    VNPAY: 2, // áp dụng cho đơn hàng có payment method VNPAY,
+    VNPAY_NA: "VNPAY",
+    COD_NA: "Tiền mặt",
+    ALL_NA: "Mọi hình thức thanh toán"
 }
 
 // constant for posts
 export const POST_TYPE = {
     HOURLY: 0, // đơn hàng theo giờ
     INSTANT: 1, // đơn hàng tức thì
+    HOURLY_NA: "Giúp việc theo giờ",
+    INSTANT_NA: "Giúp việc tức thì"
 }
 
 export const POST_STATE = {
     CANCEL: 0, // đã hủy
+    CANCEL_NA: "Đã hủy",
     COMPLETE: 1, // hoàn thành
+    COMPLETE_NA: "Đã hoàn thành",
     PROCESSING: 2, //chờ xử lý
+    PROCESSING_NA: "Đang chờ xử lý",
     INCOMPLETE: 3,
+    INCOMPLETE_NA: "Chưa hoàn thành",
+}
+
+export const LIMIT_ADDRESS_LENGTH = {
+    LENGTH: 30,
 }
