@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useContext  } from 'react'
 import { StyleSheet, View, SafeAreaView,StatusBar, ScrollView } from "react-native";
 import useThemeStyles from '~hooks/useThemeStyles';
 import { BgImageLayout } from '~components/Layout';
@@ -7,6 +7,8 @@ import AvatarComponent from '~components/AvatarComponent';
 import Typography from "~components/Typography";
 import BoxItemComponent from '~components/BoxItemComponent';
 import CouponComponent from '~components/CouponComponent';
+import { AuthContext } from "~contexts/AuthContext";
+import { AxiosContext } from "~contexts/AxiosContext";
 
 const styles = (theme) => StyleSheet.create({
   default:{
@@ -75,8 +77,51 @@ const styles = (theme) => StyleSheet.create({
 
 const HomeScreen = ({navigation}) => {
   const style = useThemeStyles(styles);
-
+  const authContext = useContext(AuthContext);
+  const {authAxios} = useContext(AxiosContext);
+  const [vouchers,setVouchers] = useState([]);
   const images = useState(["https://reactnative.dev/img/tiny_logo.png"])
+
+  useEffect(() => {
+    getCoupon();
+  },[])
+
+  const getCoupon = async () => {
+    authAxios
+      .get("http://10.0.2.2:6969/customer/CUS_g2pcl14wl8rlwhcv/vouchers")
+      .then(async (response) => {
+        setVouchers(response.data.data);
+        // console.log(vouchers);
+      })
+      .catch(async (error) => {
+        if (error.response) {
+          console.log(error.response.data);
+        }
+      });
+  }
+
+  const limitLengthName = (voucher_name) => {
+    if(voucher_name.length > 100){
+      return voucher_name.substring(0,100).concat("...");
+    }else{
+      return voucher_name;
+    }
+  }
+
+  const displayListCoupon = () => {
+    return vouchers.map((e,index) => {
+      return (
+        <CouponComponent 
+          key={index} 
+          isHome={true} 
+          containerStyle={style.couponItemStyle} 
+          voucher_info={e} 
+          navigation={navigation} 
+          title={limitLengthName(e.voucher_name)} 
+          deadline={e.end_date.substring(0,10)} />
+      )
+    })
+  }
 
   return (
     <BgImageLayout background={HOME_BG}>
@@ -98,9 +143,7 @@ const HomeScreen = ({navigation}) => {
           <Typography variant="H7">Ưu đãi</Typography>
         </View> 
         <ScrollView horizontal={true} style={style.couponContentView}>
-          <CouponComponent navigation={navigation} isHome={true} containerStyle={style.couponItemStyle} title = "Giảm 100k cho đơn hàng từ 500k tại ABC"/> 
-          <CouponComponent navigation={navigation} isHome={true} containerStyle={style.couponItemStyle} title = "Giảm 100k cho đơn hàng từ 500k tại ABC"/> 
-          <CouponComponent navigation={navigation} isHome={true} containerStyle={style.couponItemStyle} title = "Giảm 100k cho đơn hàng từ 500k tại ABC"/> 
+          {displayListCoupon()}
         </ScrollView>
       </View>
     </BgImageLayout>
