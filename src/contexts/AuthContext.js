@@ -6,29 +6,39 @@ const { Provider } = AuthContext;
 
 const AuthProvider = ({ children }) => {
   const [authState, setAuthState] = useState({
-    accessToken: null,
+    token: null,
     refeshToken: null,
     authenticated: null,
+    user: {
+      id: null,
+      name: null,
+      email: null
+    }
   });
 
   const logout = async () => {
-    await SecureStore.deleteItemAsync("token");
+    await SecureStore.deleteItemAsync("auth_info");
     setAuthState({
-      accessToken: null,
+      token: null,
       refeshToken: null,
       authenticated: false,
+      user: {
+        id: null,
+        name: null,
+        email: null
+      }
     });
   };
 
-  const getAccessToken = () => {
-    return authState.accessToken;
+  const getToken = () => {
+    return authState.token;
   };
 
   return (
     <Provider
       value={{
         authState,
-        getAccessToken,
+        getToken,
         setAuthState,
         logout,
       }}
