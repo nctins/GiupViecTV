@@ -10,9 +10,6 @@ const styles = (theme) =>
       backgroundColor: theme.colors.Gray[0],
       color: theme.colors.BackgroundBlue,
     },
-    secondary: {
-      color: theme.colors.Gray[7],
-    },
     lg: {
       width: 304,
       padding: 15,

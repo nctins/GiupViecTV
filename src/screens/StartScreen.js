@@ -19,7 +19,7 @@ const StartScreen = ({navigation}) => {
         <Button size='lg' isShadow variant='secondary' onPress={() => {navigation.push('LoginScreen', { params: 'example' })}} >
           Đăng nhập
         </Button>
-        <Button size='lg' isShadow variant='secondary' style={{marginTop: 10}} onPress={() => {navigation.push('Step1', { params: 'example' })}} >
+        <Button size='lg' isShadow variant='secondary' style={{marginTop: 10}} onPress={() => {navigation.push('Step1')}} >
           Đăng ký ngay
         </Button>
       </View>
