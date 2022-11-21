@@ -86,7 +86,7 @@ const ChangePasswordScreen = () => {
         newPassword: newPassword,
       })
       .then(async (response) => {
-        // console.log(response.data);
+        console.log(response.data);
         setMessage(response.data.data);
       })
       .catch(async (error) => {
@@ -95,7 +95,7 @@ const ChangePasswordScreen = () => {
           console.log(error.response.data);
           let msgArr = error.response.data.msg;
           msgArr.map((e) => {
-            e.replace("body","");
+            e = e.replace("body","");
             setMessage(prev => prev.concat('\n').concat(e));
           })
           // setMessage(error.response.data.msg);
