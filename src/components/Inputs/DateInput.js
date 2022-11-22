@@ -22,17 +22,11 @@ const styles = (theme) =>
     },
   });
 
-const DateInput = (props) => {
-  const [date, setDate] = useState(new Date());
-
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate;
-    setDate(currentDate);
-  };
+const DateInput = ({value, onChange}) => {
 
   const showModel = () => {
     DateTimePickerAndroid.open({
-      value: date,
+      value,
       onChange,
       mode: "date",
       is24Hour: true,
@@ -47,7 +41,7 @@ const DateInput = (props) => {
       activeOpacity={1}
     >
       <Text>
-        {date.getDate() + "/" + (date.getMonth() + 1)+ "/" + date.getFullYear()}
+        {value.getDate() + "/" + (value.getMonth() + 1)+ "/" + value.getFullYear()}
       </Text>
       <CalendarIcon size="sm"/>
     </TouchableOpacity>

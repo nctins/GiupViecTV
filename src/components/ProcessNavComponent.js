@@ -65,7 +65,7 @@ const styles = (theme) =>
     },
   });
 
-const ProcessNavComponent = () => {
+const ProcessNavComponent = ({lstItem, toItem}) => {
   const style = useThemeStyles(styles);
   const disableStyle = [style.button.shape, style.button.disable];
   const enableStyle = [style.button.shape, style.button.enable];
@@ -74,13 +74,13 @@ const ProcessNavComponent = () => {
       <View style={style.wrapper}>
         <View style={style.top}></View>
         <View style={style.bottom}>
-          <TouchableOpacity activeOpacity={1}>
+          <TouchableOpacity activeOpacity={1} onPress={() => toItem(lstItem[0])}>
             <View style={enableStyle}></View>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={1}>
+          <TouchableOpacity activeOpacity={1} onPress={() => toItem(lstItem[1])}>
             <View style={disableStyle}></View>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={1}>
+          <TouchableOpacity activeOpacity={1} onPress={() => toItem(lstItem[2])}>
             <View style={disableStyle}></View>
           </TouchableOpacity>
         </View>

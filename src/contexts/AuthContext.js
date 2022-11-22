@@ -12,7 +12,8 @@ const AuthProvider = ({ children }) => {
     user: {
       id: null,
       name: null,
-      email: null
+      email: null,
+      phone: null
     }
   });
 
@@ -25,7 +26,8 @@ const AuthProvider = ({ children }) => {
       user: {
         id: null,
         name: null,
-        email: null
+        email: null,
+        phone: null
       }
     });
   };

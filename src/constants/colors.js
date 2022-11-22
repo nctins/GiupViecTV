@@ -45,3 +45,4 @@ export const  ShinyOrange = "#FFB443";
 export const  Thistle = "#C2B7CD";
 export const  ASpunkyRedOrange = "#FF7A2F";
 export const  ModerateAquamarine = "#3DD598";
+export const  Transparency = "#E2E2EA80";

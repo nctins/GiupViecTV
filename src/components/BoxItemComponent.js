@@ -4,6 +4,7 @@ import useThemeStyles from '~hooks/useThemeStyles';
 import Typography from "~components/Typography";
 import Button from './Button';
 import AvatarComponent from './AvatarComponent';
+import { POST_TYPE } from '~constants/app_contants';
 
 const styles = (theme) => StyleSheet.create({
     default: {
@@ -45,10 +46,10 @@ const BoxItemComponent = (props) => {
     const style = useThemeStyles(styles);
     const navigation = props.navigation;
     const onPressNow = () => {
-        navigation.navigate("AddressScreen", {param1:"abc 123",param2:100});
+        navigation.navigate("ServiceTab", {post_type: POST_TYPE.INSTANT});
     }
     const onPressTime = () => {
-        navigation.navigate("AddressScreen", {param1:"abc 123",param2:100});
+        navigation.navigate("ServiceTab", {post_type: POST_TYPE.HOURLY});
     }
     return ( 
         <View style={style.default}>

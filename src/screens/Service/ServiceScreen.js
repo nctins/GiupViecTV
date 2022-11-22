@@ -1,186 +1,295 @@
-import React from "react";
-import { StyleSheet, View, ScrollView, StatusBar } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  Modal,
+  Pressable,
+  TouchableWithoutFeedback,
+} from "react-native";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
-import ProcessNavComponent from "~components/ProcessNavComponent";
 import { PlusIcon } from "~components/Icons";
-import { NormalServiceItem } from "~components/ServiceItem";
+import { NormalServiceItem, RadioServiceItem } from "~components/ServiceItem";
 import { DateInput, TimeInput, TextInput } from "~components/Inputs";
 import Button from "~components/Button";
+import { AxiosContext } from "~contexts/AxiosContext";
+import { SERVICE_TYPE, INPUT_FORMAT, POST_TYPE } from "~constants/app_contants";
+import useServiceContext from "~hooks/useServiceContext";
+import CurrencyText from "~components/CurrencyText";
 
 const styles = (theme) =>
   StyleSheet.create({
-    default: {
-      flex: 1,
-      backgroundColor: theme.colors.Gray[1],
-      flexDirection: "column",
-    },
-    header: {
-      width: "100%",
-      height: 90,
-      backgroundColor: theme.colors.BackgroundBlue,
-      flexDirection: "row",
+    content: {
+      flex: 7,
+      justifyContent: "flex-start",
       alignItems: "center",
-      justifyContent: "center",
-      paddingHorizontal: 15,
-      flex: 1,
+      marginTop: 20,
     },
-    footer:{
-      wrapper:{
-        flex: 1, 
+    footer: {
+      wrapper: {
+        flex: 1,
+        width: "100%",
         backgroundColor: theme.colors.BackgroundBlue,
       },
-      title:{
+      title: {
         flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        margin: 10,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        margin: 5,
       },
       button: {
         flex: 2,
-        justifyContent:'center',
-        alignItems:'center',
-      }
-    },
-    title: {
-      marginLeft: 15,
-      color: "white",
-    },
-    statusBar: {
-      backgroundColor: theme.colors.BackgroundBlue,
-    },
-    actionButton: {
-      color: theme.colors.Azure,
-      style: {
-        ...theme.shadow,
+        justifyContent: "center",
+        alignItems: "center",
       },
     },
-    content: {
-      backgroundColor: theme.colors.Gray[0],
-    },
     dateTimeInput: {
-      flex:1,
-      justifyContent:'flex-start',
+      flex: 1,
+      justifyContent: "flex-start",
     },
-    sectionBody:{
+    sectionBody: {
       marginTop: 10,
       marginBottom: 10,
       marginHorizontal: 20,
-      flexDirection: 'row',
+      flexDirection: "row",
     },
-    textArea:{
+    textArea: {
       borderWidth: 1,
       borderColor: theme.colors.BackgroundBlue,
       width: 340,
-    }
+    },
   });
 
 const ServiceScreen = () => {
   const style = useThemeStyles(styles);
+  const { authAxios } = useContext(AxiosContext);
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalServiceType, setModalServiceType] = useState(SERVICE_TYPE.NORMAL);
+  const { post, setPostData, post_type } = useServiceContext();
+  const { services } = post;
+  const [note, setNote] = useState(post.note);
+
+  const ServiceItems = ({ serviceType }) => {
+    return Object.entries(services).map(
+      ([service_id, { is_select, service_init }], idx) => {
+        if (is_select && service_init.service_type == serviceType) {
+          return service_init.input_format == INPUT_FORMAT.RADIO ? (
+            <RadioServiceItem key={idx} serviceId={service_id} />
+          ) : (
+            <NormalServiceItem key={idx} serviceId={service_id} />
+          );
+        }
+      }
+    );
+  };
 
   return (
-    <View style={style.default}>
-      <StatusBar backgroundColor={style.statusBar.backgroundColor} />
-      <View style={style.header}>
-        <Typography variant="H5" style={style.title}>
-          Giúp việc nhà theo giờ
-        </Typography>
-      </View>
-      <View style={{ flex: 5 }}>
-        <View style={{ flex: 1, marginTop: 20 }}>
-          <ProcessNavComponent />
-        </View>
-        <View
-          style={{
-            flex: 6,
-            justifyContent: "flex-start",
-            alignItems: "center",
-            marginTop: 20,
-          }}
-        >
-          <ScrollView style={style.content}>
-            <Section title="Dịch vụ">
-              <NormalServiceItem
-                title="Dọn phòng khách"
-                description="Dịch vụ dọn phòng khách bao gồm lau dọn, quét màng nhện phòng khách"
-                priceInfo={{
-                  calcBy: {
-                    title: "Diện tích",
-                    unitTitle: "m2",
-                  },
-                  unitPrice: {
-                    title: "VNĐ/m2",
-                    num: "12.000",
-                  },
-                }}
-              />
-              <NormalServiceItem
-                title="Dọn phòng bếp"
-                description="Dịch vụ dọn nhà bếp bao gồm lau dọn, quét màng nhện nhà bếp"
-                priceInfo={{
-                  calcBy: {
-                    title: "Diện tích",
-                    unitTitle: "m2",
-                  },
-                  unitPrice: {
-                    title: "VNĐ/m2",
-                    num: "10.000",
-                  },
-                }}
-              />
-            </Section>
-            <Section title="Dịch vụ thêm">
-              <NormalServiceItem
-                title="Lau dọn bàn ghế"
-                priceInfo={{
-                  calcBy: {
-                    title: "Số lượng",
-                    unitTitle: "cái",
-                  },
-                  unitPrice: {
-                    title: "VNĐ/cái",
-                    num: "10.000",
-                  },
-                }}
-              />
-            </Section>
-            <Section title="Thời gian">
+    <View style={style.content}>
+      <View
+        style={{
+          flex: 5,
+          justifyContent: "flex-start",
+          alignItems: "center",
+        }}
+      >
+        <ScrollView>
+          <Section
+            title="Dịch vụ"
+            onPressBtn={() => {
+              setModalServiceType(SERVICE_TYPE.NORMAL);
+              setModalVisible(true);
+            }}
+          >
+            <ServiceItems serviceType={SERVICE_TYPE.NORMAL} />
+          </Section>
+          <Section
+            title="Dịch vụ thêm"
+            onPressBtn={() => {
+              setModalServiceType(SERVICE_TYPE.BONUS);
+              setModalVisible(true);
+            }}
+          >
+            <ServiceItems serviceType={SERVICE_TYPE.BONUS} />
+          </Section>
+          {post_type == POST_TYPE.HOURLY && (
+            <Section title="Thời gian" showBtn={false}>
               <View style={style.sectionBody}>
                 <View style={style.dateTimeInput}>
-                  <Typography style={{marginBottom: 5}}>Ngày:</Typography>
-                  <DateInput/>
+                  <Typography style={{ marginBottom: 5 }}>Ngày:</Typography>
+                  <DateInput
+                    value={post.date}
+                    onChange={(event, selectedTime) => {
+                      setPostData({ date: selectedTime });
+                    }}
+                  />
                 </View>
                 <View style={style.dateTimeInput}>
-                  <Typography style={{marginBottom: 5}}>Giờ:</Typography>
-                  <TimeInput/>
+                  <Typography style={{ marginBottom: 5 }}>Giờ:</Typography>
+                  <TimeInput
+                    value={post.time}
+                    onChange={(event, selectedTime) => {
+                      setPostData({ time: selectedTime });
+                    }}
+                  />
                 </View>
               </View>
             </Section>
-            <Section title="Ghi chú">
-              <View style={[style.sectionBody]}>
-                <TextInput
-                  style={style.textArea}
-                  placeholder="Ghi chú thêm"
-                  titleStyle="blackTitle"
-                  multiline
-                  numberOfLines={4}
-                  textAlignVertical="top"
-                />
-              </View>
-            </Section>
-          </ScrollView>
-        </View>
+          )}
+          <Section title="Ghi chú" showBtn={false}>
+            <View style={[style.sectionBody]}>
+              <TextInput
+                style={style.textArea}
+                placeholder="Ghi chú thêm"
+                titleStyle="blackTitle"
+                multiline
+                numberOfLines={4}
+                textAlignVertical="top"
+                value={note}
+                onChangeText={(text) => setNote(text)}
+                onEndEditing={() => {
+                  setPostData({ note: note });
+                }}
+              />
+            </View>
+          </Section>
+        </ScrollView>
       </View>
       <View style={style.footer.wrapper}>
         <View style={style.footer.title}>
-          <Typography variant="H6" color="Gray.0">Tổng tiền:</Typography>
-          <Typography variant="H6" color="Gray.0">500.000 VNĐ</Typography>
+          <Typography variant="H6" color="Gray.0">
+            Tổng tiền:
+          </Typography>
+          <CurrencyText value={post.total} variant="H6" color="Gray.0" />
         </View>
         <View style={style.footer.button}>
-          <Button variant="secondary" size="sm">Tiếp theo</Button>
+          <Button variant="secondary" size="sm">
+            Tiếp theo
+          </Button>
         </View>
       </View>
+      <ModalService
+        visible={modalVisible}
+        setVisible={setModalVisible}
+        services={services}
+        serviceType={modalServiceType}
+        onSelectItem={(service_id) => {
+          const new_services = {
+            ...services,
+            [service_id]: {
+              ...services[service_id],
+              is_select: true,
+            },
+          };
+          const { service_init } = services[service_id];
+          if (service_init.input_format == INPUT_FORMAT.RADIO) {
+            const new_total = post.total + service_init.items[0].unit_price;
+            setPostData({ services: new_services, total: new_total });
+          } else {
+            setPostData({ services: new_services });
+          }
+          setModalVisible(false);
+        }}
+      />
     </View>
+  );
+};
+
+const modalStyle = (theme) =>
+  StyleSheet.create({
+    centeredView: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: 22,
+      backgroundColor: theme.colors.Transparency,
+    },
+    modalView: {
+      margin: 10,
+      backgroundColor: theme.colors.Gray[0],
+      borderRadius: 10,
+      paddingVertical: 10,
+      paddingHorizontal: 20,
+      height: 250,
+      width: 320,
+      alignItems: "center",
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+    },
+    modalText: {
+      marginBottom: 15,
+      textAlign: "center",
+    },
+    modalItem: {
+      borderBottomWidth: 2,
+      width: 280,
+      borderColor: theme.colors.Gray[2],
+      justifyContent: "center",
+      alignItems: "center",
+      height: 40,
+    },
+  });
+
+const ModalService = ({
+  setVisible,
+  visible,
+  services,
+  serviceType,
+  onSelectItem,
+}) => {
+  const style = useThemeStyles(modalStyle);
+  const Item = ({ children, data }) => {
+    return (
+      <TouchableWithoutFeedback
+        onPress={() => {
+          onSelectItem(data.service_id);
+        }}
+      >
+        <View style={style.modalItem}>
+          <Typography variant="Subtitle">{children}</Typography>
+        </View>
+      </TouchableWithoutFeedback>
+    );
+  };
+
+  return (
+    <Modal animationType="none" transparent={true} visible={visible}>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          setVisible(false);
+        }}
+      >
+        <View style={style.centeredView}>
+          <TouchableWithoutFeedback>
+            <View style={style.modalView}>
+              <ScrollView style={{ flex: 1 }}>
+                {Object.entries(services).map(
+                  ([service_id, { service_init, is_select }]) => {
+                    if (
+                      !is_select &&
+                      service_init.service_type == serviceType
+                    ) {
+                      return (
+                        <Item key={service_id} data={service_init}>
+                          {service_init.name}
+                        </Item>
+                      );
+                    }
+                  }
+                )}
+              </ScrollView>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+      </TouchableWithoutFeedback>
+    </Modal>
   );
 };
 
@@ -188,7 +297,7 @@ const sectionStyle = (theme) =>
   StyleSheet.create({
     wrapper: {
       backgroundColor: theme.colors.Gray[0],
-      marginTop: 10
+      marginTop: 10,
     },
     header: {
       height: 30,
@@ -199,21 +308,43 @@ const sectionStyle = (theme) =>
       borderBottomColor: theme.colors.Gray[3],
       borderBottomWidth: 1,
     },
-    body: {
-    },
+    body: {},
   });
 
-const Section = ({ title = "", children }) => {
+const Section = ({
+  title = "",
+  children,
+  onPressBtn = () => {},
+  showBtn = true,
+}) => {
   const style = useThemeStyles(sectionStyle);
-  return (
-    <View style={style.wrapper}>
-      <View style={style.header}>
-        <Typography variant="Subtitle">{title}</Typography>
-        <PlusIcon size="sm" color="Gray.10" />
+  if (showBtn) {
+    return (
+      <View style={style.wrapper}>
+        <View style={style.header}>
+          <Typography variant="Subtitle">{title}</Typography>
+          <Pressable
+            onPress={() => {
+              onPressBtn();
+            }}
+          >
+            <PlusIcon size="sm" color="Gray.10" />
+          </Pressable>
+        </View>
+        <View style={style.body}>{children}</View>
       </View>
-      <View style={style.body}>{children}</View>
-    </View>
-  );
+    );
+  } else {
+    return (
+      <View style={style.wrapper}>
+        <View style={style.header}>
+          <Typography variant="Subtitle">{title}</Typography>
+          <View />
+        </View>
+        <View style={style.body}>{children}</View>
+      </View>
+    );
+  }
 };
 
 export default ServiceScreen;

@@ -72,6 +72,7 @@ const AxiosProvider = ({ children }) => {
             id: null,
             name: null,
             email: null,
+            phone: null
           },
         });
       });

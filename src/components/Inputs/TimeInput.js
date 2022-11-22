@@ -22,24 +22,16 @@ const styles = (theme) =>
     },
   });
 
-const TimeInput = (props) => {
-  const [date, setDate] = useState(new Date());
-
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate;
-    setDate(currentDate);
-    console.log(date.toTimeLocalString())
-  };
+const TimeInput = ({value, onChange}) => {
 
   const showModel = () => {
     DateTimePickerAndroid.open({
-      value: date,
+      value,
       onChange,
       mode: "time",
       is24Hour: true,
     });
   };
-
 
   const style = useThemeStyles(styles);
   return (
@@ -49,7 +41,7 @@ const TimeInput = (props) => {
       activeOpacity={1}
     >
       <Text>
-        {date.toLocaleTimeString().slice(0,5)}
+        {value.toLocaleTimeString().slice(0,5)}
       </Text>
       <ClockIcon size="sm"/>
     </TouchableOpacity>

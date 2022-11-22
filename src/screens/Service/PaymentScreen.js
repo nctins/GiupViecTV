@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -11,31 +11,12 @@ import Typography from "~components/Typography";
 import ProcessNavComponent from "~components/ProcessNavComponent";
 import { VNPayIcon, CashIcon } from "~components/Icons";
 import Button from "~components/Button";
+import useServiceContext from "~hooks/useServiceContext";
+import CurrencyText from "~components/CurrencyText";
+import { PAYMENT_METHOD } from "~constants/app_contants";
 
 const styles = (theme) =>
   StyleSheet.create({
-    default: {
-      flex: 1,
-      backgroundColor: theme.colors.Gray[1],
-      flexDirection: "column",
-    },
-    header: {
-      width: "100%",
-      height: 90,
-      backgroundColor: theme.colors.BackgroundBlue,
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "center",
-      paddingHorizontal: 15,
-      flex: 1,
-    },
-    title: {
-      marginLeft: 15,
-      color: theme.colors.Gray[0],
-    },
-    statusBar: {
-      backgroundColor: theme.colors.BackgroundBlue,
-    },
     content: {
       flex: 7,
       backgroundColor: theme.colors.Gray[0],
@@ -47,38 +28,26 @@ const styles = (theme) =>
 
 const PaymentScreen = () => {
   const style = useThemeStyles(styles);
+  const {controller} = useServiceContext();
 
   return (
-    <View style={style.default}>
-      <StatusBar backgroundColor={style.statusBar.backgroundColor} />
-      <View style={style.header}>
-        <Typography variant="H5" style={style.title}>
-          Giúp việc nhà theo giờ
-        </Typography>
-      </View>
-      <View style={{ flex: 5 }}>
-        <View style={{ flex: 1, marginTop: 20 }}>
-          <ProcessNavComponent />
+    <View style={style.content}>
+      <ScrollView>
+        <ServiceDetail />
+        <PaymentMethod />
+        <View
+          style={{
+            flexDirection: "column",
+            alignItems: "center",
+            marginVertical: 30,
+          }}
+        >
+          <Button size="sm" style={{ marginBottom: 20 }} onPress={()=>{controller.createPost();}}>
+            Đặt dịch vụ
+          </Button>
+          <Button size="sm">Quay lại</Button>
         </View>
-        <View style={style.content}>
-          <ScrollView>
-            <ServiceDetail />
-            <PaymentMethod />
-            <View
-              style={{
-                flexDirection: "column",
-                alignItems: "center",
-                marginVertical: 30,
-              }}
-            >
-              <Button size="sm" style={{ marginBottom: 20 }}>
-                Đặt dịch vụ
-              </Button>
-              <Button size="sm">Quay lại</Button>
-            </View>
-          </ScrollView>
-        </View>
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -129,6 +98,8 @@ const ServiceDetailStyle = (theme) =>
 
 const ServiceDetail = () => {
   const style = useThemeStyles(ServiceDetailStyle);
+  const { post } = useServiceContext();
+  const { services, total, customer_name, phone_number, address } = post;
 
   return (
     <View style={style.wrapper}>
@@ -139,13 +110,13 @@ const ServiceDetail = () => {
       </View>
       <View style={style.info}>
         <Typography variant="Description" color="Gray.0">
-          Khách hàng: Nguyễn Công Tín
+          Khách hàng: {customer_name}
         </Typography>
         <Typography variant="Description" color="Gray.0">
-          Địa chỉ: KTX Khu B đại học Quốc Gia, Đông Hòa, Dĩ An, Bình Dương
+          Địa chỉ: {address}
         </Typography>
         <Typography variant="Description" color="Gray.0">
-          Số điện thoại: 0985764332
+          Số điện thoại: {phone_number}
         </Typography>
       </View>
       <View style={style.detail}>
@@ -157,38 +128,25 @@ const ServiceDetail = () => {
             Số tiền
           </Typography>
         </View>
-        <View style={style.spaceBetween}>
-          <Typography variant="Description" color="Gray.0">
-            Dọn phòng khách
-          </Typography>
-          <Typography variant="Description" color="Gray.0">
-            250.000 vnđ
-          </Typography>
-        </View>
-        <View style={style.spaceBetween}>
-          <Typography variant="Description" color="Gray.0">
-            Dọn phòng bếp
-          </Typography>
-          <Typography variant="Description" color="Gray.0">
-            200.000 vnđ
-          </Typography>
-        </View>
-        <View style={style.spaceBetween}>
-          <Typography variant="Description" color="Gray.0">
-            Lau dọn bàn ghế
-          </Typography>
-          <Typography variant="Description" color="Gray.0">
-            30.000 vnđ
-          </Typography>
-        </View>
-        <View style={style.spaceBetween}>
-          <Typography variant="Description" color="Gray.0">
-            Rửa chén
-          </Typography>
-          <Typography variant="Description" color="Gray.0">
-            30.000 vnđ
-          </Typography>
-        </View>
+        {Object.entries(services).map(
+          ([service_id, { is_select, service_init, service_value }]) => {
+            if (is_select) {
+              return (
+                <View style={style.spaceBetween} key={service_id}>
+                  <Typography variant="Description" color="Gray.0">
+                    {service_init.name}
+                  </Typography>
+                  <CurrencyText
+                    value={service_value.total}
+                    variant="Description"
+                    color="Gray.0"
+                    currency="vnđ"
+                  />
+                </View>
+              );
+            }
+          }
+        )}
       </View>
       <View style={style.coupon}>
         <View style={style.spaceBetween}>
@@ -205,9 +163,12 @@ const ServiceDetail = () => {
           <Typography variant="Description" color="Gray.0">
             Tổng cộng
           </Typography>
-          <Typography variant="Description" color="Gray.0">
-            460.000 vnđ
-          </Typography>
+          <CurrencyText
+            value={total}
+            currency="vnđ"
+            variant="Description"
+            color="Gray.0"
+          />
         </View>
       </View>
     </View>
@@ -245,13 +206,24 @@ const PaymentMethodStyle = (theme) =>
   });
 const PaymentMethod = () => {
   const style = useThemeStyles(PaymentMethodStyle);
+  const { post, setPostData } = useServiceContext();
+  const { payment_method } = post;
+
   return (
     <View style={style.wrapper}>
       <Typography variant="Description">Phương thức thanh toán:</Typography>
       <View style={style.option}>
         <TouchableOpacity
-          style={[style.enableItem, style.itemShape]}
+          style={[
+            payment_method == PAYMENT_METHOD.COD
+              ? style.enableItem
+              : style.disableItem,
+            style.itemShape,
+          ]}
           activeOpacity={1}
+          onPress={() => {
+            setPostData({ payment_method: PAYMENT_METHOD.COD });
+          }}
         >
           <CashIcon />
           <Typography variant="MiniDescription" style={{ width: 60 }}>
@@ -259,8 +231,16 @@ const PaymentMethod = () => {
           </Typography>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[style.disableItem, style.itemShape]}
+          style={[
+            payment_method == PAYMENT_METHOD.VNPAY
+              ? style.enableItem
+              : style.disableItem,
+            style.itemShape,
+          ]}
           activeOpacity={1}
+          onPress={() => {
+            setPostData({ payment_method: PAYMENT_METHOD.VNPAY });
+          }}
         >
           <VNPayIcon />
           <Typography
