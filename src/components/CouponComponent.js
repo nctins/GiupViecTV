@@ -56,9 +56,7 @@ const CouponComponent = ({navigation,voucher_info, containerStyle,isHome = false
     const style = useThemeStyles(styles);
     const onPressCoupon = () => {
         if(isHome){
-            navigation.navigate("Ưu đãi",{
-                screen: "CouponDetail",
-            });
+            navigation.navigate("Ưu đãi");
         }else{
             navigation.navigate("CouponDetail",{
                 voucher_info: voucher_info
