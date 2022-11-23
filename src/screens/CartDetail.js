@@ -16,10 +16,10 @@ import {
 import CurrencyText from "~components/CurrencyText";
 
 const dateTimeFormater = (date, time) => {
-  const time_string = time.slice(0,5);
+  const time_string = time.slice(0, 5);
   const date_obj = new Date(date);
-  return `${time_string}, ${date_obj.getDate()}/${date_obj.getMonth()}/${date_obj.getFullYear()}`
-}
+  return `${time_string}, ${date_obj.getDate()}/${date_obj.getMonth()}/${date_obj.getFullYear()}`;
+};
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -34,33 +34,34 @@ const styles = (theme) =>
       backgroundColor: theme.colors.BackgroundBlue,
       flexDirection: "row",
       alignItems: "center",
+      // justifyContent: "center",
       paddingHorizontal: 15,
     },
     titleHeader: {
       marginLeft: 15,
-      color: "white",
+      color: theme.colors.Gray[0],
     },
     title: {
-      color: "black",
+      color: theme.colors.Gray[8],
     },
     viewContent: {
       flexGrow: 1,
       flexDirection: "column",
-      backgroundColor: "white",
+      backgroundColor: theme.colors.Gray[0],
       paddingHorizontal: 20,
     },
     viewItemContent1: {
       flexDirection: "row",
       alignItems: "center",
       paddingVertical: 10,
-      borderBottomColor: "black",
+      borderBottomColor: theme.colors.Gray[8],
       borderBottomWidth: 1,
       borderStyle: "dashed",
     },
     viewItemContent2: {
       flexDirection: "column",
       paddingVertical: 10,
-      borderBottomColor: "black",
+      borderBottomColor: theme.colors.Gray[8],
       borderBottomWidth: 1,
       borderStyle: "dashed",
     },
@@ -100,12 +101,14 @@ const CartDetail = (props) => {
   const route = props.route;
   const { post_id, post_state } = route.params.post;
   const [post, setPost] = useState({
-    customer_name: "",
-    customer_phone: "",
     address: "",
     date: "0000-00-00T00:00:00.000Z",
     time: "00:00:00",
     services: [],
+    customer: {
+      name: "",
+      phone: "",
+    },
     helper: {
       name: "",
       phone: "",
@@ -124,17 +127,19 @@ const CartDetail = (props) => {
       .then((res) => {
         const res_obj = res.data.data;
         const new_post = {
-          customer_name: authState.user.name,
-          customer_phone: authState.user.phone,
           address: res_obj.address,
           date: res_obj.date,
           time: res_obj.time,
           services: res_obj.services,
+          customer: {
+            name: res_obj.customer_name,
+            phone: res_obj.customer_phone,
+          },
           helper: {
             name: "",
             phone: "",
           },
-          total: 0,
+          total: res_obj.total,
         };
         setPost(new_post);
       })
@@ -196,7 +201,7 @@ const CartDetail = (props) => {
       <StatusBar backgroundColor={style.statusBar.backgroundColor} />
       <View style={style.header}>
         <BackIcon
-          color="white"
+          color="Gray.0"
           onPress={() => {
             navigation.navigate("CartScreen");
           }}
@@ -223,7 +228,7 @@ const CartDetail = (props) => {
             </Typography>
           </View>
           <Typography variant="Description">
-            Họ và tên: {post.customer_name}{" "}
+            Họ và tên: {post.customer.name}{" "}
           </Typography>
           <Typography variant="Description">
             Địa chỉ: {post.address}{" "}
@@ -232,7 +237,7 @@ const CartDetail = (props) => {
             Thời gian: {dateTimeFormater(post.date, post.time)}
           </Typography>
           <Typography variant="Description">
-            Số điện thoại: {post.customer_phone}
+            Số điện thoại: {post.customer.phone}
           </Typography>
         </View>
         <View style={[style.viewItemContent2]}>

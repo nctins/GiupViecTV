@@ -157,12 +157,15 @@ const ServiceProvider = ({
             service_seq_nb: service_value.seq_nb,
             value: service_value.value,
             multiple_field_value: service_value.multie_field_value,
+            total: service_value.total,
           };
         }
       })
       .filter((value) => value !== undefined);
     const data = {
       post_type: post_type,
+      customer_name: post.customer_name,
+      customer_phone: post.phone_number,
       address: post.address,
       date: post.date.toISOString().slice(0, 10),
       time: post.time.toLocaleTimeString(),
