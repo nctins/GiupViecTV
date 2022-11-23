@@ -179,7 +179,7 @@ const ServiceProvider = ({
         navigation.navigate("HomeScreen");
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.response.data);
       });
   };
 
