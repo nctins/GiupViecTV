@@ -10,12 +10,20 @@ import { AxiosContext } from "./AxiosContext";
 const ServiceContext = createContext();
 const { Provider } = ServiceContext;
 
-const ServiceProvider = ({ children, navigation, post_type }) => {
+const ServiceProvider = ({
+  children,
+  navigation,
+  post_type,
+  externalState,
+}) => {
   const { authAxios } = useContext(AxiosContext);
   const { authState } = useContext(AuthContext);
 
-  const initdatetime = new Date("00-00-00 00:00:00")
+  const [serviceIds, setServiceIds] = useState([]);
+  const [addressIds, setAddressIds] = useState([]);
+  const [currentScreen, setCurrentScreen] = externalState["currentScreen"];
 
+  const initdatetime = new Date("00-00-00 00:00:00");
   const [post, setPost] = useState({
     customer_name: authState.user.name,
     address: "",
@@ -115,30 +123,24 @@ const ServiceProvider = ({ children, navigation, post_type }) => {
           };
         });
 
-        // get address state
-        const address_obj = address_res.data.data;
-        const address_list = address_obj.map((address, idx) => {
-          return idx == 0
-            ? {
-                ...address,
-                is_select: true,
-              }
-            : {
-                ...address,
-                is_select: false,
-              };
-        });
-
         // get date
         const current_datetime = new Date();
 
         setPostData({
           services: initServices,
-          address: address_obj[0].address,
           date: current_datetime,
           time: current_datetime,
         });
-        setAddresses(address_list);
+        setServiceIds(Object.keys(initServices));
+
+        // get address state
+        const address_obj = address_res.data.data;
+        let initAddresses = {};
+        address_obj.map((address, idx) => {
+          initAddresses[address.customer_address_id] = { ...address };
+        });
+        setAddresses(initAddresses);
+        setAddressIds(Object.keys(initAddresses));
       })
       .catch((err) => {
         console.log(err);
@@ -181,12 +183,52 @@ const ServiceProvider = ({ children, navigation, post_type }) => {
       });
   };
 
+  controller.onChooseAddress = (address_id) => {
+    setPostData({ address: addresses[address_id].address });
+    setCurrentScreen("ServiceScreen");
+  };
+
+  controller.goToPaymentScreen = () => {
+    setCurrentScreen("PaymentScreen");
+  };
+
+  controller.backToHomeScreen = () => {
+    navigation.navigate("HomeScreen");
+  };
+
+  controller.createAddress = (title, address) => {
+    const data = {
+      address_title: title,
+      address: address,
+    };
+    authAxios
+      .post(`/customer/${authState.user.id}/address`, data)
+      .then((res) => {
+        const resObj = res.data.data;
+        console.log(resObj.msg);
+        const address_obj = resObj.address;
+        setAddresses({
+          ...addresses,
+          [address_obj.customer_address_id]: address_obj,
+        })
+        const new_addressIds = addressIds.push(address_obj.customer_address_id);
+        setAddressIds(new_addressIds);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <Provider
       value={{
         post,
         post_type,
         setPostData,
+        addresses,
+        addressIds,
+        serviceIds,
+        currentScreen,
         controller,
       }}
     >

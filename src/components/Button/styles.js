@@ -22,6 +22,10 @@ const styles = (theme) =>
       width: 150,
       padding: 15,
     },
+    modalSize: {
+      width: 70,
+      padding: 8,
+    },
     shadow: theme.shadow,
   });
 

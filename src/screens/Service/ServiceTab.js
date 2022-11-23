@@ -38,26 +38,42 @@ const styles = (theme) =>
 const ServiceTab = ({ route, navigation }) => {
   const { post_type } = route.params;
   const style = useThemeStyles(styles);
-  const [contentComponent, setcontentComponent] = useState(<AddressScreen />);
+  const [currentScreen, setCurrentScreen] = useState("AddressScreen");
+  const contentComponent = {
+    AddressScreen: <AddressScreen />,
+    ServiceScreen: <ServiceScreen />,
+    PaymentScreen: <PaymentScreen />,
+  };
+
   return (
-    <ServiceProvider navigation={navigation} post_type={post_type}>
+    <ServiceProvider
+      navigation={navigation}
+      post_type={post_type}
+      externalState={{ currentScreen: [currentScreen, setCurrentScreen] }}
+    >
       <View style={style.default}>
         <StatusBar backgroundColor={style.statusBar.backgroundColor} />
         <View style={style.header}>
           <Typography variant="H5" style={style.title}>
-            {post_type == POST_TYPE.HOURLY ? "Giúp việc nhà theo giờ" : "Giúp việc nhà tức thì"}
+            {post_type == POST_TYPE.HOURLY
+              ? "Giúp việc nhà theo giờ"
+              : "Giúp việc nhà tức thì"}
           </Typography>
         </View>
         <View style={{ flex: 7 }}>
           <View style={{ flex: 1, marginTop: 20 }}>
             <ProcessNavComponent
-              lstItem={[<AddressScreen />, <ServiceScreen />, <PaymentScreen />]}
+              lstItem={[
+                "AddressScreen",
+                "ServiceScreen",
+                "PaymentScreen",
+              ]}
               toItem={(item) => {
-                setcontentComponent(item);
+                setCurrentScreen(item);
               }}
             />
           </View>
-          {contentComponent}
+          {contentComponent[currentScreen]}
         </View>
       </View>
     </ServiceProvider>

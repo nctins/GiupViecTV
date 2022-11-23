@@ -63,11 +63,11 @@ const styles = (theme) =>
 
 const ServiceScreen = () => {
   const style = useThemeStyles(styles);
-  const { authAxios } = useContext(AxiosContext);
+  // const { authAxios } = useContext(AxiosContext);
 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalServiceType, setModalServiceType] = useState(SERVICE_TYPE.NORMAL);
-  const { post, setPostData, post_type } = useServiceContext();
+  const { post, setPostData, post_type, controller } = useServiceContext();
   const { services } = post;
   const [note, setNote] = useState(post.note);
 
@@ -164,7 +164,7 @@ const ServiceScreen = () => {
           <CurrencyText value={post.total} variant="H6" color="Gray.0" />
         </View>
         <View style={style.footer.button}>
-          <Button variant="secondary" size="sm">
+          <Button variant="secondary" size="sm" onPress={()=>controller.goToPaymentScreen()}>
             Tiếp theo
           </Button>
         </View>
@@ -202,7 +202,6 @@ const modalStyle = (theme) =>
       flex: 1,
       justifyContent: "center",
       alignItems: "center",
-      marginTop: 22,
       backgroundColor: theme.colors.Transparency,
     },
     modalView: {

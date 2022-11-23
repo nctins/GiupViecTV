@@ -7,6 +7,10 @@ const styles = (theme) =>
       width: 270,
       padding: 10,
     },
+    modalForm: {
+      width: 250,
+      padding: 5,
+    },
     sm: {
       height: 25,
       padding: 5,

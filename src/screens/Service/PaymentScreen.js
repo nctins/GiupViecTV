@@ -28,11 +28,11 @@ const styles = (theme) =>
 
 const PaymentScreen = () => {
   const style = useThemeStyles(styles);
-  const {controller} = useServiceContext();
+  const { controller } = useServiceContext();
 
   return (
     <View style={style.content}>
-      <ScrollView>
+      <ScrollView style={{ width: "100%" }}>
         <ServiceDetail />
         <PaymentMethod />
         <View
@@ -42,10 +42,18 @@ const PaymentScreen = () => {
             marginVertical: 30,
           }}
         >
-          <Button size="sm" style={{ marginBottom: 20 }} onPress={()=>{controller.createPost();}}>
+          <Button
+            size="sm"
+            style={{ marginBottom: 20 }}
+            onPress={() => {
+              controller.createPost();
+            }}
+          >
             Đặt dịch vụ
           </Button>
-          <Button size="sm">Quay lại</Button>
+          <Button size="sm" onPress={() => controller.backToHomeScreen()}>
+            Hủy
+          </Button>
         </View>
       </ScrollView>
     </View>
@@ -57,9 +65,10 @@ const ServiceDetailStyle = (theme) =>
     wrapper: {
       backgroundColor: theme.colors.BackgroundBlue,
       padding: 20,
-      marginHorizontal: 20,
+      marginHorizontal: 30,
       marginVertical: 30,
       borderRadius: 20,
+      minWidth: 340,
     },
     spaceBetween: {
       flexDirection: "row",
@@ -178,7 +187,7 @@ const ServiceDetail = () => {
 const PaymentMethodStyle = (theme) =>
   StyleSheet.create({
     wrapper: {
-      marginHorizontal: 10,
+      marginHorizontal: 20,
     },
     option: {
       marginTop: 10,
