@@ -3,6 +3,7 @@ import { StyleSheet, View, ScrollView,TextInput } from "react-native";
 import useThemeStyles from '~hooks/useThemeStyles';
 import Typography from "~components/Typography";
 import { EditIcon } from '~components/Icons';
+import {POST_STATE, POST_TYPE, LIMIT_ADDRESS_LENGTH, PAYMENT_METHOD_CONDITION} from "../constants/app_contants";
 
 
 const styles = (theme) => StyleSheet.create({
@@ -53,18 +54,28 @@ const styles = (theme) => StyleSheet.create({
     },
 })
 
-const TimeComponent = () => {
+const TimeComponent = (props) => {
     const style = useThemeStyles(styles);
+    const order = props.order;
+    const navigation = props.navigation;
+
+    const formatAddress = () => {
+        if(order.address.length > LIMIT_ADDRESS_LENGTH.LENGTH){
+            return order.address.substring(0,LIMIT_ADDRESS_LENGTH.LENGTH).concat("...");
+        }else{
+            return order.address;
+        }
+    }
 
   return (
     <View style={style.default}>
         <View style={style.infoView}>
             <View style={style.line2}>
-                <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>Nguyễn Công Tín</Typography>
-                <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>16:00, 20/06/2022</Typography>
+                <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>{order.customer_na}</Typography>
+                <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>{order.time.substring(0,5)}, {order.date.substring(0,10)}</Typography>
             </View>
             <View style={style.line1}>
-                <Typography variant="Description" color='Gray.0' style={{marginLeft: 0,flexWrap: "wrap",}}>Địa chỉ: KTX Khu B đại học quốc gia, Đông Hòa, Dĩ An, Bình Dương</Typography>
+                <Typography variant="Description" color='Gray.0' style={{marginLeft: 0,flexWrap: "wrap",}}>Địa chỉ: {formatAddress()}</Typography>
             </View>
         </View>
         <ScrollView horizontal={true} style={style.workView}>
@@ -88,7 +99,7 @@ const TimeComponent = () => {
         <View style={style.totalView}>
             <View style={style.line2}>
                 <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>Tổng cộng:</Typography>
-                <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>460.000 VNĐ</Typography>
+                <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>{order.total} VNĐ</Typography>
             </View>
         </View>
     </View >

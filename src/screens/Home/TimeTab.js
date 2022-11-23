@@ -1,9 +1,12 @@
-import React from 'react'
-import { StyleSheet, View, ScrollView,TouchableOpacity, TextInput } from "react-native";
+import React, { useState, useEffect, useContext } from "react";
+import { StyleSheet, View, ScrollView,TouchableOpacity, RefreshControl } from "react-native";
 import useThemeStyles from '~hooks/useThemeStyles';
 import Typography from "~components/Typography";
 import { EditIcon } from '~components/Icons';
 import TimeComponent from '~components/TimeComponent';
+import { AuthContext } from "~contexts/AuthContext";
+import { AxiosContext } from "~contexts/AxiosContext";
+import {POST_STATE} from "../../constants/app_contants";
 
 const styles = (theme) => StyleSheet.create({
   default: {
@@ -38,8 +41,53 @@ const styles = (theme) => StyleSheet.create({
   }
 })
 
-const TimeTab = () => {
+const wait = (timeout) => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
+
+
+const TimeTab = ({navigation}) => {
   const style = useThemeStyles(styles);
+  const authContext = useContext(AuthContext);
+  const {authAxios} = useContext(AxiosContext);
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [orders,setOrders] = useState([]);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => {
+      setRefreshing(false);
+      getOrder();
+    });
+  }, []);
+
+  useEffect(() => {
+    getOrder();
+  },[])
+
+  const getOrder = async () => {
+    authAxios
+      .get("posts")
+      .then(async (response) => {
+        let arrOrder = response.data.data;
+        // arrOrder = arrOrder.filter((e) => {
+        //   return e.post_state === POST_STATE.PROCESSING;
+        // });
+        // console.log(response.data.data);
+        setOrders(arrOrder);
+      })
+      .catch(async (error) => {
+        if (error.response) {
+          console.log(error.response.data);
+        }
+      });
+  }
+
+  const displayOrders = () => {
+    return orders.map((e,index) => {
+      return <TimeComponent key={index} order={e} navigation={navigation} />
+    })
+  }
 
   return (
     <View style={style.default}>
@@ -50,11 +98,16 @@ const TimeTab = () => {
             <EditIcon />
           </TouchableOpacity>
         </View>
-        <ScrollView contentContainerStyle={style.mainView}>
-          <TimeComponent />
-          <TimeComponent />
-          <TimeComponent />
-          <TimeComponent />
+        <ScrollView  
+          contentContainerStyle={style.content}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
+          }
+        >
+          {displayOrders()}
         </ScrollView>
       </View>
     </View >
