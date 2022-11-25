@@ -5,6 +5,7 @@ import { ThemeProvider } from '~contexts/ThemeContext';
 import { AuthProvider } from '~contexts/AuthContext';
 import { AxiosProvider } from '~contexts/AxiosContext';
 import { SocketProvider } from '~contexts/SocketContext';
+import InitNavigator from '~navigation/InitNavigator';
 
 export default function App() {
   return (
@@ -13,7 +14,7 @@ export default function App() {
         <AxiosProvider>
           <SocketProvider>
             <NavigationContainer>
-              <RootNavigator />
+              <InitNavigator />
             </NavigationContainer>
           </SocketProvider>
         </AxiosProvider>
