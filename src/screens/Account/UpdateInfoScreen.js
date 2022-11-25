@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   View,
   ScrollView,
   StatusBar,
   Touchable,
+  Alert
 } from "react-native";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
@@ -12,6 +13,8 @@ import { BackIcon } from "~components/Icons";
 import { TextInput } from "~components/Inputs";
 import Button from "~components/Button";
 import AvatarComponent from "~components/AvatarComponent";
+import { AuthContext } from "~contexts/AuthContext";
+import { AxiosContext } from "~contexts/AxiosContext";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -73,6 +76,82 @@ const styles = (theme) =>
 
 const UpdateInfoScreen = () => {
   const style = useThemeStyles(styles);
+  const authContext = useContext(AuthContext);
+  const user = authContext.authState.user;
+  const {authAxios} = useContext(AxiosContext);
+  const [email,setEmail] = useState("");
+  const [name,setName] = useState("");
+  const [phone,setPhone] = useState("");
+  const [message,setMessage] = useState("");
+
+  useEffect(() => {
+    getAccount();
+  },[])
+
+  const messageDisplay = () => {
+    if(message.includes("thành công")){
+      return <Typography style={{marginTop: 10}} color="PersianBlue">{message}</Typography>
+    }else{
+      return <Typography style={{marginTop: 10}} color="StrawberryRed">{message}</Typography>
+    }
+  }
+
+  const getAccount = async () => {
+    authAxios
+      .get("helper/" + user.id)
+      .then(async (response) => {
+        // console.log(response.data);
+        let helper = response.data.data;
+        setEmail(helper.email);
+        setName(helper.name);
+        setPhone(helper.phone);
+      })
+      .catch(async (error) => {
+        if (error.response) {
+          console.log(error.response.data);
+        }
+      });
+  }
+
+  const updateAccount = () => {
+    authAxios
+      .put("helper/" + user.id,{
+        email: email,
+        name: name,
+        phone: phone
+      })
+      .then(async (response) => {
+        // console.log(response.data.data);
+        setMessage(response.data.data);
+      })
+      .catch(async (error) => {
+        setMessage("");
+        if (error.response) {
+          console.log(error.response.data);
+          let msgArr = error.response.data.msg;
+          msgArr.map((e) => {
+            e.replace("body","");
+            setMessage(prev => prev.concat('\n').concat(e));
+          })
+          // setMessage(error.response.data.msg);
+        }
+      });
+  }
+
+  const onPressButtonSave = () => {
+    Alert.alert(
+      "Thông báo!",
+      "Bạn có muốn cập nhập không",
+      [
+        {
+          text: "Cancel",
+          onPress: getAccount,
+          style: "cancel"
+        },
+        { text: "OK", onPress: updateAccount}
+      ]
+    );
+  }
 
   return (
     <View style={style.default}>
@@ -102,26 +181,31 @@ const UpdateInfoScreen = () => {
             placeholder=""
             title={"Email"}
             titleStyle="blackTitle"
-            value="teo.nguyenvan@gmail.com"
+            value={email}
+            onChangeText={(text) => setEmail(text)}
           />
           <TextInput
             style={style.form.field}
             placeholder=""
             title={"Họ và tên"}
             titleStyle="blackTitle"
-            value="Nguyễn Văn Tèo"
+            value={name}
+            onChangeText={(text) => setName(text)}
           />
           <TextInput
             style={style.form.field}
             placeholder=""
             title={"Số điện thoại"}
             titleStyle="blackTitle"
-            value="0564564231"
+            value={phone}
+            onChangeText={(text) => setPhone(text)}
           />
+
+          {messageDisplay()}
         </View>
 
         <View style={[{ flex: 2 }, style.form.button]}>
-          <Button size="sm" radius={4} style={{ width: 130, padding: 10 }}>
+          <Button size="sm" radius={4} style={{ width: 130, padding: 10 }} onPress={onPressButtonSave}>
             Lưu
           </Button>
         </View>
