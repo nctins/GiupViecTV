@@ -41,30 +41,33 @@ const Step2 = ({route,navigation}) => {
         password: password,
       })
       .then(async (response) => {
-        console.log("sign Up");
-        console.log(response.data);
+        Alert.alert(
+          "Thông báo!",
+          "Đăng ký tài khoản thành công!",
+          [
+            { text: "OK"}
+          ]
+        );
         navigation.popToTop();
       })
       .catch(async (error) => {
         if (error.response) {
-          console.log("sign Up error");
           let {msg} = error.response.data;
           let msgAlert = "";
-          if(msg.length == 1){
-            if(msg[0].includes("password")){
-              Alert.alert(
-                "Đăng ký tài khoản không thành công!",
-                msg[0].replace("body",""),
-                [
-                  { text: "OK"}
-                ]
-              );
-              return;
-            }
+          if(!Array.isArray(msg)){
+            Alert.alert(
+              "Đăng ký tài khoản không thành công!",
+              msg,
+              [
+                { text: "OK"}
+              ]
+            );
+            return;
+          }else{
+            msg.map(e => {
+              msgAlert = msgAlert + e.replace("body","") + '\n';
+            });
           }
-          msg.map(e => {
-            msgAlert = msgAlert + e.replace("body","") + '\n';
-          })
           Alert.alert(
             "Đăng ký tài khoản không thành công!",
             msgAlert,

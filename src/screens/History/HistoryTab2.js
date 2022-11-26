@@ -68,7 +68,6 @@ const HistoryTab2 = ({navigation}) => {
         arrOrder = arrOrder.filter((e) => {
           return e.post_state === POST_STATE.CANCEL;
         });
-        // console.log(response.data.data);
         setOrders(arrOrder);
       })
       .catch(async (error) => {

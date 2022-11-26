@@ -71,7 +71,7 @@ const TimeComponent = (props) => {
     <View style={style.default}>
         <View style={style.infoView}>
             <View style={style.line2}>
-                <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>{order.customer_na}</Typography>
+                <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>{order.customer_name}</Typography>
                 <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>{order.time.substring(0,5)}, {order.date.substring(0,10)}</Typography>
             </View>
             <View style={style.line1}>

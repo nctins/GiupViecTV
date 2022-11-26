@@ -53,7 +53,7 @@ const RightInfoCartItem2 = (props) => {
     return (
         <View style={rightStyle.default}>
             <View style={rightStyle.viewItem1}>
-                <Typography variant="TextBold">{order.customer_na}</Typography>
+                <Typography variant="TextBold">{order.customer_name}</Typography>
                 <AvatarComponent containerAvatarStyle={{}} avatarStyle={{}} size={"ssm"} style={"circle"}/>
             </View>
             <View style={rightStyle.viewItem2} >
@@ -101,7 +101,7 @@ const RightInfoCartItem3 = (props) => {
     return (
         <View style={rightStyle.default}>
             <View style={rightStyle.viewItem1}>
-                <Typography variant="TextBold">{order.customer_na}</Typography>
+                <Typography variant="TextBold">{order.customer_name}</Typography>
                 <AvatarComponent containerAvatarStyle={{}} avatarStyle={{}} size={"ssm"} style={"circle"}/>
             </View>
             <View style={rightStyle.viewItem2} >
@@ -141,7 +141,7 @@ const RightInfoCartItem4 = (props) => {
         if(order.helper_id && order.helper_id.length > 0){
             return (
                 <View style={rightStyle.viewItem1}>
-                    <Typography variant="TextBold">{order.customer_na}</Typography>
+                    <Typography variant="TextBold">{order.customer_name}</Typography>
                     <AvatarComponent containerAvatarStyle={{}} avatarStyle={{}} size={"ssm"} style={"circle"}/>
                 </View>
             )

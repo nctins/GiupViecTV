@@ -69,7 +69,6 @@ const OrderTab1 = ({navigation}) => {
         arrOrder = arrOrder.filter((e) => {
           return e.post_state === POST_STATE.INCOMPLETE;
         })
-        console.log(arrOrder);
         setOrders(arrOrder);
       })
       .catch(async (error) => {

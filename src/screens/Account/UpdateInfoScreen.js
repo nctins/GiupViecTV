@@ -74,7 +74,7 @@ const styles = (theme) =>
     },
   });
 
-const UpdateInfoScreen = () => {
+const UpdateInfoScreen = ({navigation}) => {
   const style = useThemeStyles(styles);
   const authContext = useContext(AuthContext);
   const user = authContext.authState.user;
@@ -100,7 +100,6 @@ const UpdateInfoScreen = () => {
     authAxios
       .get("helper/" + user.id)
       .then(async (response) => {
-        // console.log(response.data);
         let helper = response.data.data;
         setEmail(helper.email);
         setName(helper.name);
@@ -121,7 +120,6 @@ const UpdateInfoScreen = () => {
         phone: phone
       })
       .then(async (response) => {
-        // console.log(response.data.data);
         setMessage(response.data.data);
       })
       .catch(async (error) => {
@@ -157,7 +155,7 @@ const UpdateInfoScreen = () => {
     <View style={style.default}>
       <StatusBar backgroundColor={style.statusBar.backgroundColor} />
       <View style={style.header}>
-        <BackIcon color="Gray.0" />
+        <BackIcon color="Gray.0" onPress={() => {navigation.navigate("AccountScreen")}} />
         <Typography variant="H5" style={style.title}>
           Chỉnh sửa thông tin cá nhân
         </Typography>

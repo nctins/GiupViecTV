@@ -1,10 +1,12 @@
-import React from "react";
-import { StyleSheet, View, ScrollView, StatusBar } from "react-native";
+import React, { useState, useEffect, useContext } from "react";
+import { StyleSheet, View, ScrollView, StatusBar, Alert } from "react-native";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
 import { BackIcon } from "~components/Icons";
 import { TextInput } from "~components/Inputs";
 import Button from "~components/Button";
+import { AuthContext } from "~contexts/AuthContext";
+import { AxiosContext } from "~contexts/AxiosContext";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -38,14 +40,56 @@ const styles = (theme) =>
     },
   });
 
-const FeedbackScreen = () => {
+const FeedbackScreen = ({navigation}) => {
   const style = useThemeStyles(styles);
+  const authContext = useContext(AuthContext);
+  const {authAxios} = useContext(AxiosContext);
+  const [content,setContent] = useState("");
+
+  const createFeedback = () =>{
+    if(content.length <= 0){
+      Alert.alert(
+        "Thông báo!",
+        "Hãy nhập feedback của bạn!",
+        [
+          { text: "OK"}
+        ]
+      );
+      return;
+    }
+
+    authAxios
+      .post("feedback/",{
+        content: content
+      })
+      .then(async (res) => {
+        Alert.alert(
+          "Thông báo!",
+          res.data.data,
+          [
+            { text: "OK"}
+          ]
+        );
+      })
+      .catch(async (error) => {
+        if (error.response) {
+          console.log(error.response.data);
+          Alert.alert(
+            "Thông báo!",
+            res.data.data,
+            [
+              { text: "OK"}
+            ]
+          );
+        };
+      });
+  }
 
   return (
     <View style={style.default}>
       <StatusBar backgroundColor={style.statusBar.backgroundColor} />
       <View style={style.header}>
-        <BackIcon color="Gray.0" />
+        <BackIcon color="Gray.0" onPress={() => {navigation.navigate("AccountScreen")}} />
         <Typography variant="H5" style={style.title}>
           Phản hồi
         </Typography>
@@ -63,6 +107,8 @@ const FeedbackScreen = () => {
             multiline
             numberOfLines={10}
             textAlignVertical="top"
+            value={content}
+            onChangeText={(text) => setContent(text)}
           />
         </View>
         <View
@@ -72,7 +118,7 @@ const FeedbackScreen = () => {
             alignItems: "center",
           }}
         >
-          <Button size="sm" radius={4} style={{ width: 130, padding: 10 }}>
+          <Button size="sm" radius={4} style={{ width: 130, padding: 10 }} onPress={createFeedback}>
             Lưu
           </Button>
         </View>
