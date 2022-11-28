@@ -86,7 +86,7 @@ const ChangePasswordScreen = ({navigation}) => {
         newPassword: newPassword,
       })
       .then(async (response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setMessage(response.data.data);
       })
       .catch(async (error) => {
