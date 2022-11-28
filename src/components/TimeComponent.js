@@ -67,11 +67,27 @@ const TimeComponent = (props) => {
         }
     }
 
+    const displayService = () => {
+        let services_name = order.services_name;
+        let lstName = [];
+        while(Array.isArray(services_name) && services_name.length > 0){
+            let ele = services_name.splice(0,2);
+            lstName.push(ele);
+        }
+        return lstName.map((name,index) => {
+            return (
+                <View key={index} style={style.column}>
+                    {name.map((ele,inx) => {return <Typography key={inx} variant="Description" color='Gray.0' style={{marginLeft: 0}}>{ele}</Typography>})}
+                </View>
+            )
+        });
+    }
+
   return (
     <View style={style.default}>
         <View style={style.infoView}>
             <View style={style.line2}>
-                <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>{order.customer_na}</Typography>
+                <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>{order.customer_name}</Typography>
                 <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>{order.time.substring(0,5)}, {order.date.substring(0,10)}</Typography>
             </View>
             <View style={style.line1}>
@@ -79,22 +95,7 @@ const TimeComponent = (props) => {
             </View>
         </View>
         <ScrollView horizontal={true} style={style.workView}>
-            <View style={style.column}>
-                <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>Dọn phòng khách</Typography>
-                <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>Lau dọn bàn ghế</Typography>
-            </View>
-            <View style={style.column}>
-                <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>Dọn phòng bếp </Typography>
-                <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>rửa chén</Typography>
-            </View>
-            <View style={style.column}>
-                <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>Dọn phòng bếp</Typography>
-                <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>rửa chén</Typography>
-            </View>
-            <View style={style.column}>
-                <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>Dọn phòng bếp </Typography>
-                <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>rửa chén</Typography>
-            </View>
+            {displayService()}
         </ScrollView>
         <View style={style.totalView}>
             <View style={style.line2}>

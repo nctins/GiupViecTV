@@ -52,7 +52,7 @@ const styles = (theme) =>
     }
   });
 
-const ChangePasswordScreen = () => {
+const ChangePasswordScreen = ({navigation}) => {
   const style = useThemeStyles(styles);
   const authContext = useContext(AuthContext);
   const user = authContext.authState.user;
@@ -86,7 +86,7 @@ const ChangePasswordScreen = () => {
         newPassword: newPassword,
       })
       .then(async (response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setMessage(response.data.data);
       })
       .catch(async (error) => {
@@ -121,7 +121,7 @@ const ChangePasswordScreen = () => {
     <View style={style.default}>
       <StatusBar backgroundColor={style.statusBar.backgroundColor} />
       <View style={style.header}>
-        <BackIcon color="Gray.0" />
+        <BackIcon color="Gray.0" onPress={() => {navigation.navigate("AccountScreen")}} />
         <Typography variant="H5" style={style.title}>
           Thay đổi mật khẩu
         </Typography>

@@ -130,8 +130,10 @@ const AccountScreen = ({navigation}) => {
             onToggle={() => setIsNotice((previousState) => !previousState)}
             value={isNotice}
           />
-          <SettingItem title={"Đánh giá chúng tôi"} onTouch={() => {}} />
-          <SettingItem title={"Thay đổi mật khẩu"} onTouch={() => {}} />
+        {
+          // <SettingItem title={"Đánh giá chúng tôi"} onTouch={() => {}} />
+          // <SettingItem title={"Thay đổi mật khẩu"} onTouch={() => {}} />
+        }
           <SettingItem title={"Phản hồi"} onTouch={() => {navigation.navigate("FeedbackScreen")}} />
         </View>
       </View>
