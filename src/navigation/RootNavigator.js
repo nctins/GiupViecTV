@@ -5,11 +5,13 @@ import CartNavigator from "./CartNavigator";
 import MessageNavigator from "./MessageNavigator";
 import CouponNavigator from "./CouponNavigator";
 import AccountNavigator from "./AccountNavigator";
+import { HomeIcon, OrderIcon, UserIcon, MessageIcon, GiftIcon} from "~components/Icons";
 
 const TAB_NAV = createBottomTabNavigator();
 // const TAB_NAV = createMaterialTopTabNavigator();
 
 const RootComponent = () => {
+  const sizeIcon = "md";
   return (
     <TAB_NAV.Navigator 
       screenOptions={{
@@ -18,11 +20,81 @@ const RootComponent = () => {
       }}
       initialRouteName = "Trang chủ"
     >
-      <TAB_NAV.Screen name="Trang chủ" component={HomeNavigator} />
-      <TAB_NAV.Screen name="Đơn hàng" component={CartNavigator} />
-      <TAB_NAV.Screen name="Tin nhắn" component={MessageNavigator} />
-      <TAB_NAV.Screen name="Ưu đãi" component={CouponNavigator} />
-      <TAB_NAV.Screen name="Tài khoản" component={AccountNavigator} />
+      <TAB_NAV.Screen 
+        name="Trang chủ" 
+        component={HomeNavigator} 
+        options={{
+          tabBarLabel: 'Trang chủ',
+          tabBarIcon: ({ focused, color, size }) => {
+            if(focused){
+              color = "BackgroundBlue";
+            }else{
+              color = "Gray.6";
+            }
+            return <HomeIcon color={color} size={sizeIcon} />
+          },
+        }}
+      />
+      <TAB_NAV.Screen 
+        name="Đơn hàng" 
+        component={CartNavigator} 
+        options={{
+          tabBarLabel: 'Đơn hàng',
+          tabBarIcon: ({ focused, color, size }) => {
+            if(focused){
+              color = "BackgroundBlue";
+            }else{
+              color = "Gray.6";
+            }
+            return <OrderIcon color={color} size={sizeIcon} />
+          },
+        }}
+      />
+      <TAB_NAV.Screen 
+        name="Tin nhắn" 
+        component={MessageNavigator} 
+        options={{
+          tabBarLabel: 'Tin nhắn',
+          tabBarIcon: ({ focused, color, size }) => {
+            if(focused){
+              color = "BackgroundBlue";
+            }else{
+              color = "Gray.6";
+            }
+            return <MessageIcon color={color} size={sizeIcon} />
+          },
+        }}
+      />
+      <TAB_NAV.Screen 
+        name="Ưu đãi" 
+        component={CouponNavigator} 
+        options={{
+          tabBarLabel: 'Ưu đãi',
+          tabBarIcon: ({ focused, color, size }) => {
+            if(focused){
+              color = "BackgroundBlue";
+            }else{
+              color = "Gray.6";
+            }
+            return <GiftIcon color={color} size={sizeIcon} />
+          },
+        }}
+      />
+      <TAB_NAV.Screen 
+        name="Tài khoản" 
+        component={AccountNavigator} 
+        options={{
+          tabBarLabel: 'Tài khoản',
+          tabBarIcon: ({ focused, color, size }) => {
+            if(focused){
+              color = "BackgroundBlue";
+            }else{
+              color = "Gray.6";
+            }
+            return <UserIcon color={color} size={sizeIcon} />
+          },
+        }}
+      />
     </TAB_NAV.Navigator>
   );
 };
