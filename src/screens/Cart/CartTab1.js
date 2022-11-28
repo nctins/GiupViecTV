@@ -69,7 +69,7 @@ const CartTab1 = ({navigation}) => {
           return e.post_state === POST_STATE.PROCESSING
         })
         setPosts(arrPost);
-        console.log(arrPost);
+        // console.log(arrPost);
       })
       .catch(async (error) => {
         if (error.response) {
