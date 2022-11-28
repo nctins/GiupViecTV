@@ -22,6 +22,10 @@ const styles = (theme) =>
       width: 150,
       padding: 15,
     },
+    modalBtn: {
+      width: 150,
+      padding: 10,
+    },
     shadow: theme.shadow,
   });
 
