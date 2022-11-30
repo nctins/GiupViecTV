@@ -4,8 +4,9 @@ import {
   View,
   ScrollView,
   StatusBar,
-  Touchable,
-  Alert
+  TouchableOpacity,
+  Alert,
+  Platform 
 } from "react-native";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
@@ -15,6 +16,7 @@ import Button from "~components/Button";
 import AvatarComponent from "~components/AvatarComponent";
 import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
+import * as ImagePicker from 'expo-image-picker';
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -83,6 +85,8 @@ const UpdateInfoScreen = ({navigation}) => {
   const [name,setName] = useState("");
   const [phone,setPhone] = useState("");
   const [message,setMessage] = useState("");
+  const [selectedImage, setSelectedImage] = useState("https://reactnative.dev/img/tiny_logo.png");
+  const [imageBase64,setImageBase64] = useState();
 
   useEffect(() => {
     getAccount();
@@ -96,6 +100,31 @@ const UpdateInfoScreen = ({navigation}) => {
     }
   }
 
+  const openImagePickerAsync = async() => {
+    let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert('Permission to access camera roll is required!');
+      return;
+    }
+
+    let pickerResult = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+      //We need the image to be base64 in order to be formatted for Cloudinary
+      base64: true
+    });
+
+    if (pickerResult.cancelled === true) {
+      return;
+    }
+
+    setSelectedImage(pickerResult.uri);
+
+    let base64Img = `data:image/jpg;base64,${pickerResult.base64}`;
+    setImageBase64(base64Img);
+  }
+
   const getAccount = async () => {
     authAxios
       .get("helper/" + user.id)
@@ -104,6 +133,7 @@ const UpdateInfoScreen = ({navigation}) => {
         setEmail(helper.email);
         setName(helper.name);
         setPhone(helper.phone);
+        setSelectedImage(helper.avatar_url);
       })
       .catch(async (error) => {
         if (error.response) {
@@ -117,7 +147,8 @@ const UpdateInfoScreen = ({navigation}) => {
       .put("helper/" + user.id,{
         email: email,
         name: name,
-        phone: phone
+        phone: phone,
+        image: imageBase64,
       })
       .then(async (response) => {
         setMessage(response.data.data);
@@ -166,9 +197,12 @@ const UpdateInfoScreen = ({navigation}) => {
           <AvatarComponent
             size="llg"
             containerAvatarStyle={style.avatar.border}
+            img={selectedImage}
           />
           <View style={style.avatar.textButton}>
-            <Typography color="Gray.5">Thay đổi</Typography>
+            <TouchableOpacity onPress={openImagePickerAsync}>
+              <Typography color="Gray.5">Thay đổi</Typography>
+            </TouchableOpacity>
           </View>
         </View>
 

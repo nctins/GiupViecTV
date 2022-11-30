@@ -4,7 +4,7 @@ import React from 'react'
 import NowTab from './NowTab';
 import TimeTab from './TimeTab';
 import useThemeStyles from '~hooks/useThemeStyles';
-import { NowIcon, TimeIcon } from '~components/Icons';
+import { TimeIcon } from '~components/Icons';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -57,7 +57,7 @@ const HomeNavigator = () => {
                       }else{
                         color = "Gray.6";
                       }
-                      return <NowIcon color={color} size="md" />
+                      return <TimeIcon color={color} size="md" />
                     },
                 }}
             />
