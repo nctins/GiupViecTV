@@ -19,7 +19,7 @@ const Step2 = ({route,navigation}) => {
   const styled = useThemeStyles(styles);
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
-  const { email, phone, name } = route.params;   
+  const { email, phone, name, MSDD } = route.params;   
 
   const onSignUp = async () => {
     if(password !== passwordConfirm){
@@ -39,6 +39,7 @@ const Step2 = ({route,navigation}) => {
         phone: phone,
         name: name,
         password: password,
+        MSDD: MSDD,
       })
       .then(async (response) => {
         Alert.alert(
