@@ -4,7 +4,7 @@ import {
   View,
   ScrollView,
   StatusBar,
-  Touchable,
+  TouchableOpacity,
   Alert
 } from "react-native";
 import useThemeStyles from "~hooks/useThemeStyles";
@@ -15,6 +15,7 @@ import Button from "~components/Button";
 import AvatarComponent from "~components/AvatarComponent";
 import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
+import * as ImagePicker from 'expo-image-picker';
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -74,14 +75,17 @@ const styles = (theme) =>
     },
   });
 
-const UpdateInfoScreen = () => {
+const UpdateInfoScreen = ({navigation}) => {
   const style = useThemeStyles(styles);
   const authContext = useContext(AuthContext);
+  const user = authContext.authState.user;
   const {authAxios} = useContext(AxiosContext);
   const [email,setEmail] = useState("");
   const [name,setName] = useState("");
   const [phone,setPhone] = useState("");
   const [message,setMessage] = useState("");
+  const [selectedImage, setSelectedImage] = useState("https://reactnative.dev/img/tiny_logo.png");
+  const [imageBase64,setImageBase64] = useState();
 
   useEffect(() => {
     getAccount();
@@ -95,15 +99,41 @@ const UpdateInfoScreen = () => {
     }
   }
 
+  const openImagePickerAsync = async() => {
+    let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert('Permission to access camera roll is required!');
+      return;
+    }
+
+    let pickerResult = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+      //We need the image to be base64 in order to be formatted for Cloudinary
+      base64: true
+    });
+
+    if (pickerResult.cancelled === true) {
+      return;
+    }
+
+    setSelectedImage(pickerResult.uri);
+
+    let base64Img = `data:image/jpg;base64,${pickerResult.base64}`;
+    setImageBase64(base64Img);
+  }
+
   const getAccount = async () => {
     authAxios
-      .get("http://10.0.2.2:6969/customer/CUS_g2pcl14wl8rlwhcv")
+      .get("customer/" + user.id)
       .then(async (response) => {
         // console.log(response.data);
         let customer = response.data.data;
         setEmail(customer.email);
         setName(customer.name);
         setPhone(customer.phone);
+        setSelectedImage(customer.avatar_url);
       })
       .catch(async (error) => {
         if (error.response) {
@@ -113,15 +143,18 @@ const UpdateInfoScreen = () => {
   }
 
   const updateAccount = () => {
-    authAxios
-      .put("http://10.0.2.2:6969/customer/CUS_g2pcl14wl8rlwhcv",{
+    if(email.length > 0 && phone.length > 0 && name.length > 0){
+      authAxios
+      .put("customer/" + user.id,{
         email: email,
         name: name,
-        phone: phone
+        phone: phone,
+        image: imageBase64,
       })
       .then(async (response) => {
         // console.log(response.data.data);
         setMessage(response.data.data);
+        authContext.setAuthState({...authContext.authState,user:{id: user.id, name: name, email: email, phone: phone}});
       })
       .catch(async (error) => {
         setMessage("");
@@ -129,12 +162,22 @@ const UpdateInfoScreen = () => {
           console.log(error.response.data);
           let msgArr = error.response.data.msg;
           msgArr.map((e) => {
-            e.replace("body","");
+            e = e.replace("body","");
             setMessage(prev => prev.concat('\n').concat(e));
           })
           // setMessage(error.response.data.msg);
         }
       });
+    }else{
+      Alert.alert(
+        "Thông báo!",
+        "Cần nhập đầy đủ các mục để cập nhật!",
+        [
+          { text: "OK"}
+        ]
+      );
+    }
+    
   }
 
   const onPressButtonSave = () => {
@@ -156,7 +199,7 @@ const UpdateInfoScreen = () => {
     <View style={style.default}>
       <StatusBar backgroundColor={style.statusBar.backgroundColor} />
       <View style={style.header}>
-        <BackIcon color="Gray.0" />
+        <BackIcon color="Gray.0" onPress={() => {navigation.navigate("AccountScreen")}} />
         <Typography variant="H5" style={style.title}>
           Chỉnh sửa thông tin cá nhân
         </Typography>
@@ -167,9 +210,12 @@ const UpdateInfoScreen = () => {
           <AvatarComponent
             size="llg"
             containerAvatarStyle={style.avatar.border}
+            img={selectedImage}
           />
           <View style={style.avatar.textButton}>
-            <Typography color="Gray.5">Thay đổi</Typography>
+            <TouchableOpacity onPress={openImagePickerAsync}>
+              <Typography color="Gray.5">Thay đổi</Typography>
+            </TouchableOpacity>
           </View>
         </View>
 

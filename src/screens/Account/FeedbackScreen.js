@@ -38,14 +38,14 @@ const styles = (theme) =>
     },
   });
 
-const FeedbackScreen = () => {
+const FeedbackScreen = ({navigation}) => {
   const style = useThemeStyles(styles);
 
   return (
     <View style={style.default}>
       <StatusBar backgroundColor={style.statusBar.backgroundColor} />
       <View style={style.header}>
-        <BackIcon color="Gray.0" />
+        <BackIcon color="Gray.0" onPress={() => {navigation.navigate("AccountScreen")}} />
         <Typography variant="H5" style={style.title}>
           Phản hồi
         </Typography>

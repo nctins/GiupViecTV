@@ -55,7 +55,7 @@ const styles = (theme) =>
     },
   });
 
-const AccountLinkScreen = () => {
+const AccountLinkScreen = ({navigation}) => {
   const style = useThemeStyles(styles);
   const [linkFacebook, setLinkFacebook] = useState(false);
   const [linkGoogle, setLinkGoogle] = useState(false);
@@ -63,7 +63,7 @@ const AccountLinkScreen = () => {
     <View style={style.default}>
       <StatusBar backgroundColor={style.statusBar.backgroundColor} />
       <View style={style.header}>
-        <BackIcon color="Gray.0" />
+        <BackIcon color="Gray.0" onPress={() => {navigation.navigate("AccountScreen")}} />
         <Typography variant="H5" style={style.title}>
           Liên kết tài khoản
         </Typography>
