@@ -1,9 +1,10 @@
 import React from 'react'
-import { StyleSheet, View, ScrollView,TextInput } from "react-native";
+import { StyleSheet, View, ScrollView,TextInput, Pressable } from "react-native";
 import useThemeStyles from '~hooks/useThemeStyles';
 import Typography from "~components/Typography";
 import { EditIcon } from '~components/Icons';
 import {POST_STATE, POST_TYPE, LIMIT_ADDRESS_LENGTH, PAYMENT_METHOD_CONDITION} from "../constants/app_contants";
+import { TouchableWithoutFeedback } from 'react-native-web';
 
 
 const styles = (theme) => StyleSheet.create({
@@ -84,26 +85,30 @@ const TimeComponent = (props) => {
     }
 
   return (
-    <View style={style.default}>
-        <View style={style.infoView}>
-            <View style={style.line2}>
-                <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>{order.customer_name}</Typography>
-                <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>{order.time.substring(0,5)}, {order.date.substring(0,10)}</Typography>
+    <Pressable onPress={()=>{navigation.navigate("OrderDetail",{post: order})}}>
+        <View style={style.default}>
+            <View style={style.infoView}>
+                <View style={style.line2}>
+                    <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>{order.customer_name}</Typography>
+                    <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>{order.time.substring(0,5)}, {order.date.substring(0,10)}</Typography>
+                </View>
+                <View style={style.line1}>
+                    <Typography variant="Description" color='Gray.0' style={{marginLeft: 0,flexWrap: "wrap",}}>Địa chỉ: {formatAddress()}</Typography>
+                </View>
             </View>
-            <View style={style.line1}>
-                <Typography variant="Description" color='Gray.0' style={{marginLeft: 0,flexWrap: "wrap",}}>Địa chỉ: {formatAddress()}</Typography>
+            <TouchableWithoutFeedback>
+                <ScrollView horizontal={true} style={style.workView}>
+                    {displayService()}
+                </ScrollView>
+            </TouchableWithoutFeedback>
+            <View style={style.totalView}>
+                <View style={style.line2}>
+                    <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>Tổng cộng:</Typography>
+                    <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>{order.total} VNĐ</Typography>
+                </View>
             </View>
-        </View>
-        <ScrollView horizontal={true} style={style.workView}>
-            {displayService()}
-        </ScrollView>
-        <View style={style.totalView}>
-            <View style={style.line2}>
-                <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>Tổng cộng:</Typography>
-                <Typography variant="Description" color='Gray.0' style={{marginLeft: 0}}>{order.total} VNĐ</Typography>
-            </View>
-        </View>
-    </View >
+        </View >
+    </Pressable>
   )
 }
 export default TimeComponent

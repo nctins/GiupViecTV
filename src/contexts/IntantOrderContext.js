@@ -74,12 +74,13 @@ const IntantOrderProvider = ({ children }) => {
       if (!modalVisible && already) {
         setModalVisible(true);
         setPost(msg);
+        // console.log(msg)
       }
       socket.off(SOCKET_ACT.NEW_INTANT_POST);
     };
     socket.on(SOCKET_ACT.NEW_INTANT_POST, listener);
     return () => socket.off(SOCKET_ACT.NEW_INTANT_POST);
-  }, [already]);
+  }, [modalVisible]);
   return (
     <Provider
       value={{
@@ -176,6 +177,7 @@ const modalStyle = (theme) =>
 
 const ModalOrder = ({ setVisible, visible, post, services, setAlready }) => {
   const style = useThemeStyles(modalStyle);
+  const { authAxios } = useAxios();
 
   const [time, setTime] = useState(COUNT_DOWN_TIME);
   const [startCountdown, setStartCountdown] = useState(false);
@@ -190,7 +192,7 @@ const ModalOrder = ({ setVisible, visible, post, services, setAlready }) => {
 
   const onAccept = () => {
     authAxios
-      .put("post")
+      .put(`post/${post.post_id}`)
       .then((res) => {
         setAlready(false);
         setVisible(false);
@@ -204,7 +206,7 @@ const ModalOrder = ({ setVisible, visible, post, services, setAlready }) => {
         );
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.response.data);
       });
   };
 
@@ -226,6 +228,28 @@ const ModalOrder = ({ setVisible, visible, post, services, setAlready }) => {
       return () => clearInterval(timer);
     }
   }, [time, startCountdown]);
+
+  const renderServiceList = (service_list) => {
+    return service_list.map((service, idx) => {
+      const service_id = service.service_id;
+      const service_init = services[service_id];
+      // console.log(service_init);
+      return (
+        <View style={style.spaceBetween} key={idx}>
+          <Typography variant="Description" color="Gray.8">
+            {service_init.name}
+          </Typography>
+          <CurrencyText
+            value={service.total}
+            variant="Description"
+            color="Gray.8"
+            currency="vnđ"
+          />
+        </View>
+      );
+      // return <Typography>item</Typography>
+    });
+  };
 
   return (
     <Modal animationType="none" transparent={true} visible={visible}>
@@ -257,24 +281,8 @@ const ModalOrder = ({ setVisible, visible, post, services, setAlready }) => {
                     <Typography variant="MiniDescription">Dịch vụ</Typography>
                     <Typography variant="MiniDescription">Số tiền</Typography>
                   </View>
-                  <ScrollView style={{ maxHeight: 200 }}>
-                    {post.services.map((service, idx) => {
-                      const service_id = service.service_id;
-                      const service_init = services[service_id];
-                      return (
-                        <View style={style.spaceBetween} key={idx}>
-                          <Typography variant="Description" color="Gray.0">
-                            {service_init.name}
-                          </Typography>
-                          <CurrencyText
-                            value={service.total}
-                            variant="Description"
-                            color="Gray.0"
-                            currency="vnđ"
-                          />
-                        </View>
-                      );
-                    })}
+                  <ScrollView style={{ maxHeight: 100 }}>
+                    {renderServiceList(post.services)}
                   </ScrollView>
                 </View>
                 <View style={style.coupon}>

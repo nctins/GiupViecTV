@@ -8,7 +8,7 @@ const NowIcon = ({ size = "md", color = "Gray.4", ...otherProps }) => {
   const colors = useTheme().colors;
   return (
     <MaterialIcons
-      name="timer_off"
+      name="timer-off"
       size={styles[size]}
       color={ObjMapper.getKeyValue(colors, color)}
       {...otherProps}

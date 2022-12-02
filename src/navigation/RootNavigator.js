@@ -6,6 +6,7 @@ import HistoryNavigator from "./HistoryNavigator";
 import OrderNavigator from "./OrderNavigator";
 import MessageNavigator from "./MessageNavigator"
 import { HomeIcon, OrderIcon, UserIcon, MessageIcon, ClockIcon} from "~components/Icons";
+import HomeNavigator from "./HomeNavigator";
 
 const TAB_NAV = createBottomTabNavigator();
 
@@ -22,7 +23,7 @@ const RootComponent = () => {
     >
       <TAB_NAV.Screen 
         name="Trang chủ" 
-        component={HomeScreen} 
+        component={HomeNavigator} 
         options={{
           tabBarLabel: 'Trang chủ',
           tabBarIcon: ({ focused, color, size }) => {

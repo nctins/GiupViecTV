@@ -27,7 +27,7 @@ const styles = (theme) => StyleSheet.create({
   }
 })
 
-const MessageAndNotificationScreen = () => {
+const MessageScreen = () => {
   const style = useThemeStyles(styles);
 
   return (
@@ -38,4 +38,4 @@ const MessageAndNotificationScreen = () => {
     </SafeAreaView >
   )
 }
-export default MessageAndNotificationScreen
+export default MessageScreen

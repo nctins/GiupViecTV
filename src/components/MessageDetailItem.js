@@ -6,21 +6,21 @@ import Typography from "~components/Typography";
 const styles = (theme) => StyleSheet.create({
     defaultLeft: {
         width: "100%",
-        marginTop: 10,
+        marginVertical: 5,
         paddingHorizontal: 15,
         flexDirection: 'row',
         justifyContent: "flex-start",
     },
     defaultRight: {
         width: "100%",
-        marginTop: 10,
+        marginVertical: 5,
         paddingHorizontal: 15,
         flexDirection: 'row',
         justifyContent: "flex-end",
     },
     content: {
         width: "60%",
-        backgroundColor: "white",
+        backgroundColor: theme.colors.Gray[0],
         borderRadius: 5,
         paddingHorizontal: 10,
         paddingVertical: 5,
