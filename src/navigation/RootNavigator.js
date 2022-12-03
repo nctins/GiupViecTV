@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from "~screens/Home/HomeScreen";
 import AccountNavigator from "./AccountNavigator";
@@ -7,11 +7,19 @@ import OrderNavigator from "./OrderNavigator";
 import MessageNavigator from "./MessageNavigator"
 import { HomeIcon, OrderIcon, UserIcon, MessageIcon, ClockIcon} from "~components/Icons";
 import HomeNavigator from "./HomeNavigator";
+import { AuthContext } from "~contexts/AuthContext";
 
 const TAB_NAV = createBottomTabNavigator();
 
-const RootComponent = () => {
+const RootComponent = ({ navigation }) => {
   const sizeIcon = "md";
+  
+  const {authState} = useContext(AuthContext);
+  useEffect(()=>{
+    if (!authState.authenticated) {
+      navigation.navigate('StartScreen');
+    }
+  },[authState])
 
   return (
     <TAB_NAV.Navigator 
