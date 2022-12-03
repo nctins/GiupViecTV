@@ -12,6 +12,8 @@ import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
 import { FacebookIcon, GoogleIcon, RightArrowIcon } from "~components/Icons";
 import AvatarComponent from "~components/AvatarComponent";
+import { AuthContext } from "~contexts/AuthContext";
+import useAxios from "~hooks/useAxios";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -91,6 +93,19 @@ const settingStyle = (theme) => {
 const AccountScreen = ({navigation}) => {
   const style = useThemeStyles(styles);
   const [isNotice, setIsNotice] = useState(false);
+  const authContext = useContext(AuthContext);
+  const user = authContext.authState.user;
+  const { authAxios } = useAxios();
+  const onLogout = async () => {
+    await authAxios.post("auth/signout")
+      .then((res)=>{
+        authContext.logout();
+        navigation.navigate("StartScreen");
+      })
+      .catch((err)=>{
+        console.log(err);
+      });
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -101,9 +116,9 @@ const AccountScreen = ({navigation}) => {
       <View style={[{ flex: 1 }, style.userInfo.wrapper]}>
         <AvatarComponent size="lg" containerAvatarStyle ={style.userInfo.avatar} />
         <View style={style.userInfo.account}>
-          <Typography variant="SubTitle">Nguyễn Văn Tèo</Typography>
+          <Typography variant="SubTitle">{user.name}</Typography>
           <Typography variant="Description" color="Gray.3">
-            teo.nguyenvan@gmail.com
+          {user.email}
           </Typography>
         </View>
       </View>
@@ -118,7 +133,7 @@ const AccountScreen = ({navigation}) => {
           />
           <SettingItem title={"Thay đổi mật khẩu"} onTouch={() => {navigation.navigate("ChangePasswordScreen")}} />
           <SettingItem title={"Liên kết tài khoản"} onTouch={() => {navigation.navigate("AccountLinkScreen")}} />
-          <SettingItem title={"Đăng xuất"} onTouch={() => {}} />
+          <SettingItem title={"Đăng xuất"} onTouch={() => onLogout()} />
         </View>
         <View style={style.setting.settingMenu}>
           <Typography variant="TextBold">Tổng quát</Typography>

@@ -1,12 +1,19 @@
-import React from 'react'
+import React, { useEffect, useContext } from 'react'
 import { StyleSheet, View, SafeAreaView, StatusBar, Image } from "react-native";
 import { BgImageLayout } from '~components/Layout';
 import { START_BG, START_IMG } from 'assets/images';
 import useThemeStyles from '~hooks/useThemeStyles';
 import Button from '~components/Button';
 import Typography from '~components/Typography';
+import { AuthContext } from '~contexts/AuthContext';
 
 const StartScreen = ({navigation}) => {
+  const { authState } = useContext(AuthContext);
+  useEffect(()=>{
+    if (authState.authenticated) {
+      navigation.navigate('HomeScreen');
+    }
+  },[authState])
   return (
     <BgImageLayout background={START_BG}>
       <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>

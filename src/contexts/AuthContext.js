@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import * as SecureStore from "expo-secure-store";
 
 const AuthContext = createContext(null);
@@ -7,8 +7,8 @@ const { Provider } = AuthContext;
 const AuthProvider = ({ children }) => {
   const [authState, setAuthState] = useState({
     token: null,
-    refeshToken: null,
-    authenticated: null,
+    refreshToken: null,
+    authenticated: false,
     user: {
       id: null,
       name: null,
@@ -17,11 +17,27 @@ const AuthProvider = ({ children }) => {
     }
   });
 
+  useEffect(()=>{
+    const updateAuthState = async ()=>{
+      let auth_info = await SecureStore.getItemAsync("auth_info")
+      if (auth_info) {
+        const {token, refreshToken, user} = JSON.parse(auth_info);
+        setAuthState({
+          token: token,
+          refreshToken: refreshToken,
+          authenticated: true,
+          user: user,
+        });
+      }
+    };
+    updateAuthState();
+  },[])
+
   const logout = async () => {
     await SecureStore.deleteItemAsync("auth_info");
     setAuthState({
       token: null,
-      refeshToken: null,
+      refreshToken: null,
       authenticated: false,
       user: {
         id: null,
