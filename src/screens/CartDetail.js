@@ -1,5 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
-import { StyleSheet, View, ScrollView, StatusBar } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  StatusBar,
+  Pressable,
+  Linking,
+  Modal,
+  Keyboard,
+} from "react-native";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
 import { BackIcon } from "~components/Icons";
@@ -14,6 +23,9 @@ import {
   PAYMENT_METHOD,
 } from "../constants/app_contants";
 import CurrencyText from "~components/CurrencyText";
+import Toast from "~utils/Toast";
+import StarRating from "react-native-star-rating";
+import { TextInput } from "~components/Inputs";
 
 const dateTimeFormater = (date, time) => {
   const time_string = time.slice(0, 5);
@@ -91,6 +103,77 @@ const styles = (theme) =>
       paddingVertical: 5,
       borderRadius: 7,
     },
+    btnGroup: {
+      flexDirection: "row",
+      justifyContent: "center",
+      marginTop: 20,
+    },
+    completeBtn: {
+      backgroundColor: theme.colors.Verdepom,
+      margin: 10,
+    },
+    cancelBtn: {
+      backgroundColor: theme.colors.AlizarinRed,
+      margin: 10,
+    },
+    infoBtn: {
+      backgroundColor: theme.colors.AlizarinRed,
+    },
+    modal: {
+      centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: theme.colors.Transparency,
+      },
+      modalView: {
+        margin: 10,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+      },
+      wrapper: {
+        backgroundColor: theme.colors.Gray[0],
+        padding: 20,
+        borderRadius: 20,
+        minWidth: 340,
+      },
+      header: {
+        flexDirection: "row",
+        justifyContent: "center",
+        paddingBottom: 10,
+        borderStyle: "dashed",
+        borderBottomWidth: 1,
+        borderBottomColor: theme.colors.Gray[4],
+      },
+      footer: {
+        flexDirection: "row",
+        justifyContent: "center",
+        paddingBottom: 10,
+        marginTop: 15,
+      },
+      acceptBtn: {
+        backgroundColor: theme.colors.Azure,
+        marginRight: 10,
+      },
+      content: {
+        paddingVertical: 15,
+      },
+      formItem: {
+        alignSelf: "center",
+        width: 250,
+        marginTop: 5,
+        // flexDirection: "row",
+        // justifyContent: "space-between",
+      },
+      starColor: theme.colors.ZincYellow,
+    },
   });
 
 const CartDetail = (props) => {
@@ -100,12 +183,14 @@ const CartDetail = (props) => {
   const navigation = props.navigation;
   const route = props.route;
   const { post_id, post_state } = route.params.post;
+  const [modalVisiable, setModalVisiable] = useState(false);
   const [post, setPost] = useState({
     address: "",
     date: "0000-00-00T00:00:00.000Z",
     time: "00:00:00",
     services: [],
     customer: {
+      id: "",
       name: "",
       phone: "",
     },
@@ -132,6 +217,7 @@ const CartDetail = (props) => {
           time: res_obj.time,
           services: res_obj.services,
           customer: {
+            id: res_obj.customer_id,
             name: res_obj.customer_name,
             phone: res_obj.customer_phone,
           },
@@ -145,6 +231,39 @@ const CartDetail = (props) => {
       })
       .catch((err) => {
         console.log(err);
+      });
+  };
+
+  const onCancel = () => {
+    authAxios
+      .put(`post`, { post_id: post_id, post_state: POST_STATE.CANCEL })
+      .then((res) => {
+        Toast.createToast(res.data.msg);
+        // navigation.navigate("HomeScreen");
+        navigation.goBack();
+      })
+      .catch((err) => {
+        console.log(err);
+        Toast.createToast("có lỗi xảy ra");
+      });
+  };
+
+  const onCall = (phone_number) => {
+    Linking.openURL(`tel:${phone_number}`);
+  };
+
+  const onComplete = () => {
+    authAxios
+      .put(`post`, { post_id: post_id, post_state: POST_STATE.COMPLETE })
+      .then((res) => {
+        Toast.createToast(res.data.msg);
+        // navigation.navigate("HomeScreen");
+        // navigation.goBack();
+        setModalVisiable(true);
+      })
+      .catch((err) => {
+        console.log(err);
+        Toast.createToast("có lỗi xảy ra");
       });
   };
 
@@ -196,66 +315,178 @@ const CartDetail = (props) => {
     );
   };
 
+  const ReviewModal = () => {
+    const modalStyle = style.modal;
+    const [starCount, setStarCount] = useState(3);
+    const [comment, setComment] = useState("");
+    const evaluate = [
+      { msg: "", color: "Gray.8" },
+      { msg: "Rất tệ", color: "AlizarinRed" },
+      { msg: "Tệ", color: "AlizarinRed" },
+      { msg: "Bình thường", color: "Verdepom" },
+      { msg: "Tốt!", color: "Verdepom" },
+      { msg: "Rất tốt!", color: "Verdepom" },
+    ];
+    const onSubmit = () => {
+      let data = {
+        post_id: post_id,
+        target_id: post.customer.id,
+        rank: starCount,
+        content: comment,
+      };
+      authAxios
+        .post("/rating", data)
+        .then((res) => {
+          setModalVisiable(false);
+          Toast.createToast(res.data.msg);
+          navigation.navigate("CartScreen");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    return (
+      <Modal animationType="none" transparent={true} visible={modalVisiable}>
+        <View style={modalStyle.centeredView}>
+          <View style={modalStyle.modalView}>
+            <View style={modalStyle.wrapper}>
+              <View style={modalStyle.header}>
+                <Typography variant="H7">Đánh giá khách hàng</Typography>
+              </View>
+              <View style={modalStyle.content}>
+                <View style={{ alignItems: "center", marginVertical: 10 }}>
+                  <Typography variant="H3" color={evaluate[starCount].color}>
+                    {evaluate[starCount].msg}
+                  </Typography>
+                </View>
+                <View style={modalStyle.formItem}>
+                  <Typography variant="SubTitle">Đánh giá: </Typography>
+                  <StarRating
+                    // buttonStyle={modalStyle.starStyle}
+                    containerStyle={{ maxWidth: 150 }}
+                    fullStarColor={modalStyle.starColor}
+                    emptyStarColor={modalStyle.starColor}
+                    starSize={30}
+                    disabled={false}
+                    maxStars={5}
+                    rating={starCount}
+                    selectedStar={(rating) => setStarCount(rating)}
+                  />
+                </View>
+                <View style={modalStyle.formItem}>
+                  <Typography variant="SubTitle">Nhận xét: </Typography>
+                  <TextInput
+                    variant="modalForm"
+                    multiline
+                    numberOfLines={4}
+                    textAlignVertical="top"
+                    value={comment}
+                    onChangeText={(text) => {
+                      setComment(text);
+                    }}
+                  />
+                </View>
+              </View>
+              <View style={modalStyle.footer}>
+                <Button
+                  style={modalStyle.acceptBtn}
+                  size="modalBtn"
+                  onPress={() => onSubmit()}
+                >
+                  OK
+                </Button>
+              </View>
+            </View>
+          </View>
+        </View>
+      </Modal>
+    );
+  };
+
   return (
-    <View style={style.default}>
-      <StatusBar backgroundColor={style.statusBar.backgroundColor} />
-      <View style={style.header}>
-        <BackIcon
-          color="Gray.0"
-          onPress={() => {
-            navigation.goBack();
-          }}
-        />
-        <Typography variant="H5" style={style.titleHeader}>
-          Chi tiết đơn hàng
-        </Typography>
-      </View>
-      <ScrollView style={style.viewContent}>
-        <View style={style.viewItemContent1}>
-          <Typography variant="TextBold" style={style.title}>
-            Tình trạng đơn hàng
+    <>
+      <View style={style.default}>
+        <StatusBar backgroundColor={style.statusBar.backgroundColor} />
+        <View style={style.header}>
+          <BackIcon
+            color="Gray.0"
+            onPress={() => {
+              navigation.goBack();
+            }}
+          />
+          <Typography variant="H5" style={style.titleHeader}>
+            Chi tiết đơn hàng
           </Typography>
-          <View style={style.label}>
-            <Typography variant="Description" style={{}}>
-              {displayPostState()}
-            </Typography>
-          </View>
         </View>
-        <View style={[style.viewItemContent2]}>
-          <View style={{ flexDirection: "row", justifyContent: "center" }}>
+        <ScrollView style={style.viewContent}>
+          <View style={style.viewItemContent1}>
             <Typography variant="TextBold" style={style.title}>
-              Thông tin khách hàng
+              Tình trạng đơn hàng
             </Typography>
+            <View style={style.label}>
+              <Typography variant="Description" style={{}}>
+                {displayPostState()}
+              </Typography>
+            </View>
           </View>
-          <Typography variant="Description">
-            Họ và tên: {post.customer.name}{" "}
-          </Typography>
-          <Typography variant="Description">
-            Địa chỉ: {post.address}{" "}
-          </Typography>
-          <Typography variant="Description">
-            Thời gian: {dateTimeFormater(post.date, post.time)}
-          </Typography>
-          <Typography variant="Description">
-            Số điện thoại: {post.customer.phone}
-          </Typography>
-        </View>
-        <View style={[style.viewItemContent2]}>
-          <View style={{ flexDirection: "row", justifyContent: "center" }}>
-            <Typography variant="TextBold" style={style.title}>
-              Dịch vụ
+          <View style={[style.viewItemContent2]}>
+            <View style={{ flexDirection: "row", justifyContent: "center" }}>
+              <Typography variant="TextBold" style={style.title}>
+                Thông tin khách hàng
+              </Typography>
+            </View>
+            <Typography variant="Description">
+              Họ và tên: {post.customer.name}{" "}
             </Typography>
+            <Typography variant="Description">
+              Địa chỉ: {post.address}{" "}
+            </Typography>
+            <Typography variant="Description">
+              Thời gian: {dateTimeFormater(post.date, post.time)}
+            </Typography>
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
+              <Typography variant="Description">
+                Số điện thoại: {post.customer.phone}
+              </Typography>
+              <View style={{ flexDirection: "row" }}>
+                <Pressable
+                  style={{ marginRight: 8 }}
+                  onPress={() => onCall(post.customer.phone)}
+                >
+                  <Typography variant="Description" color="PersianBlue">
+                    [gọi điện]
+                  </Typography>
+                </Pressable>
+                <Pressable>
+                  <Typography variant="Description" color="PersianBlue">
+                    [nhắn tin]
+                  </Typography>
+                </Pressable>
+              </View>
+            </View>
           </View>
-          {post.services.map((ele, idx) => {
-            return (
-              <PriceItem key={idx} title={ele.service_name} value={ele.total} />
-            );
-          })}
-          <CouponItem title={"Ưu đãi"} value={5000} />
-          <PriceItem title={"Tổng cộng"} value={post.total} />
-          <PaymentMethodItem value={post.payment_method} />
-        </View>
-        <View style={[style.viewItemContent2]}>
+          <View style={[style.viewItemContent2]}>
+            <View style={{ flexDirection: "row", justifyContent: "center" }}>
+              <Typography variant="TextBold" style={style.title}>
+                Dịch vụ
+              </Typography>
+            </View>
+            {post.services.map((ele, idx) => {
+              return (
+                <PriceItem
+                  key={idx}
+                  title={ele.service_name}
+                  value={ele.total}
+                />
+              );
+            })}
+            <CouponItem title={"Ưu đãi"} value={5000} />
+            <PriceItem title={"Tổng cộng"} value={post.total} />
+            <PaymentMethodItem value={post.payment_method} />
+          </View>
+          {/* <View style={[style.viewItemContent2]}>
           <View style={{ flexDirection: "row", justifyContent: "center" }}>
             <Typography variant="TextBold" style={style.title}>
               Thông tin người giúp việc
@@ -267,12 +498,46 @@ const CartDetail = (props) => {
           <Typography variant="Description">
             Số điện thoại: {post.helper.phone}
           </Typography>
-        </View>
-        <View style={style.viewButton}>
-          <Button style={style.button}>Hủy đơn hàng</Button>
-        </View>
-      </ScrollView>
-    </View>
+        </View> */}
+          {/* {post_state != POST_STATE.CANCEL && (
+          <View style={style.viewButton}>
+            <Button style={style.button} onPress={() => onCancel()}>
+              Hủy đơn hàng
+            </Button>
+          </View>
+        )} */}
+          <View style={style.btnGroup}>
+            {post_state == POST_STATE.INCOMPLETE && (
+                <Button
+                  style={style.completeBtn}
+                  size="modalBtn"
+                  onPress={() => onComplete()}
+                >
+                  Hoàn thành
+                </Button>
+              )}
+            {post_state != POST_STATE.CANCEL &&
+              post_state != POST_STATE.COMPLETE && (
+                <Button
+                  style={style.cancelBtn}
+                  size="modalBtn"
+                  onPress={() => onCancel()}
+                >
+                  Hủy
+                </Button>
+              )}
+            {/* <Button
+            style={style.infoBtn}
+            size="modalBtn"
+            // onPress={() => onAccept()}
+          >
+            Liên hệ
+          </Button> */}
+          </View>
+        </ScrollView>
+      </View>
+      <ReviewModal />
+    </>
   );
 };
 export default CartDetail;

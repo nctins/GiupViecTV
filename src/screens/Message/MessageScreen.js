@@ -33,7 +33,7 @@ const MessageScreen = () => {
   return (
     <SafeAreaView  style={{flex:1}}>
       <StatusBar backgroundColor={style.statusBar.backgroundColor}/>
-      <Header style={style.header} title="Message" />
+      <Header style={style.header} title="Tin nhắn" />
       <TabNavigatorMessage />
     </SafeAreaView >
   )

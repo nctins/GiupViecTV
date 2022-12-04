@@ -85,7 +85,7 @@ const TimeComponent = (props) => {
     }
 
   return (
-    <Pressable onPress={()=>{navigation.navigate("OrderDetail",{post: order})}}>
+    <Pressable onPress={()=>{navigation.navigate("PostDetail",{post: order})}}>
         <View style={style.default}>
             <View style={style.infoView}>
                 <View style={style.line2}>

@@ -14,6 +14,7 @@ import Button from "~components/Button";
 import useSocket from "~hooks/useSocket";
 import useAxios from "~hooks/useAxios";
 import SOCKET_ACT from "~constants/socket_contant";
+import Toast from "~utils/Toast";
 
 const IntantOrderContext = createContext();
 const { Provider } = IntantOrderContext;
@@ -189,21 +190,15 @@ const ModalOrder = ({ setVisible, visible, post, services, setAlready }) => {
   const onCancel = () => {
     setVisible(false);
   };
-
+  // console.log(post)
   const onAccept = () => {
     authAxios
-      .put(`post/${post.post_id}`)
+      .put(`post`, { post_id: post.post_id })
       .then((res) => {
         setAlready(false);
         setVisible(false);
         //     console.log(res.data.msg);
-        ToastAndroid.showWithGravityAndOffset(
-          "Đã chấp nhận đơn hàng",
-          ToastAndroid.LONG,
-          ToastAndroid.BOTTOM,
-          0,
-          250
-        );
+        Toast.createToast(res.data.msg);
       })
       .catch((err) => {
         console.log(err.response.data);

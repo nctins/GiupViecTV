@@ -6,7 +6,7 @@ import { EditIcon } from '~components/Icons';
 import TimeComponent from '~components/TimeComponent';
 import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
-import {POST_STATE} from "../../constants/app_contants";
+import {POST_STATE, POST_TYPE} from "../../constants/app_contants";
 
 const styles = (theme) => StyleSheet.create({
   default: {
@@ -65,18 +65,18 @@ const TimeTab = ({navigation}) => {
     getOrder();
   },[])
 
-  const getOrder = async () => {
+  const getOrder = () => {
     authAxios
       .get("posts")
-      .then(async (response) => {
+      .then( (response) => {
         let arrOrder = response.data.data;
-        // arrOrder = arrOrder.filter((e) => {
-        //   return e.post_state === POST_STATE.PROCESSING;
-        // });
+        arrOrder = arrOrder.filter((e) => {
+          return e.post_state == POST_STATE.PROCESSING && e.post_type == POST_TYPE.HOURLY;
+        });
         // console.log(response.data.data);
         setOrders(arrOrder);
       })
-      .catch(async (error) => {
+      .catch( (error) => {
         if (error.response) {
           console.log(error.response.data);
         }
@@ -93,10 +93,10 @@ const TimeTab = ({navigation}) => {
     <View style={style.default}>
       <View style={style.viewItem}>
         <View style={style.titleView}>
-          <Typography variant="Description" style={{marginLeft: 0}}>50 đơn hàng</Typography>
-          <TouchableOpacity onPress={() => {}}>
+          <Typography variant="Description" style={{marginLeft: 0}}>{orders.length} đơn hàng</Typography>
+          {/* <TouchableOpacity onPress={() => {}}>
             <EditIcon />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         <ScrollView  
           contentContainerStyle={style.content}
