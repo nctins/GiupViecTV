@@ -2,7 +2,7 @@ import React, {useState, useContext} from "react";
 import { StyleSheet, View, ScrollView, StatusBar, Alert } from "react-native";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
-import { BackIcon } from "~components/Icons";
+import { BackIcon, UserIcon } from "~components/Icons";
 import { TextInput } from "~components/Inputs";
 import Button from "~components/Button";
 import { AuthContext } from "~contexts/AuthContext";
@@ -52,9 +52,10 @@ const styles = (theme) =>
     }
   });
 
-const ChangePasswordScreen = () => {
+const ChangePasswordScreen = ({navigation}) => {
   const style = useThemeStyles(styles);
   const authContext = useContext(AuthContext);
+  const user = authContext.authState.user;
   const {authAxios} = useContext(AxiosContext);
   const [oldPassword,setOldPassword] = useState("");
   const [newPassword,setNewPassword] = useState("");
@@ -63,9 +64,6 @@ const ChangePasswordScreen = () => {
 
   const messageDisplay = () => {
     if(message.includes("thành công")){
-      setOldPassword("");
-      setNewPassword("");
-      setNewPasswordConfirm("");
       return <Typography style={{marginTop: 10}} color="PersianBlue">{message}</Typography>
     }else{
       return <Typography style={{marginTop: 10}} color="StrawberryRed">{message}</Typography>
@@ -80,12 +78,14 @@ const ChangePasswordScreen = () => {
     }
 
     authAxios
-      .put("http://10.0.2.2:6969/customer/CUS_g2pcl14wl8rlwhcv/updatePassword",{
+      .put("customer/" + user.id + "/updatePassword",{
         oldPassword: oldPassword,
         newPassword: newPassword,
       })
       .then(async (response) => {
-        // console.log(response.data);
+        setOldPassword("");
+        setNewPassword("");
+        setNewPasswordConfirm("");
         setMessage(response.data.data);
       })
       .catch(async (error) => {
@@ -93,11 +93,15 @@ const ChangePasswordScreen = () => {
         if (error.response) {
           console.log(error.response.data);
           let msgArr = error.response.data.msg;
-          msgArr.map((e) => {
-            e.replace("body","");
-            setMessage(prev => prev.concat('\n').concat(e));
-          })
-          // setMessage(error.response.data.msg);
+          if(Array.isArray(msgArr)){
+            let msg = "";
+            msgArr.map((e) => {
+              msg += e.replace("body","").concat("\n");
+            });
+            setMessage(msg);
+          }else{
+            setMessage(msgArr);
+          }
         }
       });
   }
@@ -120,7 +124,7 @@ const ChangePasswordScreen = () => {
     <View style={style.default}>
       <StatusBar backgroundColor={style.statusBar.backgroundColor} />
       <View style={style.header}>
-        <BackIcon color="Gray.0" />
+        <BackIcon color="Gray.0" onPress={() => {navigation.navigate("AccountScreen")}} />
         <Typography variant="H5" style={style.title}>
           Thay đổi mật khẩu
         </Typography>

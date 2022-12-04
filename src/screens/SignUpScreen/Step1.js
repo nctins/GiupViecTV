@@ -52,21 +52,23 @@ const Step1 = ({navigation}) => {
         />
         </View>
         <View>
-        <Typography style={styled.label}>Phone:</Typography>
-        <TextInput
-          placeholder="Mọi người liên lạc bạn theo số này nè"
-          title={"Số điện thoại"}
-          value={phone}
-          onChangeText={(value) => {setPhone(value)}}
-        />
-        </View>
-        <View>
         <Typography style={styled.label}>Họ và tên:</Typography>
         <TextInput
           placeholder="Bạn thích mọi người gọi bạn là gì ?"
           title={"Tên"}
           value={name}
           onChangeText={(value) => {setName(value)}}
+        />
+        </View>
+        <View>
+        <Typography style={styled.label}>Phone:</Typography>
+        <TextInput
+          placeholder="Mọi người liên lạc bạn theo số này nè"
+          title={"Số điện thoại"}
+          keyboardType = 'numeric'
+          maxLength={10}
+          value={phone}
+          onChangeText={(value) => {setPhone(value)}}
         />
         </View>
       </View>
