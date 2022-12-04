@@ -28,7 +28,7 @@ const TimeInput = (props) => {
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
     setDate(currentDate);
-    console.log(date.toTimeLocalString())
+    // console.log(date.toTimeLocalString())
   };
 
   const showModel = () => {
