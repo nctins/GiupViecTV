@@ -21,6 +21,7 @@ import {
   LIMIT_ADDRESS_LENGTH,
   PAYMENT_METHOD_CONDITION,
   PAYMENT_METHOD,
+  EVALUATE,
 } from "../constants/app_contants";
 import CurrencyText from "~components/CurrencyText";
 import Toast from "~utils/Toast";
@@ -31,6 +32,23 @@ const dateTimeFormater = (date, time) => {
   const time_string = time.slice(0, 5);
   const date_obj = new Date(date);
   return `${time_string}, ${date_obj.getDate()}/${date_obj.getMonth()}/${date_obj.getFullYear()}`;
+};
+
+const init_post = {
+  address: "",
+  date: "0000-00-00T00:00:00.000Z",
+  time: "00:00:00",
+  services: [],
+  customer: {
+    id: "",
+    name: "",
+    phone: "",
+  },
+  helper: {
+    name: "",
+    phone: "",
+  },
+  total: 0,
 };
 
 const styles = (theme) =>
@@ -161,6 +179,11 @@ const styles = (theme) =>
       acceptBtn: {
         backgroundColor: theme.colors.Azure,
         marginRight: 10,
+        width: 100,
+      },
+      cancelBtn: {
+        backgroundColor: theme.colors.AlizarinRed,
+        width: 100,
       },
       content: {
         paddingVertical: 15,
@@ -182,24 +205,11 @@ const CartDetail = (props) => {
   const { authAxios } = useContext(AxiosContext);
   const navigation = props.navigation;
   const route = props.route;
-  const { post_id, post_state } = route.params.post;
-  const [modalVisiable, setModalVisiable] = useState(false);
-  const [post, setPost] = useState({
-    address: "",
-    date: "0000-00-00T00:00:00.000Z",
-    time: "00:00:00",
-    services: [],
-    customer: {
-      id: "",
-      name: "",
-      phone: "",
-    },
-    helper: {
-      name: "",
-      phone: "",
-    },
-    total: 0,
-  });
+  const { post_id } = route.params.post;
+  const [post_state, setPostState] = useState(route.params.post.post_state);
+  const [review_modal, setReviewModal] = useState(false);
+  const [cancel_modal, setCancelModal] = useState(false);
+  const [post, setPost] = useState(init_post);
 
   useEffect(() => {
     getPostDetail();
@@ -228,6 +238,26 @@ const CartDetail = (props) => {
           total: res_obj.total,
         };
         setPost(new_post);
+        setPostState(res_obj.post_state);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const onCall = (phone_number) => {
+    Linking.openURL(`tel:${phone_number}`);
+  };
+
+  const onChat = () => {
+    // console.log(post)
+    authAxios
+      .get("box-chat-id", { params: { customer_id: post.customer.id } })
+      .then((res) => {
+        const box_chat_id = res.data.box_chat_id;
+        navigation.navigate("MessageScreen", {
+          params: { box_chat_id: box_chat_id, sender: post.customer.name },
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -235,21 +265,7 @@ const CartDetail = (props) => {
   };
 
   const onCancel = () => {
-    authAxios
-      .put(`post`, { post_id: post_id, post_state: POST_STATE.CANCEL })
-      .then((res) => {
-        Toast.createToast(res.data.msg);
-        // navigation.navigate("HomeScreen");
-        navigation.goBack();
-      })
-      .catch((err) => {
-        console.log(err);
-        Toast.createToast("có lỗi xảy ra");
-      });
-  };
-
-  const onCall = (phone_number) => {
-    Linking.openURL(`tel:${phone_number}`);
+    setCancelModal(true);
   };
 
   const onComplete = () => {
@@ -259,7 +275,7 @@ const CartDetail = (props) => {
         Toast.createToast(res.data.msg);
         // navigation.navigate("HomeScreen");
         // navigation.goBack();
-        setModalVisiable(true);
+        setReviewModal(true);
       })
       .catch((err) => {
         console.log(err);
@@ -315,18 +331,85 @@ const CartDetail = (props) => {
     );
   };
 
+  const CancelModal = () => {
+    const modalStyle = style.modal;
+    const [reason_cancel, setReasonCancel] = useState("");
+    const onSubmit = () => {
+      if (reason_cancel === "") {
+        Toast.createToast("vui lòng nhập lý do");
+        return;
+      }
+      authAxios
+        .put(`post`, {
+          post_id: post_id,
+          post_state: POST_STATE.CANCEL,
+          reason_cancel: reason_cancel,
+        })
+        .then((res) => {
+          Toast.createToast(res.data.msg);
+          navigation.navigate("CartScreen");
+          // navigation.goBack();
+        })
+        .catch((err) => {
+          console.log(err);
+          Toast.createToast("có lỗi xảy ra vui lòng thử lại");
+          setCancelModal(false);
+        });
+    };
+
+    return (
+      <Modal animationType="none" transparent={true} visible={cancel_modal}>
+        <View style={modalStyle.centeredView}>
+          <View style={modalStyle.modalView}>
+            <View style={modalStyle.wrapper}>
+              <View style={modalStyle.header}>
+                <Typography variant="H7">Hủy đơn hàng</Typography>
+              </View>
+              <View style={modalStyle.content}>
+                <View style={modalStyle.formItem}>
+                  <Typography variant="SubTitle">
+                    Lý do hủy đơn hàng:{" "}
+                  </Typography>
+                  <TextInput
+                    variant="modalForm"
+                    multiline
+                    numberOfLines={4}
+                    textAlignVertical="top"
+                    value={reason_cancel}
+                    onChangeText={(text) => {
+                      setReasonCancel(text);
+                    }}
+                  />
+                </View>
+              </View>
+              <View style={modalStyle.footer}>
+                <Button
+                  style={modalStyle.acceptBtn}
+                  size="modalBtn"
+                  onPress={() => onSubmit()}
+                >
+                  Xác nhận
+                </Button>
+                <Button
+                  style={modalStyle.cancelBtn}
+                  size="modalBtn"
+                  onPress={() => setCancelModal(false)}
+                >
+                  Quay về
+                </Button>
+              </View>
+            </View>
+          </View>
+        </View>
+      </Modal>
+    );
+  };
+
   const ReviewModal = () => {
     const modalStyle = style.modal;
     const [starCount, setStarCount] = useState(3);
     const [comment, setComment] = useState("");
-    const evaluate = [
-      { msg: "", color: "Gray.8" },
-      { msg: "Rất tệ", color: "AlizarinRed" },
-      { msg: "Tệ", color: "AlizarinRed" },
-      { msg: "Bình thường", color: "Verdepom" },
-      { msg: "Tốt!", color: "Verdepom" },
-      { msg: "Rất tốt!", color: "Verdepom" },
-    ];
+    const evaluate = EVALUATE;
     const onSubmit = () => {
       let data = {
         post_id: post_id,
@@ -337,7 +420,7 @@ const CartDetail = (props) => {
       authAxios
         .post("/rating", data)
         .then((res) => {
-          setModalVisiable(false);
+          setReviewModal(false);
           Toast.createToast(res.data.msg);
           navigation.navigate("CartScreen");
         })
@@ -346,7 +429,7 @@ const CartDetail = (props) => {
         });
     };
     return (
-      <Modal animationType="none" transparent={true} visible={modalVisiable}>
+      <Modal animationType="none" transparent={true} visible={review_modal}>
         <View style={modalStyle.centeredView}>
           <View style={modalStyle.modalView}>
             <View style={modalStyle.wrapper}>
@@ -459,7 +542,7 @@ const CartDetail = (props) => {
                     [gọi điện]
                   </Typography>
                 </Pressable>
-                <Pressable>
+                <Pressable onPress={() => onChat()}>
                   <Typography variant="Description" color="PersianBlue">
                     [nhắn tin]
                   </Typography>
@@ -508,14 +591,14 @@ const CartDetail = (props) => {
         )} */}
           <View style={style.btnGroup}>
             {post_state == POST_STATE.INCOMPLETE && (
-                <Button
-                  style={style.completeBtn}
-                  size="modalBtn"
-                  onPress={() => onComplete()}
-                >
-                  Hoàn thành
-                </Button>
-              )}
+              <Button
+                style={style.completeBtn}
+                size="modalBtn"
+                onPress={() => onComplete()}
+              >
+                Hoàn thành
+              </Button>
+            )}
             {post_state != POST_STATE.CANCEL &&
               post_state != POST_STATE.COMPLETE && (
                 <Button
@@ -537,6 +620,7 @@ const CartDetail = (props) => {
         </ScrollView>
       </View>
       <ReviewModal />
+      <CancelModal />
     </>
   );
 };

@@ -72,16 +72,15 @@ const IntantOrderProvider = ({ children }) => {
 
   useEffect(() => {
     const listener = (msg) => {
-      if (!modalVisible && already) {
-        setModalVisible(true);
-        setPost(msg);
-        // console.log(msg)
-      }
-      socket.off(SOCKET_ACT.NEW_INTANT_POST);
+      setModalVisible(true);
+      setPost(msg);
+      // console.log(msg);
     };
-    socket.on(SOCKET_ACT.NEW_INTANT_POST, listener);
-    return () => socket.off(SOCKET_ACT.NEW_INTANT_POST);
-  }, [modalVisible]);
+    if (!modalVisible && already) {
+      socket.on(SOCKET_ACT.NEW_INTANT_POST, listener);
+      return () => socket.off(SOCKET_ACT.NEW_INTANT_POST);
+    }
+  }, [socket, already, modalVisible]);
   return (
     <Provider
       value={{
