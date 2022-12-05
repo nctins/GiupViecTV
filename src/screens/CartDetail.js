@@ -251,12 +251,21 @@ const CartDetail = (props) => {
 
   const onChat = () => {
     // console.log(post)
-    authAxios
-      .get("box-chat-id", { params: { customer_id: post.customer.id } })
-      .then((res) => {
-        const box_chat_id = res.data.box_chat_id;
+    if (!post.customer.id) {
+      return;
+    }
+    Promise.all([
+      authAxios.get("box-chat-id", {
+        params: { customer_id: post.customer.id },
+      }),
+      authAxios.get(`customer/${post.customer.id}`),
+    ])
+      .then(([box_chat_res, customer_res]) => {
+        const box_chat_id = box_chat_res.data.box_chat_id;
+        const sender = customer_res.data.data.name;
         navigation.navigate("MessageScreen", {
-          params: { box_chat_id: box_chat_id, sender: post.customer.name },
+          box_chat_id: box_chat_id,
+          sender: sender,
         });
       })
       .catch((err) => {
