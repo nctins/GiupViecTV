@@ -160,7 +160,7 @@ const UpdateInfoScreen = ({navigation}) => {
       })
       .then(async (response) => {
         setMessage(response.data.data);
-        authContext.setAuthState({...authContext.authState,user:{id: user.id, name: name, email: email, phone: phone}});
+        authContext.setAuthState({...authContext.authState,user:{id: user.id, name: name, email: email, phone: phone, avatar_url: selectedImage}});
       })
       .catch(async (error) => {
         setMessage("");
@@ -168,7 +168,7 @@ const UpdateInfoScreen = ({navigation}) => {
           console.log(error.response.data);
           let msgArr = error.response.data.msg;
           msgArr.map((e) => {
-            e.replace("body","");
+            e = e.replace("body","");
             setMessage(prev => prev.concat('\n').concat(e));
           })
           // setMessage(error.response.data.msg);

@@ -35,9 +35,16 @@ const styles = (theme) => StyleSheet.create({
   title:{
 
   },
+  wrapContent:{
+    flex:1,
+    backgroundColor: "white",
+    marginBottom: 10,
+  },
+  content:{
+  },
   mainView:{
     flexGrow: 1,
-    alignItems:"center"
+    alignItems:"center",
   }
 })
 
@@ -98,6 +105,7 @@ const TimeTab = ({navigation}) => {
             <EditIcon />
           </TouchableOpacity> */}
         </View>
+        <View style={style.wrapContent}>
         <ScrollView  
           contentContainerStyle={style.content}
           refreshControl={
@@ -109,6 +117,7 @@ const TimeTab = ({navigation}) => {
         >
           {displayOrders()}
         </ScrollView>
+        </View>
       </View>
     </View >
   )

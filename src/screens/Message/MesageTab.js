@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { StyleSheet, View, ScrollView, TextInput } from "react-native";
+import { StyleSheet, View, ScrollView, TextInput, RefreshControl } from "react-native";
 import MessageItem from "~components/MessageItem";
 import { AxiosContext } from "~contexts/AxiosContext";
 import useThemeStyles from "~hooks/useThemeStyles";
@@ -36,29 +36,56 @@ const styles = (theme) =>
     },
   });
 
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
+
 const MessageTab = ({ navigation }) => {
   const style = useThemeStyles(styles);
   const { authAxios } = useContext(AxiosContext);
   const [boxChats, setBoxChats] = useState([]);
+  const [refreshing, setRefreshing] = React.useState(false);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => {
+      setRefreshing(false);
+      getOrder();
+    });
+  }, []);
+
+
   useEffect(()=>{
+    getBoxChat();
+  },[]);
+
+  const getBoxChat = () => {
     authAxios
     .get("/box-chats")
     .then((res) => {
       const resObj = res.data;
+      // console.log(resObj.data);
       setBoxChats(resObj.data);
     })
     .catch((err) => {
       console.log(err.response.data);
       setBoxChats([]);
     });
-  },[]);
+  }
 
   return (
     <View style={style.default}>
       <View style={style.TextInputView}>
         <TextInput style={style.textInput} placeholder="Search" />
       </View>
-      <ScrollView contentContainerStyle={style.content}>
+      <ScrollView 
+        contentContainerStyle={style.content}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
+      >
         {boxChats.map((box_chat, idx) => (
           <MessageItem key={idx} navigation={navigation} data={box_chat} />
         ))}

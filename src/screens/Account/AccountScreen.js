@@ -99,6 +99,7 @@ const AccountScreen = ({navigation}) => {
   const onLogout = async () => {
     await authAxios.post("auth/signout")
       .then((res)=>{
+        console.log(res.data);
         authContext.logout();
         navigation.navigate("StartScreen");
       })
@@ -114,7 +115,7 @@ const AccountScreen = ({navigation}) => {
 
       {/* user info */}
       <View style={[{ flex: 1 }, style.userInfo.wrapper]}>
-        <AvatarComponent size="lg" containerAvatarStyle ={style.userInfo.avatar} />
+        <AvatarComponent img={user.avatar_url} size="lg" containerAvatarStyle ={style.userInfo.avatar} />
         <View style={style.userInfo.account}>
           <Typography variant="SubTitle">{user.name}</Typography>
           <Typography variant="Description" color="Gray.3">

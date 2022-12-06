@@ -1,20 +1,21 @@
 import React, { useContext, useState } from "react";
-
 import { BgImageLayout } from "~components/Layout";
 import { LOGIN_BG } from "assets/images";
 import Button from "~components/Button";
 import Typography from "~components/Typography";
 import { TextInput } from "~components/Inputs";
-import { View } from "react-native";
+import { View, Alert } from "react-native";
 import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
 import * as SecureStore from "expo-secure-store";
+import Toast from "~utils/Toast";
 
 const LoginScreen = ({navigation}) => {
   const authContext = useContext(AuthContext);
   const { publicAxios } = useContext(AxiosContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
 
   const setToken = async (value) => {
     await SecureStore.setItemAsync("auth_info", value);
@@ -37,11 +38,19 @@ const LoginScreen = ({navigation}) => {
         await setToken(JSON.stringify({ token, refreshToken, user }));
         setEmail("");
         setPassword("");
+        Toast.createToast("Xin chào, " + user.name);
         navigation.push('HomeScreen', { params: 'example' })
       })
       .catch(async (error) => {
         if (error.response) {
-          console.log(error.response.data);
+          // console.log(error.response.data);
+          Alert.alert(
+            "Thông báo!",
+            error.response.data.msg,
+            [
+              { text: "OK"}
+            ]
+          );
         }
       });
   };
