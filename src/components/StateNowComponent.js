@@ -1,7 +1,9 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useContext } from 'react';
 import { StyleSheet, View, TouchableWithoutFeedback , ScrollView,TextInput,Animated, Easing } from "react-native";
 import useThemeStyles from '~hooks/useThemeStyles';
 import Typography from "~components/Typography";
+import useIntantOrderContext from '~hooks/useIntantOrderContext';
+import { IntantOrderContext } from '~contexts/IntantOrderContext';
 
 const styles = (theme) => StyleSheet.create({
     default: {
@@ -67,17 +69,13 @@ const OnStateUI = () => {
 
 const StateNowComponent = () => {
   	const style = useThemeStyles(styles);
-  	const [stateWork,setStateWord] = useState(false);
-
-	const changeStateWord = () => {
-		setStateWord(!stateWork);
-  	}
+    const {controller, already} = useIntantOrderContext();
 
   	return (
 		<View style={style.animationView}>
-            {stateWork?<OnStateUI /> : null}
-            <TouchableWithoutFeedback style={style.circleView} onPress={changeStateWord}>
-                <Typography color='BackgroundBlue' variant="H1">{stateWork?"ON":"OFF"}</Typography>
+            {already?<OnStateUI /> : null}
+            <TouchableWithoutFeedback style={style.circleView} onPress={()=>controller.toggleReceiving()}>
+                <Typography color='BackgroundBlue' variant="H1">{already?"ON":"OFF"}</Typography>
             </TouchableWithoutFeedback>
         </View>
   	)

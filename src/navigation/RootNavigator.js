@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from "~screens/Home/HomeScreen";
 import AccountNavigator from "./AccountNavigator";
@@ -6,11 +6,23 @@ import HistoryNavigator from "./HistoryNavigator";
 import OrderNavigator from "./OrderNavigator";
 import MessageNavigator from "./MessageNavigator"
 import { HomeIcon, OrderIcon, UserIcon, MessageIcon, ClockIcon} from "~components/Icons";
+import HomeNavigator from "./HomeNavigator";
+import { AuthContext } from "~contexts/AuthContext";
+import Toast from "~utils/Toast";
 
 const TAB_NAV = createBottomTabNavigator();
 
-const RootComponent = () => {
+const RootComponent = ({ navigation }) => {
   const sizeIcon = "md";
+  
+  const {authState, logout} = useContext(AuthContext);
+  useEffect(()=>{
+    if (!authState.authenticated) {
+      Toast.createToast("Phiên đăng nhập đã hết hạn");
+      logout();
+      navigation.navigate('StartScreen');
+    }
+  },[authState])
 
   return (
     <TAB_NAV.Navigator 
@@ -22,7 +34,7 @@ const RootComponent = () => {
     >
       <TAB_NAV.Screen 
         name="Trang chủ" 
-        component={HomeScreen} 
+        component={HomeNavigator} 
         options={{
           tabBarLabel: 'Trang chủ',
           tabBarIcon: ({ focused, color, size }) => {

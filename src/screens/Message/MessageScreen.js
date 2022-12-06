@@ -27,15 +27,15 @@ const styles = (theme) => StyleSheet.create({
   }
 })
 
-const MessageAndNotificationScreen = () => {
+const MessageScreen = () => {
   const style = useThemeStyles(styles);
 
   return (
     <SafeAreaView  style={{flex:1}}>
       <StatusBar backgroundColor={style.statusBar.backgroundColor}/>
-      <Header style={style.header} title="Message" />
+      <Header style={style.header} title="Tin nhắn" />
       <TabNavigatorMessage />
     </SafeAreaView >
   )
 }
-export default MessageAndNotificationScreen
+export default MessageScreen

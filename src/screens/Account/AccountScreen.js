@@ -13,6 +13,7 @@ import Typography from "~components/Typography";
 import { FacebookIcon, GoogleIcon, RightArrowIcon } from "~components/Icons";
 import AvatarComponent from "~components/AvatarComponent";
 import { AuthContext } from "~contexts/AuthContext";
+import useAxios from "~hooks/useAxios";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -94,6 +95,17 @@ const AccountScreen = ({navigation}) => {
   const [isNotice, setIsNotice] = useState(false);
   const authContext = useContext(AuthContext);
   const user = authContext.authState.user;
+  const { authAxios } = useAxios();
+  const onLogout = async () => {
+    await authAxios.post("auth/signout")
+      .then((res)=>{
+        authContext.logout();
+        navigation.navigate("StartScreen");
+      })
+      .catch((err)=>{
+        console.log(err);
+      });
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -121,7 +133,7 @@ const AccountScreen = ({navigation}) => {
           />
           <SettingItem title={"Thay đổi mật khẩu"} onTouch={() => {navigation.navigate("ChangePasswordScreen")}} />
           <SettingItem title={"Liên kết tài khoản"} onTouch={() => {navigation.navigate("AccountLinkScreen")}} />
-          <SettingItem title={"Đăng xuất"} onTouch={() => {}} />
+          <SettingItem title={"Đăng xuất"} onTouch={() => onLogout()} />
         </View>
         <View style={style.setting.settingMenu}>
           <Typography variant="TextBold">Tổng quát</Typography>

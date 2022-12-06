@@ -60,17 +60,17 @@ const HistoryTab2 = ({navigation}) => {
     getOrder();
   },[])
 
-  const getOrder = async () => {
+  const getOrder = () => {
     authAxios
       .get("posts/helper")
-      .then(async (response) => {
+      .then((response) => {
         let arrOrder = response.data.data;
         arrOrder = arrOrder.filter((e) => {
           return e.post_state === POST_STATE.CANCEL;
         });
         setOrders(arrOrder);
       })
-      .catch(async (error) => {
+      .catch((error) => {
         if (error.response) {
           console.log(error.response.data);
         }
