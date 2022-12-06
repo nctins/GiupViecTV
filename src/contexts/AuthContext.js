@@ -18,7 +18,7 @@ const AuthProvider = ({ children }) => {
 
   useEffect(()=>{
     const updateAuthState = async ()=>{
-      let auth_info = await SecureStore.getItemAsync("auth_info")
+      let auth_info = await SecureStore.getItemAsync("helper_auth_info")
       if (auth_info) {
         const {token, refreshToken, user} = JSON.parse(auth_info);
         setAuthState({
@@ -33,7 +33,7 @@ const AuthProvider = ({ children }) => {
   },[])
 
   const logout = async () => {
-    await SecureStore.deleteItemAsync("auth_info");
+    await SecureStore.deleteItemAsync("helper_auth_info");
     setAuthState({
       token: null,
       refreshToken: null,
