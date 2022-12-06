@@ -95,8 +95,6 @@ const AccountScreen = ({navigation}) => {
   const authContext = useContext(AuthContext);
   const user = authContext.authState.user;
   const [isNotice, setIsNotice] = useState(false);
-  const authContext = useContext(AuthContext);
-  const user = authContext.authState.user;
   const { authAxios } = useAxios();
   const onLogout = async () => {
     await authAxios.post("auth/signout")
@@ -116,11 +114,15 @@ const AccountScreen = ({navigation}) => {
 
       {/* user info */}
       <View style={[{ flex: 1 }, style.userInfo.wrapper]}>
-        <AvatarComponent size="lg" containerAvatarStyle ={style.userInfo.avatar} />
+        <AvatarComponent 
+          img={user.avatar_url}
+          size="lg" 
+          containerAvatarStyle ={style.userInfo.avatar} 
+        />
         <View style={style.userInfo.account}>
-          <Typography variant="SubTitle">Nguyễn Văn Tèo</Typography>
+          <Typography variant="SubTitle">{user.name}</Typography>
           <Typography variant="Description" color="Gray.3">
-            teo.nguyenvan@gmail.com
+          {user.email}
           </Typography>
         </View>
       </View>
@@ -134,7 +136,7 @@ const AccountScreen = ({navigation}) => {
             onTouch={() => {navigation.navigate("UpdateInfoScreen")}}
           />
           <SettingItem title={"Thay đổi mật khẩu"} onTouch={() => {navigation.navigate("ChangePasswordScreen")}} />
-          <SettingItem title={"Liên kết tài khoản"} onTouch={() => {navigation.navigate("AccountLinkScreen")}} />
+          {/*<SettingItem title={"Liên kết tài khoản"} onTouch={() => {navigation.navigate("AccountLinkScreen")}} /> */}
           <SettingItem title={"Đăng xuất"} onTouch={() => onLogout()} />
         </View>
         <View style={style.setting.settingMenu}>
@@ -144,8 +146,6 @@ const AccountScreen = ({navigation}) => {
             onToggle={() => setIsNotice((previousState) => !previousState)}
             value={isNotice}
           />
-          <SettingItem title={"Đánh giá chúng tôi"} onTouch={() => {}} />
-          <SettingItem title={"Thay đổi mật khẩu"} onTouch={() => {}} />
           <SettingItem title={"Phản hồi"} onTouch={() => {navigation.navigate("FeedbackScreen")}} />
         </View>
       </View>

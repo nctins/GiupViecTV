@@ -79,6 +79,7 @@ const HomeScreen = ({navigation}) => {
   const style = useThemeStyles(styles);
   const authContext = useContext(AuthContext);
   const {authAxios} = useContext(AxiosContext);
+  const user = authContext.authState.user;
   const [vouchers,setVouchers] = useState([]);
   const images = useState(["https://reactnative.dev/img/tiny_logo.png"])
 
@@ -127,10 +128,11 @@ const HomeScreen = ({navigation}) => {
     <BgImageLayout background={HOME_BG}>
       <StatusBar />
       <View style={style.hiUserView}>
-        <AvatarComponent size='lg' />
+        <AvatarComponent img={user.avatar_url} size='lg' />
         <View style={style.nameAndAddressView}>
-          <Typography variant="H7">Xin chào, Nguyễn Văn Tèo</Typography>
-          <Typography variant="Description" style={{marginLeft: 0}}>KTX khu B, Đông Hòa, Dĩ An, Bình Dương</Typography>
+          <Typography variant="H7">Xin chào, {user.name}</Typography>
+          <Typography variant="Description" style={{marginLeft: 0}}>{user.email}</Typography>
+          <Typography variant="Description" style={{marginLeft: 0}}>{user.phone}</Typography>
         </View>
       </View>
       <View style={style.ItemView} >
