@@ -88,7 +88,7 @@ const HomeScreen = ({navigation}) => {
 
   const getCoupon = async () => {
     authAxios
-      .get("http://10.0.2.2:6969/customer/CUS_g2pcl14wl8rlwhcv/vouchers")
+      .get("customer/CUS_g2pcl14wl8rlwhcv/vouchers")
       .then(async (response) => {
         setVouchers(response.data.data);
         // console.log(vouchers);

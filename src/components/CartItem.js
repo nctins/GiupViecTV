@@ -188,7 +188,6 @@ const CartItem = (props) => {
     const navigation = props.navigation;
     const post = props.post;
     const onPressCart = () => {
-        console.log(post);
         navigation.navigate("CartDetail",{post:post});
     }
 

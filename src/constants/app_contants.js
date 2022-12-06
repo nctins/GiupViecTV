@@ -51,3 +51,14 @@ export const POST_STATE = {
 export const LIMIT_ADDRESS_LENGTH = {
     LENGTH: 30,
 }
+
+// ranking name
+
+export const EVALUATE = [
+    { msg: "", color: "Gray.8" },
+    { msg: "Rất tệ", color: "AlizarinRed" },
+    { msg: "Tệ", color: "AlizarinRed" },
+    { msg: "Bình thường", color: "Verdepom" },
+    { msg: "Tốt!", color: "Verdepom" },
+    { msg: "Rất tốt!", color: "Verdepom" },
+  ];
