@@ -63,7 +63,7 @@ const CartTab4 = ({navigation}) => {
 
   const getPosts = () => {
     authAxios
-      .get("http://10.0.2.2:6969/posts")
+      .get("posts")
       .then(async (response) => {
         let arrPost = response.data.data;
         arrPost = arrPost.filter(e => {
