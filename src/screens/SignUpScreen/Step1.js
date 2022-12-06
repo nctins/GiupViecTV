@@ -16,10 +16,11 @@ const Step1 = ({navigation}) => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
+  const [MSDD, setMSDD] = useState("");
 
   const onPressNextButton = () => {
-    if(email.length > 0 && phone.length > 0 && name.length > 0){
-      navigation.push('Step2', {email: email, phone: phone, name: name})
+    if(email.length > 0 && phone.length > 0 && name.length > 0 && MSDD.length > 0){
+      navigation.push('Step2', {email: email, phone: phone, name: name, MSDD: MSDD})
     }else{
       Alert.alert(
         "Thông báo!",
@@ -41,7 +42,7 @@ const Step1 = ({navigation}) => {
           Đăng ký
         </Typography>
       </View>
-      <View style={{ alignItems: "center", marginTop:30 }}>
+      <View style={{ alignItems: "center", marginTop:10 }}>
         <View>
         <Typography style={styled.label}>Email:</Typography>
         <TextInput 
@@ -52,21 +53,34 @@ const Step1 = ({navigation}) => {
         />
         </View>
         <View>
-        <Typography style={styled.label}>Phone:</Typography>
-        <TextInput
-          placeholder="Mọi người liên lạc bạn theo số này nè"
-          title={"Số điện thoại"}
-          value={phone}
-          onChangeText={(value) => {setPhone(value)}}
-        />
-        </View>
-        <View>
         <Typography style={styled.label}>Họ và tên:</Typography>
         <TextInput
           placeholder="Bạn thích mọi người gọi bạn là gì ?"
           title={"Tên"}
           value={name}
           onChangeText={(value) => {setName(value)}}
+        />
+        </View>
+        <View>
+        <Typography style={styled.label}>MSDD:</Typography>
+        <TextInput
+          placeholder="Nhập số CMND / CCCD của bạn"
+          title={"CMND/CCCD"}
+          value={MSDD}
+          keyboardType = 'numeric'
+          maxLength={12}
+          onChangeText={(value) => {setMSDD(value)}}
+        />
+        </View>
+        <View>
+        <Typography style={styled.label}>Phone:</Typography>
+        <TextInput
+          placeholder="Mọi người liên lạc bạn theo số này nè"
+          title={"Số điện thoại"}
+          value={phone}
+          keyboardType = 'numeric'
+          maxLength={10}
+          onChangeText={(value) => {setPhone(value)}}
         />
         </View>
       </View>

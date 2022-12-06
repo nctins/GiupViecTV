@@ -4,8 +4,9 @@ import {
   View,
   ScrollView,
   StatusBar,
-  Touchable,
-  Alert
+  TouchableOpacity,
+  Alert,
+  Platform 
 } from "react-native";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
@@ -15,6 +16,7 @@ import Button from "~components/Button";
 import AvatarComponent from "~components/AvatarComponent";
 import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
+import * as ImagePicker from 'expo-image-picker';
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -59,7 +61,7 @@ const styles = (theme) =>
     },
     form: {
       field: {
-        marginBottom: 20,
+        marginBottom: 10,
         borderWidth: 1,
         borderColor: theme.colors.BackgroundBlue,
       },
@@ -72,6 +74,10 @@ const styles = (theme) =>
         alignItems: "center",
       },
     },
+    label: {
+      color: theme.colors.DarkGray[11],
+      marginLeft: 10,
+    }
   });
 
 const UpdateInfoScreen = ({navigation}) => {
@@ -82,7 +88,10 @@ const UpdateInfoScreen = ({navigation}) => {
   const [email,setEmail] = useState("");
   const [name,setName] = useState("");
   const [phone,setPhone] = useState("");
+  const [MSDD,setMSDD] = useState("");
   const [message,setMessage] = useState("");
+  const [selectedImage, setSelectedImage] = useState("https://reactnative.dev/img/tiny_logo.png");
+  const [imageBase64,setImageBase64] = useState();
 
   useEffect(() => {
     getAccount();
@@ -96,6 +105,31 @@ const UpdateInfoScreen = ({navigation}) => {
     }
   }
 
+  const openImagePickerAsync = async() => {
+    let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert('Permission to access camera roll is required!');
+      return;
+    }
+
+    let pickerResult = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+      //We need the image to be base64 in order to be formatted for Cloudinary
+      base64: true
+    });
+
+    if (pickerResult.cancelled === true) {
+      return;
+    }
+
+    setSelectedImage(pickerResult.uri);
+
+    let base64Img = `data:image/jpg;base64,${pickerResult.base64}`;
+    setImageBase64(base64Img);
+  }
+
   const getAccount = async () => {
     authAxios
       .get("helper/" + user.id)
@@ -104,6 +138,8 @@ const UpdateInfoScreen = ({navigation}) => {
         setEmail(helper.email);
         setName(helper.name);
         setPhone(helper.phone);
+        setMSDD(helper.MSDD);
+        setSelectedImage(helper.avatar_url);
       })
       .catch(async (error) => {
         if (error.response) {
@@ -113,14 +149,18 @@ const UpdateInfoScreen = ({navigation}) => {
   }
 
   const updateAccount = () => {
-    authAxios
+    if(email.length > 0 && phone.length > 0 && name.length > 0 && MSDD.length > 0){
+      authAxios
       .put("helper/" + user.id,{
         email: email,
         name: name,
-        phone: phone
+        phone: phone,
+        MSDD: MSDD,
+        image: imageBase64,
       })
       .then(async (response) => {
         setMessage(response.data.data);
+        authContext.setAuthState({...authContext.authState,user:{id: user.id, name: name, email: email, phone: phone}});
       })
       .catch(async (error) => {
         setMessage("");
@@ -134,6 +174,15 @@ const UpdateInfoScreen = ({navigation}) => {
           // setMessage(error.response.data.msg);
         }
       });
+    }else{
+      Alert.alert(
+        "Thông báo!",
+        "Cần nhập đầy đủ các mục để cập nhật!",
+        [
+          { text: "OK"}
+        ]
+      );
+    }
   }
 
   const onPressButtonSave = () => {
@@ -166,43 +215,69 @@ const UpdateInfoScreen = ({navigation}) => {
           <AvatarComponent
             size="llg"
             containerAvatarStyle={style.avatar.border}
+            img={selectedImage}
           />
           <View style={style.avatar.textButton}>
-            <Typography color="Gray.5">Thay đổi</Typography>
+            <TouchableOpacity onPress={openImagePickerAsync}>
+              <Typography color="Gray.5">Thay đổi</Typography>
+            </TouchableOpacity>
           </View>
         </View>
 
         {/* form */}
         <View style={[{ flex: 3 }, style.form.wrapper]}>
-          <TextInput
-            style={style.form.field}
-            placeholder=""
-            title={"Email"}
-            titleStyle="blackTitle"
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-          />
-          <TextInput
-            style={style.form.field}
-            placeholder=""
-            title={"Họ và tên"}
-            titleStyle="blackTitle"
-            value={name}
-            onChangeText={(text) => setName(text)}
-          />
-          <TextInput
-            style={style.form.field}
-            placeholder=""
-            title={"Số điện thoại"}
-            titleStyle="blackTitle"
-            value={phone}
-            onChangeText={(text) => setPhone(text)}
-          />
-
+          <View>
+            <Typography style={style.label}>Email:</Typography>
+            <TextInput
+              style={style.form.field}
+              placeholder="Địa chỉ email của bạn"
+              title={"Email"}
+              titleStyle="blackTitle"
+              value={email}
+              onChangeText={(text) => setEmail(text)}
+            />
+          </View>
+          <View>
+            <Typography style={style.label}>Họ và tên:</Typography>
+            <TextInput
+              style={style.form.field}
+              placeholder="Họ và tên của bạn"
+              title={"Họ và tên"}
+              titleStyle="blackTitle"
+              value={name}
+              onChangeText={(text) => setName(text)}
+            />
+          </View>
+          <View>
+            <Typography style={style.label}>MSDD:</Typography>
+            <TextInput
+              style={style.form.field}
+              placeholder="CMND|CCCD của bạn"
+              title={"MSDD"}
+              titleStyle="blackTitle"
+              keyboardType = 'numeric'
+              maxLength={12}
+              value={MSDD}
+              onChangeText={(text) => setMSDD(text)}
+            />
+          </View>
+          <View>
+            <Typography style={style.label}>Phone:</Typography>
+            <TextInput
+              style={style.form.field}
+              placeholder="Số điện thoại của bạn"
+              title={"Số điện thoại"}
+              titleStyle="blackTitle"
+              keyboardType = 'numeric'
+              maxLength={10}
+              value={phone}
+              onChangeText={(text) => setPhone(text)}
+            />
+          </View>
           {messageDisplay()}
         </View>
 
-        <View style={[{ flex: 2 }, style.form.button]}>
+        <View style={[{ flex: 1 }, style.form.button]}>
           <Button size="sm" radius={4} style={{ width: 130, padding: 10 }} onPress={onPressButtonSave}>
             Lưu
           </Button>

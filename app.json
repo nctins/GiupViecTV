@@ -8,15 +8,16 @@
     ],
     "plugins": [
       [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        },
         "expo-notifications",
         {
           "icon": "./local/assets/logo.png",
           "color": "#ffffff"
         }
       ]
-    ],
-    "android": {
-      "googleServicesFile": "./google-services.json"
-    }
+    ]
   }
 }

@@ -64,9 +64,6 @@ const ChangePasswordScreen = ({navigation}) => {
 
   const messageDisplay = () => {
     if(message.includes("thành công")){
-      setOldPassword("");
-      setNewPassword("");
-      setNewPasswordConfirm("");
       return <Typography style={{marginTop: 10}} color="PersianBlue">{message}</Typography>
     }else{
       return <Typography style={{marginTop: 10}} color="StrawberryRed">{message}</Typography>
@@ -87,6 +84,9 @@ const ChangePasswordScreen = ({navigation}) => {
       })
       .then(async (response) => {
         // console.log(response.data);
+        setOldPassword("");
+        setNewPassword("");
+        setNewPasswordConfirm("");
         setMessage(response.data.data);
       })
       .catch(async (error) => {
@@ -94,11 +94,15 @@ const ChangePasswordScreen = ({navigation}) => {
         if (error.response) {
           console.log(error.response.data);
           let msgArr = error.response.data.msg;
-          msgArr.map((e) => {
-            e = e.replace("body","");
-            setMessage(prev => prev.concat('\n').concat(e));
-          })
-          // setMessage(error.response.data.msg);
+          if(Array.isArray(msgArr)){
+            let msg = "";
+            msgArr.map((e) => {
+              msg += e.replace("body","").concat("\n");
+            });
+            setMessage(msg);
+          }else{
+            setMessage(msgArr);
+          }
         }
       });
   }
