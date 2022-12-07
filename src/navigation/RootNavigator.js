@@ -7,6 +7,7 @@ import CouponNavigator from "./CouponNavigator";
 import AccountNavigator from "./AccountNavigator";
 import { HomeIcon, OrderIcon, UserIcon, MessageIcon, GiftIcon} from "~components/Icons";
 import { AuthContext } from "~contexts/AuthContext";
+import Toast from "~utils/Toast";
 
 const TAB_NAV = createBottomTabNavigator();
 // const TAB_NAV = createMaterialTopTabNavigator();
@@ -14,9 +15,11 @@ const TAB_NAV = createBottomTabNavigator();
 const RootComponent = ({ navigation }) => {
   const sizeIcon = "md";
   
-  const {authState} = useContext(AuthContext);
+  const {authState, logout} = useContext(AuthContext);
   useEffect(()=>{
     if (!authState.authenticated) {
+      Toast.createToast("Phiên đăng nhập đã hết hạn");
+      logout();
       navigation.navigate('StartScreen');
     }
   },[authState]);

@@ -34,7 +34,7 @@ const Step2 = ({route,navigation}) => {
       return;
     }
     publicAxios
-      .post("http://10.0.2.2:6969/auth/customer/signup", {
+      .post("auth/customer/signup", {
         email: email,
         phone: phone,
         name: name,

@@ -17,7 +17,7 @@ const LoginScreen = ({navigation}) => {
   const [password, setPassword] = useState("");
 
   const setToken = async (value) => {
-    await SecureStore.setItemAsync("auth_info", value);
+    await SecureStore.setItemAsync("customer_auth_info", value);
   };
   
   const onLogin = async () => {

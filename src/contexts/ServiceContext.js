@@ -214,7 +214,8 @@ const ServiceProvider = ({
           ...addresses,
           [address_obj.customer_address_id]: address_obj,
         })
-        const new_addressIds = addressIds.push(address_obj.customer_address_id);
+        const new_addressIds = addressIds;
+        new_addressIds.push(address_obj.customer_address_id);
         setAddressIds(new_addressIds);
       })
       .catch((err) => {
