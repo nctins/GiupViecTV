@@ -92,6 +92,8 @@ const settingStyle = (theme) => {
 
 const AccountScreen = ({navigation}) => {
   const style = useThemeStyles(styles);
+  const authContext = useContext(AuthContext);
+  const user = authContext.authState.user;
   const [isNotice, setIsNotice] = useState(false);
   const { authAxios } = useAxios();
   const onLogout = async () => {

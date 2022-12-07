@@ -43,7 +43,7 @@ const styles = (theme) => StyleSheet.create({
   },
   AdsView:{
     width: "100%",
-    height: 180,
+    height: 200,
     marginTop: 20,
     flexDirection: "column",
     alignItems: "center",
@@ -51,7 +51,7 @@ const styles = (theme) => StyleSheet.create({
   },
   couponView:{
     width: "100%",
-    height: 250,
+    height: 230,
     marginTop: 10,
     flexDirection: "column",
     alignItems: "center",
@@ -174,7 +174,9 @@ const HomeScreen = ({navigation}) => {
         <SliderBox
           images={imagesAds}
           onCurrentImagePressed={index => console.log(`image ${index} pressed`)}
-          currentImageEmitter={index => console.log(`current pos is: ${index}`)}
+          autoplay={true}
+          circleLoop={true}
+          autoplayInterval={5000}
         />
       </View>
       <View style={style.couponView} >

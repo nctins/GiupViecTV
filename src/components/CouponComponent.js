@@ -6,17 +6,20 @@ import Button from './Button';
 
 const styles = (theme) => StyleSheet.create({
     default: {
-        width: "90%",
-        height: 170,
+        width: "85%",
+        height: 165,
         backgroundColor: theme.colors.BackgroundBlue,
-        marginTop: 10,
+        // marginTop: 10,
+        marginVertical: 10,
         borderRadius: 5,
         flexDirection: "column",
         justifyContent: "flex-end",
+        overflow: "hidden"
     },
     image:{
         flex:1,
         justifyContent: "flex-end",
+        // padding: 1
     },
     viewTitle:{
         width: "100%",
@@ -71,7 +74,7 @@ const CouponComponent = ({navigation,voucher_info, containerStyle,isHome = false
     return ( 
         <TouchableOpacity onPress={onPressCoupon}>
             <View style={[style.default,containerStyle]}>
-            <ImageBackground source={{uri: voucher_info.voucher_url}} resizeMode="contain" style={style.image}>
+            <ImageBackground source={{uri: voucher_info.voucher_url}} resizeMode="cover" style={style.image}>
                 <View style={style.viewTitle}>
                     <View style={[style.title,isHome?{width:"100%"}:null]}>
                         <Typography variant="TextBold">{title}</Typography>

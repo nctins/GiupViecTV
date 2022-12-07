@@ -16,6 +16,7 @@ const styles = (theme) => StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         marginTop: 5,
+        backgroundColor: "white"
     },
     infoView: {
         width: "50%",
