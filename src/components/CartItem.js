@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import useThemeStyles from '~hooks/useThemeStyles';
 import Typography from "~components/Typography";
 import AvatarComponent from './AvatarComponent';
 import {POST_STATE, POST_TYPE, LIMIT_ADDRESS_LENGTH, PAYMENT_METHOD_CONDITION} from "../constants/app_contants";
+import logoImage from '../../assets/images/icons/logo.png';
+
+const logo = Image.resolveAssetSource(logoImage).uri;
 
 const styles = (theme) => StyleSheet.create({
     default: {
@@ -57,7 +60,7 @@ const rightInfoStyle2 = (theme) => StyleSheet.create({
     viewItem1:{
         flex:1,
         flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "center",
         alignItems: "center",
     },
     viewItem2:{
@@ -75,7 +78,7 @@ const RightInfoCartItem2 = (props) => {
         <View style={rightStyle.default}>
             <View style={rightStyle.viewItem1}>
                 <Typography variant="TextBold">{post.helper_na}</Typography>
-                <AvatarComponent containerAvatarStyle={{}} avatarStyle={{}} size={"ssm"} style={"circle"}/>
+                { /* <AvatarComponent containerAvatarStyle={{}} avatarStyle={{}} size={"ssm"} style={"circle"}/> */}
             </View>
             <View style={rightStyle.viewItem2} >
                 <Typography variant="TextBold">{post.total} VNĐ</Typography>
@@ -95,7 +98,7 @@ const rightInfoStyle3 = (theme) => StyleSheet.create({
     viewItem1:{
         flex:1,
         flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "center",
         alignItems: "center",
     },
     viewItem2:{
@@ -123,7 +126,7 @@ const RightInfoCartItem3 = (props) => {
         <View style={rightStyle.default}>
             <View style={rightStyle.viewItem1}>
                 <Typography variant="TextBold">{post.helper_na}</Typography>
-                <AvatarComponent containerAvatarStyle={{}} avatarStyle={{}} size={"ssm"} style={"circle"}/>
+                {/*<AvatarComponent containerAvatarStyle={{}} avatarStyle={{}} size={"ssm"} style={"circle"}/>*/}
             </View>
             <View style={rightStyle.viewItem2} >
                 <Typography variant="TextBold">{post.total} VNĐ</Typography>
@@ -144,7 +147,7 @@ const rightInfoStyle4 = (theme) => StyleSheet.create({
     viewItem1:{
         flex:1,
         flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "center",
         alignItems: "center",
     },
     viewItem2:{
@@ -163,7 +166,7 @@ const RightInfoCartItem4 = (props) => {
             return (
                 <View style={rightStyle.viewItem1}>
                     <Typography variant="TextBold">{post.helper_na}</Typography>
-                    <AvatarComponent containerAvatarStyle={{}} avatarStyle={{}} size={"ssm"} style={"circle"}/>
+                    {/*<AvatarComponent containerAvatarStyle={{}} avatarStyle={{}} size={"ssm"} style={"circle"}/>*/}
                 </View>
             )
         }
@@ -222,7 +225,7 @@ const CartItem = (props) => {
     return ( 
         <TouchableOpacity onPress={onPressCart}>
             <View style={style.default}>
-            <AvatarComponent containerAvatarStyle={{}} avatarStyle={{}} size={"lg"} style={"circle"}/>
+            <AvatarComponent img={logo} containerAvatarStyle={{}} avatarStyle={{}} size={"lg"} style={"circle"}/>
                 <View style={style.infoView}>
                     <Typography variant="Text">{getNamePost()}</Typography>
                     <Typography variant="MiniDescription" style={{marginLeft: 5}}>{formatAddress()}</Typography>
