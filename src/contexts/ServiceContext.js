@@ -1,9 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { Alert } from "react-native";
 import {
   INPUT_FORMAT,
   PAYMENT_METHOD,
   POST_TYPE,
 } from "~constants/app_contants";
+import Caculator from "~utils/Caculator";
+import Toast from "~utils/Toast";
 import { AuthContext } from "./AuthContext";
 import { AxiosContext } from "./AxiosContext";
 
@@ -22,6 +25,7 @@ const ServiceProvider = ({
   const [serviceIds, setServiceIds] = useState([]);
   const [addressIds, setAddressIds] = useState([]);
   const [currentScreen, setCurrentScreen] = externalState["currentScreen"];
+  const [vouchers, setVouchers] = useState([]);
 
   const initdatetime = new Date("00-00-00 00:00:00");
   const [post, setPost] = useState({
@@ -35,8 +39,9 @@ const ServiceProvider = ({
     voucher_code: "",
     payment_method: PAYMENT_METHOD.COD,
     total: 0,
+    coupon_price: 0,
   });
-  const [addresses, setAddresses] = useState([]);
+  const [addresses, setAddresses] = useState({});
 
   const isNotEmpty = (value) => {
     return !(value == null);
@@ -53,6 +58,7 @@ const ServiceProvider = ({
     voucher_code,
     payment_method,
     total,
+    coupon_price,
   }) => {
     let new_post = post;
     if (isNotEmpty(customer_name)) {
@@ -85,10 +91,24 @@ const ServiceProvider = ({
     if (isNotEmpty(total)) {
       new_post = { ...new_post, total: total };
     }
+    if (isNotEmpty(coupon_price)) {
+      new_post = { ...new_post, coupon_price: coupon_price };
+    }
     setPost(new_post);
   };
 
   useEffect(() => {
+    getPostData();
+    getVouchers();
+  }, []);
+
+  const getVouchers = () => {
+    authAxios.get(`/customer/${authState.user.id}/vouchers`).then((res) => {
+      setVouchers(res.data.data);
+    });
+  };
+
+  const getPostData = () => {
     Promise.all([
       authAxios.get("/services"),
       authAxios.get(`customer/${authState.user.id}/addresses`),
@@ -145,7 +165,7 @@ const ServiceProvider = ({
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  };
 
   const controller = {};
   controller.createPost = () => {
@@ -170,7 +190,8 @@ const ServiceProvider = ({
       date: post.date.toISOString().slice(0, 10),
       time: post.time.toLocaleTimeString(),
       note: post.note,
-      total: post.total,
+      total: Caculator.calcTotalOrder(post),
+      coupon_price: post.coupon_price,
       voucher_id: post.voucher_code,
       payment_method: post.payment_method,
       services: post_detail,
@@ -192,6 +213,10 @@ const ServiceProvider = ({
   };
 
   controller.goToPaymentScreen = () => {
+    if (post.total == 0) {
+      Alert.alert("", "Vui lòng chọn ít nhất 1 dịch vụ");
+      return;
+    }
     setCurrentScreen("PaymentScreen");
   };
 
@@ -213,13 +238,58 @@ const ServiceProvider = ({
         setAddresses({
           ...addresses,
           [address_obj.customer_address_id]: address_obj,
-        })
+        });
         const new_addressIds = addressIds;
         new_addressIds.push(address_obj.customer_address_id);
         setAddressIds(new_addressIds);
       })
       .catch((err) => {
         console.log(err);
+      });
+  };
+
+  controller.deleteAddress = (address_id) => {
+    authAxios
+      .put(`/customer/${authState.user.id}/address/${address_id}`, {
+        is_delete: 1,
+      })
+      .then((res) => {
+        const new_addressIds = addressIds.filter((id) => id != address_id);
+        setAddressIds(new_addressIds);
+      })
+      .catch((err) => {
+        Toast.createToast("có lỗi xảy ra");
+      });
+  };
+
+  controller.deleteService = (service_id) => {
+    const services = post.services;
+    const new_services = {
+      ...services,
+      [service_id]: {
+        ...services[service_id],
+        is_select: false,
+      },
+    };
+    setPostData({ services: new_services });
+  };
+
+  controller.updateAddress = ({ address_id, title, address }) => {
+    authAxios
+      .put(`/customer/${authState.user.id}/address/${address_id}`, {
+        address_title: title,
+        address: address,
+      })
+      .then((res) => {
+        const address_obj = {
+          ...addresses[address_id],
+          address_title: title,
+          address: address,
+        };
+        setAddresses({ ...addresses, [address_id]: address_obj });
+      })
+      .catch((err) => {
+        Toast.createToast("có lỗi xảy ra");
       });
   };
 
@@ -234,6 +304,7 @@ const ServiceProvider = ({
         serviceIds,
         currentScreen,
         controller,
+        vouchers,
       }}
     >
       {children}

@@ -5,7 +5,7 @@ import { LOGIN_BG } from "assets/images";
 import Button from "~components/Button";
 import Typography from "~components/Typography";
 import { TextInput } from "~components/Inputs";
-import { View } from "react-native";
+import { Pressable, View } from "react-native";
 import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
 import * as SecureStore from "expo-secure-store";
@@ -70,9 +70,11 @@ const LoginScreen = ({navigation}) => {
             value={password}
             onChangeText={(text)=>setPassword(text)}
           />
-          <Typography variant="Text" style={{ alignSelf: "flex-end" }}>
-            Quên mật khẩu?
-          </Typography>
+          <Pressable onPress={()=>{navigation.navigate("ForgotPassScreen")}}>
+            <Typography variant="Text" style={{ alignSelf: "flex-end" }}>
+              Quên mật khẩu?
+            </Typography>
+          </Pressable>
         </View>
         <Button variant="primary" size="sm" onPress={() => onLogin()}>
           Đăng nhập

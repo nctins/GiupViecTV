@@ -4,6 +4,7 @@ import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
 import useServiceContext from "~hooks/useServiceContext";
 import CurrencyText from "~components/CurrencyText";
+import { TrashIcon } from "~components/Icons";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -15,6 +16,8 @@ const styles = (theme) =>
     },
     title: {
       marginVertical: 5,
+      flexDirection: "row",
+      justifyContent:"space-between",
     },
     description: {
       backgroundColor: theme.colors.Gray[1],
@@ -74,7 +77,7 @@ const styles = (theme) =>
 
 const RadioServiceItem = ({ serviceId }) => {
   const style = useThemeStyles(styles);
-  const { post, setPostData } = useServiceContext();
+  const { post, setPostData, controller } = useServiceContext();
   const { services } = post;
   const { service_init, service_value } = services[serviceId];
 
@@ -119,6 +122,9 @@ const RadioServiceItem = ({ serviceId }) => {
     <View style={style.wrapper}>
       <View style={style.title}>
         <Typography>{service_init.name}</Typography>
+        <Pressable onPress={()=>controller.deleteService(serviceId)}>
+          <TrashIcon size="sm"/>
+        </Pressable>
       </View>
       {service_init.description && (
         <View style={style.description}>

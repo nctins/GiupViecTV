@@ -6,10 +6,11 @@ import {
   Pressable,
   Modal,
   TouchableWithoutFeedback,
+  Alert,
 } from "react-native";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
-import { EditIcon } from "~components/Icons";
+import { EditIcon, TrashIcon } from "~components/Icons";
 import Button, { ActionButton } from "~components/Button";
 import useServiceContext from "~hooks/useServiceContext";
 import { TextInput } from "~components/Inputs";
@@ -33,27 +34,165 @@ const styles = (theme) =>
 const AddressScreen = () => {
   const style = useThemeStyles(styles);
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalEditVisible, setModalEditVisible] = useState(false);
   const { addressIds, addresses } = useServiceContext();
+  const [address_edit, setAddressEdit] = useState({});
+
+  const onEditAddress = (address) => {
+    setModalEditVisible(true);
+    setAddressEdit(address);
+  };
+
+  const ModalAddress = () => {
+    const style = useThemeStyles(modalStyle);
+    const { controller } = useServiceContext();
+    const [title, setTitle] = useState("");
+    const [address, setAddress] = useState("");
+
+    return (
+      <Modal animationType="none" transparent={true} visible={modalVisible}>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            setModalVisible(false);
+          }}
+        >
+          <View style={style.centeredView}>
+            <TouchableWithoutFeedback>
+              <View style={style.modalView}>
+                <View style={style.formInput}>
+                  <Typography>Tiêu đề</Typography>
+                  <TextInput
+                    variant="modalForm"
+                    onChangeText={(text) => {
+                      setTitle(text);
+                    }}
+                    value={title}
+                  />
+                </View>
+                <View style={style.formInput}>
+                  <Typography>Địa chỉ</Typography>
+                  <TextInput
+                    variant="modalForm"
+                    multiline
+                    numberOfLines={4}
+                    textAlignVertical="top"
+                    value={address}
+                    onChangeText={(text) => {
+                      setAddress(text);
+                    }}
+                  />
+                </View>
+                <View style={style.footer}>
+                  <Button
+                    size="modalSize"
+                    isShadow
+                    onPress={() => {
+                      controller.createAddress(title, address);
+                      setModalVisible(false);
+                    }}
+                  >
+                    OK
+                  </Button>
+                </View>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
+    );
+  };
+
+  const ModalEditAddress = () => {
+    const style = useThemeStyles(modalStyle);
+    const { controller } = useServiceContext();
+    const [title, setTitle] = useState(address_edit.title);
+    const [address, setAddress] = useState(address_edit.address);
+    // console.log(data);
+    const onEdit = () => {
+      controller.updateAddress({
+        title,
+        address,
+        address_id: address_edit.address_id,
+      })
+      setModalEditVisible(false);
+    }
+    return (
+      <Modal animationType="none" transparent={true} visible={modalEditVisible}>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            setModalEditVisible(false);
+          }}
+        >
+          <View style={style.centeredView}>
+            <TouchableWithoutFeedback>
+              <View style={style.modalView}>
+                <View style={style.formInput}>
+                  <Typography>Tiêu đề</Typography>
+                  <TextInput
+                    variant="modalForm"
+                    onChangeText={(text) => {
+                      setTitle(text);
+                    }}
+                    value={title}
+                  />
+                </View>
+                <View style={style.formInput}>
+                  <Typography>Địa chỉ</Typography>
+                  <TextInput
+                    variant="modalForm"
+                    multiline
+                    numberOfLines={4}
+                    textAlignVertical="top"
+                    value={address}
+                    onChangeText={(text) => {
+                      setAddress(text);
+                    }}
+                  />
+                </View>
+                <View style={style.footer}>
+                  <Button
+                    size="modalSize"
+                    isShadow
+                    onPress={() => onEdit()}
+                  >
+                    OK
+                  </Button>
+                </View>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
+    );
+  };
 
   return (
     <View style={style.content}>
-      {addressIds.map((id) => {
-        const address = addresses[id];
-        return (
-          <AddressCard
-            key={id}
-            title={address.address_title}
-            address={address.address}
-            addressId={id}
-          />
-        );
-      })}
+      <ScrollView
+        style={{ width: "100%" }}
+        contentContainerStyle={{ alignSelf: "center" }}
+      >
+        {addressIds.map((id) => {
+          const address = addresses[id];
+          return (
+            <AddressCard
+              key={id}
+              title={address.address_title}
+              address={address.address}
+              addressId={id}
+              onEdit={onEditAddress}
+            />
+          );
+        })}
+        <View style={{ height: 150 }}></View>
+      </ScrollView>
       <ActionButton
         onPress={() => {
           setModalVisible(true);
         }}
       />
-      <ModalAddress visible={modalVisible} setVisible={setModalVisible} />
+      <ModalAddress />
+      <ModalEditAddress />
     </View>
   );
 };
@@ -85,23 +224,45 @@ const CardStyles = (theme) =>
       flex: 1,
       padding: 10,
       paddingBottom: 15,
-      alignItems: "flex-end",
+      justifyContent: "space-between",
+      flexDirection: "row",
     },
   });
 
-const AddressCard = ({ title = "", address = "", addressId }) => {
+const AddressCard = ({ title = "", address = "", addressId, onEdit }) => {
   const style = useThemeStyles(CardStyles);
   const { controller } = useServiceContext();
+  const onDelete = () => {
+    Alert.alert("", "Bạn có muốn xóa địa chỉ này không", [
+      {
+        text: "OK",
+        onPress: () => {
+          controller.deleteAddress(addressId);
+        },
+      },
+    ]);
+  };
   return (
     <View style={style.wrapper}>
       <View style={style.header}>
         <Typography variant="Subtitle">{title}</Typography>
-        <EditIcon size="sm" />
+        <Pressable
+          onPress={() => {
+            onEdit({ address_id: addressId, title, address });
+          }}
+        >
+          <EditIcon size="sm" />
+        </Pressable>
       </View>
       <View style={style.body}>
         <Typography>{address}</Typography>
       </View>
       <View style={style.footer}>
+        <Pressable onPress={() => onDelete()}>
+          <Typography variant="MiniDescription" color="AlizarinRed">
+            xóa địa chỉ
+          </Typography>
+        </Pressable>
         <Pressable
           onPress={() => {
             controller.onChooseAddress(addressId);
@@ -149,59 +310,5 @@ const modalStyle = (theme) =>
       marginVertical: 15,
     },
   });
-
-const ModalAddress = ({ setVisible, visible }) => {
-  const style = useThemeStyles(modalStyle);
-  const { controller } = useServiceContext();
-  const [title, setTitle] = useState("");
-  const [address, setAddress] = useState("");
-
-  return (
-    <Modal animationType="none" transparent={true} visible={visible}>
-      <TouchableWithoutFeedback
-        onPress={() => {
-          setVisible(false);
-        }}
-      >
-        <View style={style.centeredView}>
-          <TouchableWithoutFeedback>
-            <View style={style.modalView}>
-              <View style={style.formInput}>
-                <Typography>Tiêu đề</Typography>
-                <TextInput
-                  variant="modalForm"
-                  onChangeText={(text) => {
-                    setTitle(text);
-                  }}
-                  value={title}
-                />
-              </View>
-              <View style={style.formInput}>
-                <Typography>Địa chỉ</Typography>
-                <TextInput
-                  variant="modalForm"
-                  multiline
-                  numberOfLines={4}
-                  textAlignVertical="top"
-                  value={address}
-                  onChangeText={(text) => {
-                    setAddress(text);
-                  }}
-                />
-              </View>
-              <View style={style.footer}>
-                <Button size="modalSize" isShadow onPress={() => {
-                  controller.createAddress(title, address);
-                }}>
-                  OK
-                </Button>
-              </View>
-            </View>
-          </TouchableWithoutFeedback>
-        </View>
-      </TouchableWithoutFeedback>
-    </Modal>
-  );
-};
 
 export default AddressScreen;
