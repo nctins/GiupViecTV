@@ -190,6 +190,7 @@ const styles = (theme) =>
       },
       content: {
         paddingVertical: 15,
+        maxHeight: 300,
       },
       formItem: {
         alignSelf: "center",
@@ -560,7 +561,7 @@ const CartDetail = (props) => {
                       Đánh giá về {post.helper.name}
                     </Typography>
                   </View>
-                  <View style={modalStyle.content}>
+                  <ScrollView style={modalStyle.content}>
                     {ratings.map((rating, idx) => {
                       return (
                         <CommentComponent
@@ -574,7 +575,8 @@ const CartDetail = (props) => {
                         />
                       );
                     })}
-                  </View>
+                    <View style={{height: 50}}></View>
+                  </ScrollView>
                   <View style={modalStyle.footer}>
                     <Button
                       style={style.cancelBtn}
@@ -708,8 +710,7 @@ const CartDetail = (props) => {
                     // buttonStyle={modalStyle.starStyle}
                     containerStyle={{ maxWidth: 150 }}
                     starSize={20}
-                    rating={post.helper.rank}
-                    selectedStar={(rating) => setStarCount(rating)}
+                    rating={post.customer.rank}
                   />
                 </View>
                 {post.helper.rank > 0 && (

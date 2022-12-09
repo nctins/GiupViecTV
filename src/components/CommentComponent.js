@@ -11,6 +11,7 @@ const styles = (theme) =>
       backgroundColor: theme.colors.BackgroundBlue,
       padding: 5,
       borderRadius: 5,
+      margin: 5,
     },
     header: {
       flexDirection: "row",
