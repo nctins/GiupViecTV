@@ -62,7 +62,7 @@ const styles = (theme) =>
 
 const MessageDetail = ({ navigation, route }) => {
   const style = useThemeStyles(styles);
-  const { box_chat_id, sender } = route.params;
+  const { box_chat_id, sender, avatar_url } = route.params;
   const { socket } = useContext(SocketContext);
   const { authAxios } = useContext(AxiosContext);
   const { authState } = useContext(AuthContext);
@@ -125,7 +125,8 @@ const MessageDetail = ({ navigation, route }) => {
         <AvatarComponent
           containerAvatarStyle={{ marginLeft: 10 }}
           avatarStyle={{}}
-          size={"sm"}
+          img={avatar_url}
+          size={"md"}
           style={"circle"}
         />
         <Typography variant="H5" style={style.title}>

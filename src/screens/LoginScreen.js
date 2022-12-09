@@ -5,7 +5,7 @@ import { LOGIN_BG } from "assets/images";
 import Button from "~components/Button";
 import Typography from "~components/Typography";
 import { TextInput } from "~components/Inputs";
-import { Pressable, View } from "react-native";
+import { Pressable, View, Alert } from "react-native";
 import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
 import * as SecureStore from "expo-secure-store";
@@ -41,7 +41,23 @@ const LoginScreen = ({navigation}) => {
       })
       .catch(async (error) => {
         if (error.response) {
-          console.log(error.response.data);
+          let msg = error.response.data.msg;
+          let rsMsg = "";
+          if(Array.isArray(msg)){
+            msg.map((e) => {
+              e = e.split(":");
+              rsMsg += e[1].concat("\n");
+            });
+          }else{
+            rsMsg = msg;
+          }
+          Alert.alert(
+            "Thông báo!",
+            rsMsg,
+            [
+              { text: "OK"}
+            ]
+          );
         }
       });
   };

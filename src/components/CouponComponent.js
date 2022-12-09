@@ -1,18 +1,25 @@
 import React, { useState } from 'react'
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity, ImageBackground } from "react-native";
 import useThemeStyles from '~hooks/useThemeStyles';
 import Typography from "~components/Typography";
 import Button from './Button';
 
 const styles = (theme) => StyleSheet.create({
     default: {
-        width: "90%",
-        height: 170,
+        width: "85%",
+        height: 165,
         backgroundColor: theme.colors.BackgroundBlue,
-        marginTop: 10,
+        // marginTop: 10,
+        marginVertical: 10,
         borderRadius: 5,
         flexDirection: "column",
         justifyContent: "flex-end",
+        overflow: "hidden"
+    },
+    image:{
+        flex:1,
+        justifyContent: "flex-end",
+        // padding: 1
     },
     viewTitle:{
         width: "100%",
@@ -23,7 +30,7 @@ const styles = (theme) => StyleSheet.create({
         paddingVertical: 5,
         paddingHorizontal: 5,
         backgroundColor: "white",
-        backgroundColor: "#FFFFFF80",
+        // backgroundColor: "#FFFFFF90",
     },
     title:{
         width: "60%",
@@ -67,13 +74,15 @@ const CouponComponent = ({navigation,voucher_info, containerStyle,isHome = false
     return ( 
         <TouchableOpacity onPress={onPressCoupon}>
             <View style={[style.default,containerStyle]}>
+            <ImageBackground source={{uri: voucher_info.voucher_url}} resizeMode="cover" style={style.image}>
                 <View style={style.viewTitle}>
                     <View style={[style.title,isHome?{width:"100%"}:null]}>
                         <Typography variant="TextBold">{title}</Typography>
                         {!isHome? <Typography variant="Description" style={{}}>Hạn dùng:{deadline}</Typography>:null} 
                     </View>
                     {!isHome?<View style={style.viewButton}><Button style={style.button} radius={5} onPress={() => {navigation.navigate("Trang chủ")}}>Dùng ngay</Button></View> : null}
-                </View>           
+                </View>
+            </ImageBackground>           
             </View>
         </TouchableOpacity>
      );

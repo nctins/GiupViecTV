@@ -32,7 +32,6 @@ const styles = (theme) => StyleSheet.create({
     width: "100%",
     flexDirection: "column",
     alignItems: "center",
-    backgroundColor: "white"
   },
   viewInput:{
     flexDirection: "row",
