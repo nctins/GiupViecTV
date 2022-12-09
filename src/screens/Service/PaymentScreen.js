@@ -223,7 +223,7 @@ const PaymentScreen = () => {
                     <Button
                       style={modalStyle.cancelBtn}
                       size="modalBtn"
-                      onPress={() => {}}
+                      onPress={() => setVoucherModal(false)}
                     >
                       Đóng
                     </Button>
