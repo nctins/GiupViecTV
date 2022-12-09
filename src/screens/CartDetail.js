@@ -8,6 +8,7 @@ import {
   Linking,
   Modal,
   Keyboard,
+  TouchableWithoutFeedback
 } from "react-native";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
@@ -25,8 +26,9 @@ import {
 } from "../constants/app_contants";
 import CurrencyText from "~components/CurrencyText";
 import Toast from "~utils/Toast";
-import StarRating from "react-native-star-rating";
 import { TextInput } from "~components/Inputs";
+import StarRatingComponent from "~components/StarRatingComponent";
+import CommentComponent from "~components/CommentComponent";
 
 const dateTimeFormater = (date, time) => {
   const time_string = time.slice(0, 5);
@@ -43,10 +45,13 @@ const init_post = {
     id: "",
     name: "",
     phone: "",
+    rank: 0,
   },
   helper: {
+    id: "",
     name: "",
     phone: "",
+    rank: 0,
   },
   total: 0,
 };
@@ -187,6 +192,7 @@ const styles = (theme) =>
       },
       content: {
         paddingVertical: 15,
+        maxHeight: 300,
       },
       formItem: {
         alignSelf: "center",
@@ -209,7 +215,9 @@ const CartDetail = (props) => {
   const [post_state, setPostState] = useState(route.params.post.post_state);
   const [review_modal, setReviewModal] = useState(false);
   const [cancel_modal, setCancelModal] = useState(false);
+  const [user_review_modal, setUserReviewModal] = useState(false);
   const [post, setPost] = useState(init_post);
+  const [rating_detail, setRatingDetail] = useState(null);
 
   useEffect(() => {
     getPostDetail();
@@ -230,15 +238,34 @@ const CartDetail = (props) => {
             id: res_obj.customer_id,
             name: res_obj.customer_name,
             phone: res_obj.customer_phone,
+            rank: res_obj.customer_rank,
           },
           helper: {
-            name: "",
-            phone: "",
+            id: res_obj.helper_id,
+            name: res_obj.helper_name,
+            phone: res_obj.helper_phone,
+            rank: res_obj.helper_rank,
           },
           total: res_obj.total,
         };
         setPost(new_post);
         setPostState(res_obj.post_state);
+
+        if (res_obj.post_state == POST_STATE.COMPLETE) {
+          getRatingDetail(post_id);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const getRatingDetail = (post_id) => {
+    authAxios
+      .get(`rating/post/${post_id}`)
+      .then((res) => {
+        console.log(res.data.data);
+        setRatingDetail(res.data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -453,14 +480,11 @@ const CartDetail = (props) => {
                 </View>
                 <View style={modalStyle.formItem}>
                   <Typography variant="SubTitle">Đánh giá: </Typography>
-                  <StarRating
+                  <StarRatingComponent
                     // buttonStyle={modalStyle.starStyle}
                     containerStyle={{ maxWidth: 150 }}
-                    fullStarColor={modalStyle.starColor}
-                    emptyStarColor={modalStyle.starColor}
                     starSize={30}
                     disabled={false}
-                    maxStars={5}
                     rating={starCount}
                     selectedStar={(rating) => setStarCount(rating)}
                   />
@@ -491,6 +515,85 @@ const CartDetail = (props) => {
             </View>
           </View>
         </View>
+      </Modal>
+    );
+  };
+
+  const UserReviewModal = () => {
+    const modalStyle = style.modal;
+
+    const [ratings, setRatings] = useState([]);
+    useEffect(() => {
+      getRatings();
+    }, [user_review_modal]);
+
+    const getRatings = () => {
+      if (post.helper.id == "") {
+        return;
+      }
+      authAxios
+        .get(`rating/customer/${post.customer.id}`)
+        .then((res) => {
+          setRatings(res.data.data);
+        })
+        .catch((err) => {
+          setRatings([]);
+          console.log(err);
+        });
+    };
+
+    return (
+      <Modal
+        animationType="none"
+        transparent={true}
+        visible={user_review_modal}
+      >
+        <TouchableWithoutFeedback
+          onPress={() => {
+            setUserReviewModal(false);
+          }}
+        >
+          <View style={modalStyle.centeredView}>
+            <TouchableWithoutFeedback>
+              <View style={modalStyle.modalView}>
+                <View style={modalStyle.wrapper}>
+                  <View style={modalStyle.header}>
+                    <Typography variant="H7">
+                      Đánh giá về {post.helper.name}
+                    </Typography>
+                  </View>
+                  <ScrollView style={modalStyle.content}>
+                    {ratings.map((rating, idx) => {
+                      return (
+                        <CommentComponent
+                          key={idx}
+                          data={{
+                            user_name: rating.user_name,
+                            date: rating.date_time,
+                            content: rating.content,
+                            rating: rating.rank,
+                          }}
+                        />
+                      );
+                    })}
+                    <View style={{height:50}}></View>
+                  </ScrollView>
+                  <View style={modalStyle.footer}>
+                    <Button
+                      style={style.cancelBtn}
+                      size="modalBtn"
+                      onPress={() => {
+                        setUserReviewModal(false);
+                      }}
+                    >
+                      Đóng
+                    </Button>
+                  </View>
+                </View>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
       </Modal>
     );
   };
@@ -558,6 +661,37 @@ const CartDetail = (props) => {
                 </Pressable>
               </View>
             </View>
+            <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Typography variant="Description">
+                    Hạng khách hàng:
+                  </Typography>
+                  <StarRatingComponent
+                    // buttonStyle={modalStyle.starStyle}
+                    containerStyle={{ maxWidth: 150 }}
+                    starSize={20}
+                    rating={post.helper.rank}
+                  />
+                </View>
+                {post.helper.rank > 0 && (
+                  <Pressable
+                    style={{ marginRight: 8 }}
+                    onPress={() => {
+                      setUserReviewModal(true);
+                    }}
+                  >
+                    <Typography variant="Description" color="PersianBlue">
+                      [Xem chi tiết]
+                    </Typography>
+                  </Pressable>
+                )}
+              </View>
           </View>
           <View style={[style.viewItemContent2]}>
             <View style={{ flexDirection: "row", justifyContent: "center" }}>
@@ -630,6 +764,7 @@ const CartDetail = (props) => {
       </View>
       <ReviewModal />
       <CancelModal />
+      <UserReviewModal />
     </>
   );
 };

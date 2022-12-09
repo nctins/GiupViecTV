@@ -52,6 +52,13 @@ export const LIMIT_ADDRESS_LENGTH = {
   LENGTH: 30,
 };
 
+// constant for notification table
+export const ICON_CODE = {
+  LOGO: "logoIcon", // icon hiển thị là logo khi thông báo loại hệ thống (do admin tạo)
+  ORDER: "order", // icon đơn hàng khi thông báo loại cập nhật đơn hàng 
+  COUPON: "coupon", // icon khuyến mãi khi thông báo loại khuyến mãi (do admin tạo)
+};
+
 // ranking name
 
 export const EVALUATE = [

@@ -4,6 +4,7 @@ import Step2 from '~screens/SignUpScreen/Step2';
 import StartScreen from '~screens/StartScreen';
 import LoginScreen from '~screens/LoginScreen';
 import RootComponent from './RootNavigator';
+import ForgotPassScreen from '~screens/ForgotPassScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,6 +16,7 @@ const InitNavigator = () => {
             <Stack.Screen name="Step1" component={Step1} options={{ headerShown: false }} />
             <Stack.Screen name="Step2" component={Step2} options={{ headerShown: false }} />
             <Stack.Screen name="HomeScreen" component={RootComponent} options={{ headerShown: false }} />
+            <Stack.Screen name="ForgotPassScreen" component={ForgotPassScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
     );
 }
