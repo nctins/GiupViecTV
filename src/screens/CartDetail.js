@@ -55,6 +55,7 @@ const init_post = {
     rank: 0,
   },
   total: 0,
+  coupon_price: 0,
 };
 
 const styles = (theme) =>
@@ -250,6 +251,7 @@ const CartDetail = (props) => {
             rank: res_obj.helper_rank,
           },
           total: res_obj.total,
+          coupon_price: res_obj.coupon_price,
         };
         setPost(new_post);
         setPostState(res_obj.post_state);
@@ -718,7 +720,7 @@ const CartDetail = (props) => {
                 />
               );
             })}
-            <CouponItem title={"Ưu đãi"} value={5000} />
+            <CouponItem title={"Ưu đãi"} value={post.coupon_price} />
             <PriceItem title={"Tổng cộng"} value={post.total} />
             <PaymentMethodItem value={post.payment_method} />
           </View>
