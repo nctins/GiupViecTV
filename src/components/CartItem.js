@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Pressable } from "react-native";
+import { View, StyleSheet, Pressable, Image } from "react-native";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
 import AvatarComponent from "./AvatarComponent";
@@ -9,6 +9,9 @@ import {
   LIMIT_ADDRESS_LENGTH,
   PAYMENT_METHOD_CONDITION,
 } from "../constants/app_contants";
+import logoImage from '../../assets/images/icons/logo.png';
+
+const logo = Image.resolveAssetSource(logoImage).uri;
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -87,7 +90,7 @@ const rightInfoStyle3 = (theme) =>
     viewItem1: {
       flex: 1,
       flexDirection: "row",
-      justifyContent: "space-between",
+      justifyContent: "center",
       alignItems: "center",
     },
     viewItem2: {
@@ -115,12 +118,6 @@ const RightInfoCartItem3 = (props) => {
     <View style={rightStyle.default}>
       <View style={rightStyle.viewItem1}>
         <Typography variant="TextBold">{order.customer_name}</Typography>
-        <AvatarComponent
-          containerAvatarStyle={{}}
-          avatarStyle={{}}
-          size={"ssm"}
-          style={"circle"}
-        />
       </View>
       <View style={rightStyle.viewItem2}>
         <Typography variant="TextBold">{order.total} VNĐ</Typography>
@@ -144,7 +141,7 @@ const rightInfoStyle4 = (theme) =>
     viewItem1: {
       flex: 1,
       flexDirection: "row",
-      justifyContent: "space-between",
+      justifyContent: "center",
       alignItems: "center",
     },
     viewItem2: {
@@ -163,12 +160,6 @@ const RightInfoCartItem4 = (props) => {
       return (
         <View style={rightStyle.viewItem1}>
           <Typography variant="TextBold">{order.customer_name}</Typography>
-          <AvatarComponent
-            containerAvatarStyle={{}}
-            avatarStyle={{}}
-            size={"ssm"}
-            style={"circle"}
-          />
         </View>
       );
     }
@@ -180,7 +171,7 @@ const RightInfoCartItem4 = (props) => {
       {displayHelper()}
       <View style={rightStyle.viewItem2}>
         <Typography variant="Description" style={{ color: "red" }}>
-          Đàm phán giá không thành công
+          {order.reason_cancel}
         </Typography>
       </View>
     </View>
@@ -194,9 +185,7 @@ const CartItem = (props) => {
   const navigation = props.navigation;
 
   const setRightItem = (type) => {
-    if (type === 1) {
-      return <RightInfoCartItem1 order={order} />;
-    } else if (type === 2) {
+    if (type === 2) {
       return <RightInfoCartItem2 order={order} />;
     } else if (type === 3) {
       return <RightInfoCartItem3 order={order} />;
@@ -230,8 +219,9 @@ const CartItem = (props) => {
       <AvatarComponent
         containerAvatarStyle={{}}
         avatarStyle={{}}
-        size={"lg"}
-        style={"circle"}
+        img={logo}
+        size="lg"
+        type="circle"
       />
       <View style={style.infoView}>
         <Typography variant="Text">{displayPostType()}</Typography>

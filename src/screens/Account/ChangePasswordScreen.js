@@ -7,6 +7,7 @@ import { TextInput } from "~components/Inputs";
 import Button from "~components/Button";
 import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
+import LoadingScreen from "~screens/LoadingScreen";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -61,6 +62,7 @@ const ChangePasswordScreen = ({navigation}) => {
   const [newPassword,setNewPassword] = useState("");
   const [newPasswordConfirm,setNewPasswordConfirm] = useState("");
   const [message,setMessage] = useState("");
+  const [isLoading, setIsLoadding] = useState(false);
 
   const messageDisplay = () => {
     if(message.includes("thành công")){
@@ -76,7 +78,7 @@ const ChangePasswordScreen = ({navigation}) => {
       setNewPasswordConfirm("");
       return;
     }
-
+    setIsLoadding(true);
     authAxios
       .put("helper/" + user.id + "/updatePassword",{
         oldPassword: oldPassword,
@@ -88,9 +90,11 @@ const ChangePasswordScreen = ({navigation}) => {
         setNewPassword("");
         setNewPasswordConfirm("");
         setMessage(response.data.data);
+        setIsLoadding(false);
       })
       .catch(async (error) => {
         setMessage("");
+        setIsLoadding(false);
         if (error.response) {
           console.log(error.response.data);
           let msgArr = error.response.data.msg;
@@ -123,6 +127,7 @@ const ChangePasswordScreen = ({navigation}) => {
 
   return (
     <View style={style.default}>
+      {isLoading ? <LoadingScreen /> : null}
       <StatusBar backgroundColor={style.statusBar.backgroundColor} />
       <View style={style.header}>
         <BackIcon color="Gray.0" onPress={() => {navigation.navigate("AccountScreen")}} />

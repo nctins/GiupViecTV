@@ -29,6 +29,7 @@ import Toast from "~utils/Toast";
 import { TextInput } from "~components/Inputs";
 import StarRatingComponent from "~components/StarRatingComponent";
 import CommentComponent from "~components/CommentComponent";
+import LoadingScreen from "./LoadingScreen";
 
 const dateTimeFormater = (date, time) => {
   const time_string = time.slice(0, 5);
@@ -217,6 +218,7 @@ const CartDetail = (props) => {
   const [cancel_modal, setCancelModal] = useState(false);
   const [user_review_modal, setUserReviewModal] = useState(false);
   const [post, setPost] = useState(init_post);
+  const [isLoading, setIsLoadding] = useState(false);
   const [rating_detail, setRatingDetail] = useState(null);
 
   useEffect(() => {
@@ -225,6 +227,7 @@ const CartDetail = (props) => {
 
   const getPostDetail = () => {
     // console.log(`post/${post.post_id}`);
+    setIsLoadding(true);
     authAxios
       .get(`post`, { params: { post_id: post_id } })
       .then((res) => {
@@ -250,12 +253,14 @@ const CartDetail = (props) => {
         };
         setPost(new_post);
         setPostState(res_obj.post_state);
+        setIsLoadding(false);
 
         if (res_obj.post_state == POST_STATE.COMPLETE) {
           getRatingDetail(post_id);
         }
       })
       .catch((err) => {
+        setIsLoadding(false);
         console.log(err);
       });
   };
@@ -268,6 +273,7 @@ const CartDetail = (props) => {
         setRatingDetail(res.data.data);
       })
       .catch((err) => {
+        // setIsLoadding(false);
         console.log(err);
       });
   };
@@ -305,6 +311,7 @@ const CartDetail = (props) => {
   };
 
   const onComplete = () => {
+    setIsLoadding(true);
     authAxios
       .put(`post`, { post_id: post_id, post_state: POST_STATE.COMPLETE })
       .then((res) => {
@@ -312,9 +319,11 @@ const CartDetail = (props) => {
         // navigation.navigate("HomeScreen");
         // navigation.goBack();
         setReviewModal(true);
+        setIsLoadding(false);
       })
       .catch((err) => {
         console.log(err);
+        setIsLoadding(true);
         Toast.createToast("có lỗi xảy ra");
       });
   };
@@ -601,6 +610,7 @@ const CartDetail = (props) => {
   return (
     <>
       <View style={style.default}>
+        {isLoading ? <LoadingScreen />:null}
         <StatusBar backgroundColor={style.statusBar.backgroundColor} />
         <View style={style.header}>
           <BackIcon

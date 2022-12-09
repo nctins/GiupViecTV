@@ -7,6 +7,7 @@ import { TextInput } from "~components/Inputs";
 import Button from "~components/Button";
 import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
+import LoadingScreen from "~screens/LoadingScreen";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -45,6 +46,7 @@ const FeedbackScreen = ({navigation}) => {
   const authContext = useContext(AuthContext);
   const {authAxios} = useContext(AxiosContext);
   const [content,setContent] = useState("");
+  const [isLoading, setIsLoadding] = useState(false);
 
   const createFeedback = () =>{
     if(content.length <= 0){
@@ -57,12 +59,13 @@ const FeedbackScreen = ({navigation}) => {
       );
       return;
     }
-
+    setIsLoadding(true);
     authAxios
       .post("feedback/",{
         content: content
       })
       .then(async (res) => {
+        setIsLoadding(false);
         Alert.alert(
           "Thông báo!",
           res.data.data,
@@ -73,6 +76,7 @@ const FeedbackScreen = ({navigation}) => {
       })
       .catch(async (error) => {
         if (error.response) {
+          setIsLoadding(false);
           console.log(error.response.data);
           Alert.alert(
             "Thông báo!",
@@ -83,10 +87,12 @@ const FeedbackScreen = ({navigation}) => {
           );
         };
       });
+      
   }
 
   return (
     <View style={style.default}>
+      {isLoading ? <LoadingScreen /> : null}
       <StatusBar backgroundColor={style.statusBar.backgroundColor} />
       <View style={style.header}>
         <BackIcon color="Gray.0" onPress={() => {navigation.navigate("AccountScreen")}} />
