@@ -11,6 +11,7 @@ import ObjMapper from "object-mapper";
 import useThemeStyles from "~hooks/useThemeStyles";
 import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
+import LoadingScreen from "~screens/LoadingScreen";
 
 const Step2 = ({route,navigation}) => {
   const authContext = useContext(AuthContext);
@@ -20,6 +21,7 @@ const Step2 = ({route,navigation}) => {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const { email, phone, name, MSDD } = route.params;   
+  const [isLoading, setIsLoadding] = useState(false);
 
   const onSignUp = async () => {
     if(password !== passwordConfirm){
@@ -33,6 +35,7 @@ const Step2 = ({route,navigation}) => {
       setPasswordConfirm("");
       return;
     }
+    setIsLoadding(true);
     publicAxios
       .post("auth/helper/signup", {
         email: email,
@@ -42,6 +45,7 @@ const Step2 = ({route,navigation}) => {
         MSDD: MSDD,
       })
       .then(async (response) => {
+        setIsLoadding(false);
         Alert.alert(
           "Thông báo!",
           "Đăng ký tài khoản thành công!",
@@ -52,6 +56,7 @@ const Step2 = ({route,navigation}) => {
         navigation.popToTop();
       })
       .catch(async (error) => {
+        setIsLoadding(false);
         if (error.response) {
           let {msg} = error.response.data;
           let msgAlert = "";
@@ -82,6 +87,7 @@ const Step2 = ({route,navigation}) => {
 
   return (
     <BgImageLayout background={SIGNUP_BG}>
+      {isLoading ? <LoadingScreen /> : null}
       <View style={{ flex: 1, alignItems: "flex-start" }}>
         <IconButton style={{ margin: 20 }} icon={<BackIcon color="Gray.0" onPress={() => {navigation.pop()}} />} />
       </View>

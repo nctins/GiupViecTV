@@ -15,6 +15,7 @@ import { BackIcon, SendIcon } from "~components/Icons";
 import { SocketContext } from "~contexts/SocketContext";
 import { AxiosContext } from "~contexts/AxiosContext";
 import { AuthContext } from "~contexts/AuthContext";
+import LoadingScreen from "~screens/LoadingScreen";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -67,7 +68,7 @@ const MessageDetail = ({ navigation, route }) => {
   const { socket } = useContext(SocketContext);
   const { authAxios } = useContext(AxiosContext);
   const { authState } = useContext(AuthContext);
-
+  const [isLoading, setIsLoadding] = useState(false);
   const [messages, setMessages] = useState([]);
   const [enterMsg, setEnterMsg] = useState("");
   const user_id = authState.user.id;
@@ -75,14 +76,17 @@ const MessageDetail = ({ navigation, route }) => {
   const scrollViewRef = useRef();
 
   const onSendMsg = () => {
+    setIsLoadding(true);
     authAxios
       .post(`/box-chat/${box_chat_id}/message`, {
         message: enterMsg,
       })
       .then((res) => {
+        setIsLoadding(false);
         const resObj = res.data;
       })
       .catch((err) => {
+        setIsLoadding(false);
         console.log(err);
       });
     setEnterMsg("");
@@ -95,13 +99,16 @@ const MessageDetail = ({ navigation, route }) => {
   }, [messages]);
 
   useEffect(() => {
+    setIsLoadding(true);
     authAxios
       .get(`/box-chat/${box_chat_id}/messages`)
       .then((res) => {
         const resObj = res.data;
+        setIsLoadding(false);
         setMessages([...messages, ...resObj.data]);
       })
       .catch((err) => {
+        setIsLoadding(false);
         console.log(err.response.data);
         setMessages([]);
       });
@@ -119,6 +126,7 @@ const MessageDetail = ({ navigation, route }) => {
 
   return (
     <View style={style.default}>
+      {isLoading ? <LoadingScreen /> : null}
       <View style={style.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <BackIcon color="Gray.0" />

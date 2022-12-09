@@ -17,6 +17,7 @@ import AvatarComponent from "~components/AvatarComponent";
 import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
 import * as ImagePicker from 'expo-image-picker';
+import LoadingScreen from "~screens/LoadingScreen";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -77,7 +78,7 @@ const styles = (theme) =>
     label: {
       color: theme.colors.DarkGray[11],
       marginLeft: 10,
-    }
+    },
   });
 
 const UpdateInfoScreen = ({navigation}) => {
@@ -92,6 +93,7 @@ const UpdateInfoScreen = ({navigation}) => {
   const [message,setMessage] = useState("");
   const [selectedImage, setSelectedImage] = useState("https://reactnative.dev/img/tiny_logo.png");
   const [imageBase64,setImageBase64] = useState();
+  const [isLoading, setIsLoadding] = useState(false);
 
   useEffect(() => {
     getAccount();
@@ -109,7 +111,7 @@ const UpdateInfoScreen = ({navigation}) => {
     let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      alert('Permission to access camera roll is required!');
+      console.log('Permission to access camera roll is required!');
       return;
     }
 
@@ -150,6 +152,7 @@ const UpdateInfoScreen = ({navigation}) => {
 
   const updateAccount = () => {
     if(email.length > 0 && phone.length > 0 && name.length > 0 && MSDD.length > 0){
+      setIsLoadding(true);
       authAxios
       .put("helper/" + user.id,{
         email: email,
@@ -161,6 +164,7 @@ const UpdateInfoScreen = ({navigation}) => {
       .then(async (response) => {
         setMessage(response.data.data);
         authContext.setAuthState({...authContext.authState,user:{id: user.id, name: name, email: email, phone: phone, avatar_url: selectedImage}});
+        setIsLoadding(false);
       })
       .catch(async (error) => {
         setMessage("");
@@ -171,6 +175,7 @@ const UpdateInfoScreen = ({navigation}) => {
             e = e.replace("body","");
             setMessage(prev => prev.concat('\n').concat(e));
           })
+          setIsLoadding(false);
           // setMessage(error.response.data.msg);
         }
       });
@@ -202,6 +207,7 @@ const UpdateInfoScreen = ({navigation}) => {
 
   return (
     <View style={style.default}>
+      {isLoading ? <LoadingScreen /> : null}
       <StatusBar backgroundColor={style.statusBar.backgroundColor} />
       <View style={style.header}>
         <BackIcon color="Gray.0" onPress={() => {navigation.navigate("AccountScreen")}} />

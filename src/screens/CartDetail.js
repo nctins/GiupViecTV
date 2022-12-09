@@ -27,6 +27,7 @@ import CurrencyText from "~components/CurrencyText";
 import Toast from "~utils/Toast";
 import StarRating from "react-native-star-rating";
 import { TextInput } from "~components/Inputs";
+import LoadingScreen from "./LoadingScreen";
 
 const dateTimeFormater = (date, time) => {
   const time_string = time.slice(0, 5);
@@ -210,6 +211,7 @@ const CartDetail = (props) => {
   const [review_modal, setReviewModal] = useState(false);
   const [cancel_modal, setCancelModal] = useState(false);
   const [post, setPost] = useState(init_post);
+  const [isLoading, setIsLoadding] = useState(false);
 
   useEffect(() => {
     getPostDetail();
@@ -217,6 +219,7 @@ const CartDetail = (props) => {
 
   const getPostDetail = () => {
     // console.log(`post/${post.post_id}`);
+    setIsLoadding(true);
     authAxios
       .get(`post`, { params: { post_id: post_id } })
       .then((res) => {
@@ -239,8 +242,10 @@ const CartDetail = (props) => {
         };
         setPost(new_post);
         setPostState(res_obj.post_state);
+        setIsLoadding(false);
       })
       .catch((err) => {
+        setIsLoadding(false);
         console.log(err);
       });
   };
@@ -278,6 +283,7 @@ const CartDetail = (props) => {
   };
 
   const onComplete = () => {
+    setIsLoadding(true);
     authAxios
       .put(`post`, { post_id: post_id, post_state: POST_STATE.COMPLETE })
       .then((res) => {
@@ -285,9 +291,11 @@ const CartDetail = (props) => {
         // navigation.navigate("HomeScreen");
         // navigation.goBack();
         setReviewModal(true);
+        setIsLoadding(false);
       })
       .catch((err) => {
         console.log(err);
+        setIsLoadding(true);
         Toast.createToast("có lỗi xảy ra");
       });
   };
@@ -498,6 +506,7 @@ const CartDetail = (props) => {
   return (
     <>
       <View style={style.default}>
+        {isLoading ? <LoadingScreen />:null}
         <StatusBar backgroundColor={style.statusBar.backgroundColor} />
         <View style={style.header}>
           <BackIcon
