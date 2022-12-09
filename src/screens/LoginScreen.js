@@ -9,18 +9,22 @@ import { View, Alert } from "react-native";
 import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
 import * as SecureStore from "expo-secure-store";
+import LoadingScreen from "./LoadingScreen";
+import Toast from "~utils/Toast";
 
 const LoginScreen = ({navigation}) => {
   const authContext = useContext(AuthContext);
   const { publicAxios } = useContext(AxiosContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const setToken = async (value) => {
     await SecureStore.setItemAsync("customer_auth_info", value);
   };
   
   const onLogin = async () => {
+    setIsLoading(true);
     publicAxios
       .post("auth/customer/signin", {
         email: email,
@@ -37,9 +41,12 @@ const LoginScreen = ({navigation}) => {
         await setToken(JSON.stringify({ token, refreshToken, user }));
         setEmail("");
         setPassword("");
+        setIsLoading(false);
+        Toast.createToast("Xin chào, " + user.name);
         navigation.push('HomeScreen', { params: 'example' })
       })
       .catch(async (error) => {
+        setIsLoading(false);
         if (error.response) {
           let msg = error.response.data.msg;
           let rsMsg = "";
@@ -64,6 +71,7 @@ const LoginScreen = ({navigation}) => {
 
   return (
     <BgImageLayout background={LOGIN_BG}>
+      {isLoading ? <LoadingScreen /> : null}
       <View style={{ flex: 3 }}></View>
       <View style={{ flex: 3, alignItems: "center", justifyContent: "center" }}>
         <Typography variant="H4" color="Gray.8" style={{ marginBottom: 10 }}>

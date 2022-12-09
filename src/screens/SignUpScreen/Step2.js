@@ -11,6 +11,7 @@ import ObjMapper from "object-mapper";
 import useThemeStyles from "~hooks/useThemeStyles";
 import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
+import LoadingScreen from "~screens/LoadingScreen";
 
 const Step2 = ({route,navigation}) => {
   const authContext = useContext(AuthContext);
@@ -20,6 +21,7 @@ const Step2 = ({route,navigation}) => {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const { email, phone, name } = route.params;   
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSignUp = async () => {
     if(password !== passwordConfirm){
@@ -33,6 +35,7 @@ const Step2 = ({route,navigation}) => {
       setPasswordConfirm("");
       return;
     }
+    setIsLoading(true);
     publicAxios
       .post("auth/customer/signup", {
         email: email,
@@ -41,11 +44,13 @@ const Step2 = ({route,navigation}) => {
         password: password,
       })
       .then(async (response) => {
+        setIsLoading(false);
         console.log("sign Up");
         console.log(response.data);
         navigation.popToTop();
       })
       .catch(async (error) => {
+        setIsLoading(false);
         if (error.response) {
           console.log("sign Up error");
           let {msg} = error.response.data;
@@ -78,6 +83,7 @@ const Step2 = ({route,navigation}) => {
 
   return (
     <BgImageLayout background={SIGNUP_BG}>
+      {isLoading ? <LoadingScreen /> : null}
       <View style={{ flex: 1, alignItems: "flex-start" }}>
         <IconButton style={{ margin: 20 }} icon={<BackIcon color="Gray.0" onPress={() => {navigation.pop()}} />} />
       </View>

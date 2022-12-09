@@ -1,9 +1,10 @@
 import React from 'react'
-import { StyleSheet, View, ScrollView,StatusBar } from "react-native";
+import { StyleSheet, View, ScrollView,StatusBar, ImageBackground } from "react-native";
 import useThemeStyles from '~hooks/useThemeStyles';
 import Typography from "~components/Typography";
 import { BackIcon } from '~components/Icons';
 import Button from '~components/Button';
+import {DEFAULT_IMAGE_ERROR} from "../constants/app_contants";
 
 const styles = (theme) => StyleSheet.create({
   default: {
@@ -28,7 +29,10 @@ const styles = (theme) => StyleSheet.create({
     height: 250,
     flexDirection: "column",
     justifyContent: "flex-end",
-    backgroundColor: "red",
+    // backgroundColor: "red",
+  },
+  image:{
+    flex:1,
   },
   content:{
     width: "100%",
@@ -85,6 +89,14 @@ const CouponDetail = ({route,navigation}) => {
     return date.substring(0, date.length - 4);
   }
 
+  const getImageUrl = () => {
+    if(voucher_info.voucher_url && voucher_info.voucher_url.length > 0){
+      return voucher_info.voucher_url;
+    }else{
+      return DEFAULT_IMAGE_ERROR;
+    }
+  }
+
   return (
     <View style={style.default}>
         <StatusBar backgroundColor={style.statusBar.backgroundColor}/>
@@ -93,10 +105,8 @@ const CouponDetail = ({route,navigation}) => {
             <Typography variant = "H5" style={style.title}>Chi tiết quà tặng</Typography>
         </View>
         <View style={style.viewMainContent}>
-            <View style={style.content}>
-                <Typography variant = "TextBold" style={style.title}>{voucher_info.voucher_name}</Typography>
-                <Typography variant = "Description" style={style.title}>{voucher_info.end_date.substring(0,10)}</Typography>
-            </View>
+          <ImageBackground source={{uri: getImageUrl()}} resizeMode="stretch" style={style.image}>
+          </ImageBackground>
         </View>
         <View style={style.viewDetail}>
             <ScrollView  contentContainerStyle={style.detail}>

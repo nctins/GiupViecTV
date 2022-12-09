@@ -71,10 +71,18 @@ const CouponComponent = ({navigation,voucher_info, containerStyle,isHome = false
         }
     }
 
+    const getImageUrl = () => {
+        if(voucher_info.voucher_url && voucher_info.voucher_url.length > 0){
+          return voucher_info.voucher_url;
+        }else{
+          return DEFAULT_IMAGE_ERROR;
+        }
+    }
+
     return ( 
         <TouchableOpacity onPress={onPressCoupon}>
             <View style={[style.default,containerStyle]}>
-            <ImageBackground source={{uri: voucher_info.voucher_url}} resizeMode="cover" style={style.image}>
+            <ImageBackground source={{uri: getImageUrl()}} resizeMode="cover" style={style.image}>
                 <View style={style.viewTitle}>
                     <View style={[style.title,isHome?{width:"100%"}:null]}>
                         <Typography variant="TextBold">{title}</Typography>
