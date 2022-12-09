@@ -7,6 +7,7 @@ import useThemeStyles from '~hooks/useThemeStyles';
 import Typography from "~components/Typography";
 import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
+import LoadingScreen from './LoadingScreen';
 
 const styles = (theme) => StyleSheet.create({
   default:{
@@ -78,6 +79,7 @@ const CouponScreen = ({navigation}) => {
   const [vouchers,setVouchers] = useState([]);
   const [message, setMessage] = useState("");
   const [refreshing, setRefreshing] = React.useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -93,13 +95,16 @@ const CouponScreen = ({navigation}) => {
   },[])
 
   const getCoupon = async () => {
+    setIsLoading(true);
     authAxios
       .get("customer/CUS_g2pcl14wl8rlwhcv/vouchers")
       .then(async (response) => {
         setVouchers(response.data.data);
         // console.log(vouchers);
+        setIsLoading(false);
       })
       .catch(async (error) => {
+        setIsLoading(false);
         if (error.response) {
           console.log(error.response.data);
         }
@@ -155,6 +160,7 @@ const CouponScreen = ({navigation}) => {
 
   return (
     <SafeAreaView  style={{flex:1}}>
+      {isLoading ? <LoadingScreen /> : null}
       <StatusBar backgroundColor={style.statusBar.backgroundColor}/>
       <Header style={style.header} title="CouponScreen" />
       <View style={{flexDirection:"column"}}>

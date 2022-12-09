@@ -1,10 +1,13 @@
-import React from "react";
-import { StyleSheet, View, ScrollView, StatusBar } from "react-native";
+import React, { useState, useEffect, useContext } from "react";
+import { StyleSheet, View, ScrollView, StatusBar, Alert } from "react-native";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
 import { BackIcon } from "~components/Icons";
 import { TextInput } from "~components/Inputs";
 import Button from "~components/Button";
+import { AuthContext } from "~contexts/AuthContext";
+import { AxiosContext } from "~contexts/AxiosContext";
+import LoadingScreen from "~screens/LoadingScreen";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -40,9 +43,57 @@ const styles = (theme) =>
 
 const FeedbackScreen = ({navigation}) => {
   const style = useThemeStyles(styles);
+  const authContext = useContext(AuthContext);
+  const {authAxios} = useContext(AxiosContext);
+  const [content,setContent] = useState("");
+  const [isLoading, setIsLoadding] = useState(false);
+
+  const createFeedback = () =>{
+    if(content.length <= 0){
+      Alert.alert(
+        "Thông báo!",
+        "Hãy nhập feedback của bạn!",
+        [
+          { text: "OK"}
+        ]
+      );
+      return;
+    }
+    setIsLoadding(true);
+    authAxios
+      .post("feedback/",{
+        content: content
+      })
+      .then(async (res) => {
+        setIsLoadding(false);
+        Alert.alert(
+          "Thông báo!",
+          res.data.data,
+          [
+            { text: "OK"}
+          ]
+        );
+        setContent("");
+      })
+      .catch(async (error) => {
+        if (error.response) {
+          setIsLoadding(false);
+          console.log(error.response.data);
+          Alert.alert(
+            "Thông báo!",
+            error.response.data.msg,
+            [
+              { text: "OK"}
+            ]
+          );
+        };
+      });
+      
+  }
 
   return (
     <View style={style.default}>
+      {isLoading ? <LoadingScreen /> : null}
       <StatusBar backgroundColor={style.statusBar.backgroundColor} />
       <View style={style.header}>
         <BackIcon color="Gray.0" onPress={() => {navigation.navigate("AccountScreen")}} />
@@ -63,6 +114,8 @@ const FeedbackScreen = ({navigation}) => {
             multiline
             numberOfLines={10}
             textAlignVertical="top"
+            value={content}
+            onChangeText={(text) => setContent(text)}
           />
         </View>
         <View
@@ -72,7 +125,7 @@ const FeedbackScreen = ({navigation}) => {
             alignItems: "center",
           }}
         >
-          <Button size="sm" radius={4} style={{ width: 130, padding: 10 }}>
+          <Button size="sm" radius={4} style={{ width: 130, padding: 10 }} onPress={createFeedback}>
             Lưu
           </Button>
         </View>
