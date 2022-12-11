@@ -187,8 +187,11 @@ const styles = (theme) =>
         marginTop: 15,
       },
       acceptBtn: {
-        backgroundColor: theme.colors.Azure,
+        backgroundColor: theme.colors.SpringGreen,
         marginRight: 10,
+      },
+      cancelBtn: {
+        backgroundColor: theme.colors.AlizarinRed,
       },
       content: {
         paddingVertical: 15,
