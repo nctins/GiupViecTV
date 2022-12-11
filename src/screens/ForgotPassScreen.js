@@ -102,6 +102,7 @@ const ForgotPassScreen = ({ navigation }) => {
           title={"Mật khẩu mới"}
           titleStyle="blackTitle"
           value={new_password}
+          secureTextEntry={true}
           isPassword
           onChangeText={(text) => setNewPassword(text)}
         />
