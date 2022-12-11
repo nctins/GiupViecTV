@@ -235,6 +235,10 @@ const AddressCard = ({ title = "", address = "", addressId, onEdit }) => {
   const onDelete = () => {
     Alert.alert("", "Bạn có muốn xóa địa chỉ này không", [
       {
+        text: "Cancel",
+        onPress: () => {},
+      },
+      {
         text: "OK",
         onPress: () => {
           controller.deleteAddress(addressId);
