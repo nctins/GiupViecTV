@@ -8,6 +8,7 @@ import {
   Modal,
   Pressable,
   TouchableWithoutFeedback,
+  Alert,
 } from "react-native";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
@@ -321,15 +322,23 @@ const CartDetail = (props) => {
   };
 
   const onDelete = () => {
-    authAxios
-      .delete(`post?post_id=${post_id}`)
-      .then((res) => {
-        Toast.createToast(res.data.msg);
-      })
-      .catch((err) => {
-        Toast.createToast("Có lỗi xảy ra vui lòng thử lại!");
-        console.log(err);
-      });
+    Alert.alert("", "Bạn có muốn xóa bài đăng này không?", [
+      { text: "Cancel", onPress: () => {} },
+      {
+        text: "OK",
+        onPress: () => {
+          authAxios
+            .delete(`post?post_id=${post_id}`)
+            .then((res) => {
+              Toast.createToast(res.data.msg);
+            })
+            .catch((err) => {
+              Toast.createToast("Có lỗi xảy ra vui lòng thử lại!");
+              console.log(err);
+            });
+        },
+      },
+    ]);
   };
 
   const PriceItem = ({ title, value }) => {
@@ -577,7 +586,7 @@ const CartDetail = (props) => {
                         />
                       );
                     })}
-                    <View style={{height: 50}}></View>
+                    <View style={{ height: 50 }}></View>
                   </ScrollView>
                   <View style={modalStyle.footer}>
                     <Button
