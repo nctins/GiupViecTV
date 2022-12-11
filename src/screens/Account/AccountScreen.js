@@ -133,7 +133,7 @@ const AccountScreen = ({navigation}) => {
             onTouch={() => {navigation.navigate("UpdateInfoScreen")}}
           />
           <SettingItem title={"Thay đổi mật khẩu"} onTouch={() => {navigation.navigate("ChangePasswordScreen")}} />
-          <SettingItem title={"Liên kết tài khoản"} onTouch={() => {navigation.navigate("AccountLinkScreen")}} />
+          {/*<SettingItem title={"Liên kết tài khoản"} onTouch={() => {navigation.navigate("AccountLinkScreen")}} /> */}
           <SettingItem title={"Đăng xuất"} onTouch={() => onLogout()} />
         </View>
         <View style={style.setting.settingMenu}>

@@ -241,6 +241,7 @@ const UpdateInfoScreen = ({navigation}) => {
               titleStyle="blackTitle"
               value={email}
               onChangeText={(text) => setEmail(text)}
+              editable = {false}
             />
           </View>
           <View>

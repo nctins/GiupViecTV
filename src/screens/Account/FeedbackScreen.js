@@ -73,6 +73,7 @@ const FeedbackScreen = ({navigation}) => {
             { text: "OK"}
           ]
         );
+        setContent("");
       })
       .catch(async (error) => {
         if (error.response) {
@@ -80,7 +81,7 @@ const FeedbackScreen = ({navigation}) => {
           console.log(error.response.data);
           Alert.alert(
             "Thông báo!",
-            res.data.data,
+            error.response.data.msg,
             [
               { text: "OK"}
             ]

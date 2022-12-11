@@ -84,6 +84,7 @@ const Step1 = ({navigation}) => {
         />
         </View>
       </View>
+      {/*
       <View style={{ alignItems: "center", marginTop:50 }}>
         <View style={styled.card}>
           <Typography style={styled.cardTitle}>Đăng ký với</Typography>
@@ -99,7 +100,8 @@ const Step1 = ({navigation}) => {
           </View>
         </View>
       </View>
-      <View style={{ alignItems: "center", marginTop:50 }}>
+      */}
+      <View style={{ alignItems: "center", marginTop:150 }}>
         <Button size="lg" isShadow onPress={onPressNextButton}>
           Tiếp theo
         </Button>

@@ -10,6 +10,7 @@ import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
 import * as SecureStore from "expo-secure-store";
 import Validation from "~utils/Validation";
+import LoadingScreen from "./LoadingScreen";
 
 const ForgotPassScreen = ({ navigation }) => {
   const authContext = useContext(AuthContext);
@@ -19,21 +20,25 @@ const ForgotPassScreen = ({ navigation }) => {
   const [input_email, setInputEmail] = useState(true);
   const [access_token, setAccessToken] = useState(null);
   const [new_password, setNewPassword] = useState("");
+  const [isLoading, setIsLoadding] = useState(false);
 
   const onSubmitEmail = () => {
     if (!Validation.isEmail(email)) {
       Alert.alert("Lỗi", "Địa chỉ email không chính xác");
       return;
     }
+    setIsLoadding(true);
     publicAxios
       .post("auth/helper/forgot-password", { email: email })
       .then((res) => {
+        setIsLoadding(false);
         Alert.alert("", "Mã xác thực tới email của bạn", [
           { text: "OK", onPress: () => setInputEmail(false) },
         ]);
       })
       .catch((err) => {
         console.log(err.response.data);
+        setIsLoadding(false);
         Alert.alert("Lỗi", err.response.data.msg);
       });
   };
@@ -43,12 +48,15 @@ const ForgotPassScreen = ({ navigation }) => {
       Alert.alert("Lỗi", "Mã xác thực không đúng.");
       return;
     }
+    setIsLoadding(true);
     publicAxios
       .post("auth/helper/forgot-password/verify", { email, otp })
       .then((res) => {
         setAccessToken(res.data.token);
+        setIsLoadding(false);
       })
       .catch((err) => {
+        setIsLoadding(false);
         Alert.alert("Lỗi", err.response.data.msg);
       });
   };
@@ -58,15 +66,18 @@ const ForgotPassScreen = ({ navigation }) => {
     if (new_password.length < 6) {
       Alert.alert("", "Mật khẩu phải ít nhất 6 ký tự");
     }
+    setIsLoadding(true);
     publicAxios.post(
       "auth/change-password",
       { password: new_password },
       { headers: { "x-access-token": access_token } }
     ).then((res)=>{
+      setIsLoadding(false);
       Alert.alert("", res.data.msg, [{text: "OK", onPress: ()=>{
         navigation.navigate("LoginScreen");
       }}]);
     }).catch((err)=>{
+      setIsLoadding(false);
       Alert.alert("", err.response.data.msg);
     });
   };
@@ -124,6 +135,7 @@ const ForgotPassScreen = ({ navigation }) => {
 
   return (
     <BgImageLayout background={LOGIN_BG}>
+      {isLoading ? <LoadingScreen /> : null}
       <View style={{ flex: 3 }}></View>
       <View style={{ flex: 3, alignItems: "center", justifyContent: "center" }}>
         <Typography variant="H7" color="Gray.8" style={{ marginBottom: 10 }}>

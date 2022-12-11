@@ -24,6 +24,16 @@ const Step2 = ({route,navigation}) => {
   const [isLoading, setIsLoadding] = useState(false);
 
   const onSignUp = async () => {
+    if (password.length < 6 || passwordConfirm.length < 6) {
+      Alert.alert(
+        "Thông báo!",
+        "Mật khẩu phải ít nhất 6 ký tự!",
+        [
+          { text: "OK"}
+        ]
+      );
+      return;
+    }
     if(password !== passwordConfirm){
       Alert.alert(
         "Thông báo!",

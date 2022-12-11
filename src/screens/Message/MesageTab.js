@@ -74,9 +74,11 @@ const MessageTab = ({ navigation }) => {
 
   return (
     <View style={style.default}>
+      {/* 
       <View style={style.TextInputView}>
         <TextInput style={style.textInput} placeholder="Search" />
       </View>
+      */}
       <ScrollView 
         contentContainerStyle={style.content}
         refreshControl={
