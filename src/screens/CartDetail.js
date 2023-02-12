@@ -483,7 +483,7 @@ const CartDetail = (props) => {
           <View style={modalStyle.modalView}>
             <View style={modalStyle.wrapper}>
               <View style={modalStyle.header}>
-                <Typography variant="H7">Đánh giá khách hàng</Typography>
+                <Typography variant="H7">Đánh giá người giúp việc</Typography>
               </View>
               <View style={modalStyle.content}>
                 <View style={{ alignItems: "center", marginVertical: 10 }}>
