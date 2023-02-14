@@ -3,6 +3,7 @@ import { StyleSheet, View, ScrollView, TextInput } from "react-native";
 import MessageItem from "~components/MessageItem";
 import { AxiosContext } from "~contexts/AxiosContext";
 import useThemeStyles from "~hooks/useThemeStyles";
+import LoadingScreen from '../LoadingScreen';
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -40,21 +41,27 @@ const MessageTab = ({ navigation }) => {
   const style = useThemeStyles(styles);
   const { authAxios } = useContext(AxiosContext);
   const [boxChats, setBoxChats] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(()=>{
+    setIsLoading(true);
     authAxios
     .get("/box-chats")
     .then((res) => {
       const resObj = res.data;
       setBoxChats(resObj.data);
+      setIsLoading(false);
     })
     .catch((err) => {
       console.log(err.response.data);
       setBoxChats([]);
+      setIsLoading(false);
     });
   },[]);
 
   return (
     <View style={style.default}>
+      {isLoading ? <LoadingScreen /> : null}
       <View style={style.TextInputView}>
         <TextInput style={style.textInput} placeholder="Search" />
       </View>

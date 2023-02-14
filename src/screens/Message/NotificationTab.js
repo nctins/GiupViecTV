@@ -31,6 +31,7 @@ const NotificationTab = ({navigation}) => {
   const { authAxios } = useAxios();
   const [notifications, setNotifications] = useState([]);
   const { socket } = useSocket();
+  
   useEffect(() => {
     getNotification();
   }, []);

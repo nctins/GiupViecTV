@@ -23,6 +23,7 @@ const AuthProvider = ({ children }) => {
       let auth_info = await SecureStore.getItemAsync("customer_auth_info")
       if (auth_info) {
         const {token, refreshToken, user} = JSON.parse(auth_info);
+        console.log(user);
         setAuthState({
           token: token,
           refreshToken: refreshToken,

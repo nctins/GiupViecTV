@@ -10,6 +10,7 @@ import BoxItemComponent from '~components/BoxItemComponent';
 import CouponComponent from '~components/CouponComponent';
 import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
+import {DEFAULT_IMAGE_ERROR} from '../constants/app_contants';
 
 const styles = (theme) => StyleSheet.create({
   default:{
@@ -84,7 +85,6 @@ const HomeScreen = ({navigation}) => {
   const [vouchers,setVouchers] = useState([]);
   const [adss,setadss] = useState([]);
   const [imagesAds,setImagesAds] = useState([]);
-  const images = useState(["https://reactnative.dev/img/tiny_logo.png"])
 
   useEffect(() => {
     getCoupon();
@@ -111,12 +111,11 @@ const HomeScreen = ({navigation}) => {
       .then(async (response) => {
         let data = response.data.data;
         if(Array.isArray(data) && data.length > 0){
-          
           setadss(data);
           let images = [];
           images = data.map((ads) => {
             if(!ads.poster_path){
-              ads.poster_path = "https://res.cloudinary.com/dru3umoml/image/upload/v1670421546/images/601082646d6bf4446451b0a4_6002086f72b72717ae01d954_google-doc-error-message_g1wpwa.png"
+              ads.poster_path = DEFAULT_IMAGE_ERROR;
             }
             return ads.poster_path;
           })

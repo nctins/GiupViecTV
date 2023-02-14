@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity, ImageBackground } from "react-nativ
 import useThemeStyles from '~hooks/useThemeStyles';
 import Typography from "~components/Typography";
 import Button from './Button';
+import {DEFAULT_IMAGE_ERROR} from '../constants/app_contants';
 
 const styles = (theme) => StyleSheet.create({
     default: {

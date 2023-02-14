@@ -1,3 +1,4 @@
 import { API_URL as API_URL_ENV } from "@env";
 
-export const API_URL = API_URL_ENV || "http://10.0.2.2:6969";
+// export const API_URL = API_URL_ENV || "http://10.0.2.2:6969";
+export const API_URL = API_URL_ENV || "https://sandbox-giupviectv.onrender.com";

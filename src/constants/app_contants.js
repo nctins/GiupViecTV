@@ -72,3 +72,4 @@ export const EVALUATE = [
 
 
 export const DEFAULT_IMAGE_ERROR = "https://res.cloudinary.com/dru3umoml/image/upload/v1670421546/images/601082646d6bf4446451b0a4_6002086f72b72717ae01d954_google-doc-error-message_g1wpwa.png"
+export const DEFAULT_AVATAR = "https://reactnative.dev/img/tiny_logo.png";
