@@ -21,7 +21,7 @@ export default function App() {
         <AxiosProvider>
           <SocketProvider>
             <NavigationContainer>
-              <GoogleMap />
+              <InitNavigator />
             </NavigationContainer>
           </SocketProvider>
         </AxiosProvider>

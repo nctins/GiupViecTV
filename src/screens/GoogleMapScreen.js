@@ -4,9 +4,11 @@ import useThemeStyles from '~hooks/useThemeStyles';
 import Typography from "~components/Typography";
 import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
-import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { API_GOOGLE } from "../constants/api";
+
+const { width, height } = Dimensions.get("window");
 
 const SearchAddressComponent = ({onPlaceSelected}) => {
     const style = useThemeStyles(styles);
@@ -28,31 +30,50 @@ const SearchAddressComponent = ({onPlaceSelected}) => {
     )
 }
 
+const ASPECT_RATIO = width / height;
+
+const cal_longitude_Delta = (latitudeDelta) => {
+    return latitudeDelta * ASPECT_RATIO;
+}
+
 const GoogleMap = ({}) => { 
     const style = useThemeStyles(styles);
     const authContext = useContext(AuthContext);
     const {authAxios} = useContext(AxiosContext);
-    const [position, setPosition] = useState({latitude: 0, longitude: 0});
+    const [position, setPosition] = useState({latitude: 10.8403729,
+                                            longitude: 106.6752672,
+                                            latitudeDelta: 0.01,
+                                            longitudeDelta: cal_longitude_Delta(0.01)});
     const mapRef = useRef(null);
 
-    const moveTo = async (position) => {
+    const moveTo = async () => {
         const camera = await mapRef.current?.getCamera();
-        console.log("position:");
+        // console.log("position:");
         if (camera) {
             console.log(position);
-            camera.center = position;
+            camera.center = {
+                                latitude: position.latitude,
+                                longitude: position.longitude
+                            };
             mapRef.current?.animateCamera(camera, { duration: 1000 });
         }
     };
 
     const onPlaceSelected = (details) => {
-        const position = {
-          latitude: details?.geometry.location.lat || 0,
-          longitude: details?.geometry.location.lng || 0,
-        };
-        setPosition(position);
-        moveTo(position);
+        // const position = {
+        //   latitude: details?.geometry.location.lat || 0,
+        //   longitude: details?.geometry.location.lng || 0,
+        // };
+        // setPosition(position);
+        setPosition(prev => {return {...prev,latitude: details.geometry.location.lat, longitude: details.geometry.location.lng}})
+        moveTo();
     };
+
+    const onPressMap = (pos) => {
+        // console.log(position);
+        setPosition(prev => {return {...prev, latitude:pos.latitude, longitude:pos.longitude}});
+        moveTo();
+    }
 
     return (
         <View style={style.container}>
@@ -61,7 +82,11 @@ const GoogleMap = ({}) => {
                 style={style.map} 
                 provider={PROVIDER_GOOGLE} 
                 ref={mapRef}
-            />
+                initialRegion={position}
+                onPress={(e) => onPressMap(e.nativeEvent.coordinate)}
+            >
+                {position && <Marker coordinate={{latitude: position.latitude, longitude: position.longitude}} />}
+            </MapView>
             <View style={style.searchContainer}>
                 <SearchAddressComponent onPlaceSelected = {onPlaceSelected}/>
             </View>
