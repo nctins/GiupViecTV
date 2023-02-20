@@ -12,8 +12,47 @@ import { API_GOOGLE } from "../constants/api";
 
 const { width, height } = Dimensions.get("window");
 
-const SearchAddressComponent = ({onPlaceSelected, address}) => {
+const SearchAddressComponent = ({onPlaceSelected, position}) => {
     const style = useThemeStyles(styles);
+    const authContext = useContext(AuthContext);
+    const {authAxios} = useContext(AxiosContext);
+    const [address, setAddress] = useState("");
+
+    const getAddress = (address) => {
+        console.log(address);
+        return address.streetNumber + " " + address.street + " " + address.subregion + " " + address.region;
+    }
+
+    const reverseGeocode = async () => {
+        // Location.setGoogleApiKey(API_GOOGLE);
+        const reverseGeocodeAddress = await Location.reverseGeocodeAsync(
+            {
+                latitude: position.latitude,
+                longitude: position.longitude,
+                // useGoogleMaps: true,
+            }
+        );
+        
+        setAddress(getAddress(reverseGeocodeAddress[0]));
+    }
+
+    const reverseGeocodeGoogle = async () => {
+        authAxios
+        .get("https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key=" + API_GOOGLE)
+        .then(async (response) => {
+            console.log("oke");
+            console.log(response.data.results);
+        })
+        .catch(async (error) => {
+            console.log(error);
+        });
+        
+        setAddress(getAddress(reverseGeocodeAddress[0]));
+    }
+
+    useEffect(() => {
+        reverseGeocode();
+    }, [position]);
 
     return (
         <GooglePlacesAutocomplete
@@ -22,11 +61,13 @@ const SearchAddressComponent = ({onPlaceSelected, address}) => {
             fetchDetails={true}
             onPress={(data, details) => {
                 // 'details' is provided when fetchDetails = true
+                console.log(details);
                 onPlaceSelected(details);
             }}
+            onFail={error => console.error(error)}
             query={{
                 key: API_GOOGLE,
-                language: 'vi',
+                language: 'en',
             }}
         />
     )
@@ -46,36 +87,22 @@ const GoogleMap = ({}) => {
                                             longitude: 106.6752672,
                                             latitudeDelta: 0.01,
                                             longitudeDelta: cal_longitude_Delta(0.01)});
-    const [address, setAddress] = useState("");
     const mapRef = useRef(null);
 
     useEffect(() => {
         (async () => {
+
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                setErrorMsg('Permission to access location was denied');
+                return;
+            }
           
-          let { status } = await Location.requestForegroundPermissionsAsync();
-          if (status !== 'granted') {
-            setErrorMsg('Permission to access location was denied');
-            return;
-          }
-    
-          let location = await Location.getCurrentPositionAsync({});
+            let location = await Location.getCurrentPositionAsync({});
         //   console.log(location);
         //   setPosition({...position, latitude: location.coords.latitude, longitude: location.coords.longitude});
-        reverseGeocode();
         })();
     }, []);
-
-    const getAddress = (address) => {
-        return address.streetNumber + " " + address.street + " " + address.subregion + " " + address.region;
-    }
-
-    const reverseGeocode = async () => {
-        const reverseGeocodeAddress = await Location.reverseGeocodeAsync({
-            latitude: position.latitude,
-            longitude: position.longitude,
-        });
-        setAddress(getAddress(reverseGeocodeAddress[0]));
-    }
 
     const moveTo = async () => {
         const camera = await mapRef.current?.getCamera();
@@ -113,7 +140,6 @@ const GoogleMap = ({}) => {
 
     const onPressMap = (pos) => {
         // console.log(position);
-        reverseGeocode();
         setPosition(prev => {return {...prev, latitude:pos.latitude, longitude:pos.longitude}});
         // moveTo();
     }
@@ -131,7 +157,7 @@ const GoogleMap = ({}) => {
                 {position && <Marker coordinate={{latitude: position.latitude, longitude: position.longitude}} />}
             </MapView>
             <View style={style.searchContainer}>
-                <SearchAddressComponent onPlaceSelected = {onPlaceSelected} address={address} />
+                <SearchAddressComponent onPlaceSelected = {onPlaceSelected} position={position} />
             </View>
             <Button style = {style.zoomInButton} radius={0} onPress={zoomIn}>+</Button>
             <Button style = {style.zoomOutButton} radius={0} onPress={zoomOut}>-</Button>
