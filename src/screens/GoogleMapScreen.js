@@ -9,9 +9,10 @@ import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import * as Location from 'expo-location';
 import { API_GOOGLE } from "../constants/api";
+import { CancelIcon, PlusIcon } from '~components/Icons';
+import MinusIcon from '~components/Icons/MinusIcon';
 
 const { width, height } = Dimensions.get("window");
-
 const SearchAddressComponent = ({onPlaceSelected, position}) => {
     const style = useThemeStyles(styles);
     const authContext = useContext(AuthContext);
@@ -42,12 +43,11 @@ const SearchAddressComponent = ({onPlaceSelected, position}) => {
         .then(async (response) => {
             console.log("oke");
             console.log(response.data.results);
+            setAddress(response.data.results[0]);
         })
         .catch(async (error) => {
             console.log(error);
         });
-        
-        setAddress(getAddress(reverseGeocodeAddress[0]));
     }
 
     useEffect(() => {
@@ -55,21 +55,34 @@ const SearchAddressComponent = ({onPlaceSelected, position}) => {
     }, [position]);
 
     return (
-        <GooglePlacesAutocomplete
-            styles={{textInput: style.input}}
-            placeholder= {address}
-            fetchDetails={true}
-            onPress={(data, details) => {
-                // 'details' is provided when fetchDetails = true
-                console.log(details);
-                onPlaceSelected(details);
-            }}
-            onFail={error => console.error(error)}
-            query={{
-                key: API_GOOGLE,
-                language: 'en',
-            }}
-        />
+        <View style={style.searchContainer}>
+            <GooglePlacesAutocomplete
+                styles={{container: style.inputContainer ,textInputContainer:style.textInputContainer ,textInput: style.input}}
+                placeholder= "Nhập địa chỉ của bạn"
+                fetchDetails={true}
+                currentLocation={true}
+                autoFillOnNotFound={true}
+                onPress={(data, details) => {
+                    // 'details' is provided when fetchDetails = true
+                    onPlaceSelected(details);
+                }}
+                textInputProps={{
+                    value: address,
+                    onChangeText: setAddress,
+                }}
+                onFail={error => console.error(error)}
+                query={{
+                    key: API_GOOGLE,
+                    language: 'en',
+                }}
+                renderRightButton={() => {return (<View style={{width: 120, flexDirection:"row", justifyContent:"center", alignItems:"center"}}>
+                                                    {address.length > 0 ? <CancelIcon onPress={() => {setAddress("")}} /> : null} 
+                                                    <Button style={style.confirmButton} borderRadius={100}>xác nhận</Button>
+                                                </View>)}}
+            >
+            </GooglePlacesAutocomplete>
+        </View>
+        
     )
 }
 
@@ -156,11 +169,13 @@ const GoogleMap = ({}) => {
             >
                 {position && <Marker coordinate={{latitude: position.latitude, longitude: position.longitude}} />}
             </MapView>
-            <View style={style.searchContainer}>
-                <SearchAddressComponent onPlaceSelected = {onPlaceSelected} position={position} />
-            </View>
-            <Button style = {style.zoomInButton} radius={0} onPress={zoomIn}>+</Button>
-            <Button style = {style.zoomOutButton} radius={0} onPress={zoomOut}>-</Button>
+            <SearchAddressComponent onPlaceSelected = {onPlaceSelected} position={position} />
+            <Button style = {style.zoomInButton} radius={0} onPress={zoomIn}>
+                <PlusIcon />
+            </Button>
+            <Button style = {style.zoomOutButton} radius={0} onPress={zoomOut}>
+                <MinusIcon />
+            </Button>
 
         </View>
     );
@@ -186,13 +201,34 @@ const styles = (theme) => StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 4,
         elevation: 4,
-        padding: 8,
+        padding: 5,
         borderRadius: 8,
-        top: 100,
+        top: 40,
+    },
+    inputContainer:{
+        // backgroundColor: "blue",
+        width: "100%",
+        paddingHorizontal: 0,
+        paddingVertical: 0,
+        borderRadius: 100,
+    },
+    textInputContainer:{
+        borderRadius: 100,
+        width: "100%",
     },
     input: {
-        borderColor: "#888",
-        borderWidth: 1,
+        borderRadius: 100,
+    },
+    confirmButton:{
+        width: 90,
+        height: 30,
+        paddingHorizontal: 5,
+        paddingVertical: 5,
+        backgroundColor: theme.colors.BackgroundBlue,
+        flexDirection: "column",
+        alignContent: "center",
+        alignItems: "center",
+        justifyContent: "center",
     },
     zoomInButtonContainer: {
         position: "absolute",
