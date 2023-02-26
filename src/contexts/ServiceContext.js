@@ -119,7 +119,6 @@ const ServiceProvider = ({
         let initServices = {};
         services_obj.forEach((service) => {
           let initServiceValues = {};
-
           if (service.input_format == INPUT_FORMAT.TEXTBOX) {
             initServiceValues = {
               seq_nb: 0,

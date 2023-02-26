@@ -9,7 +9,7 @@ import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import * as Location from 'expo-location';
 import { API_GOOGLE } from "../constants/api";
-import { CancelIcon, PlusIcon } from '~components/Icons';
+import { BackIcon, CancelIcon, PlusIcon } from '~components/Icons';
 import MinusIcon from '~components/Icons/MinusIcon';
 
 const { width, height } = Dimensions.get("window");
@@ -73,11 +73,16 @@ const SearchAddressComponent = ({onPlaceSelected, position}) => {
                 onFail={error => console.error(error)}
                 query={{
                     key: API_GOOGLE,
-                    language: 'en',
+                    language: 'en', // Ngôn ngữ tìm kiếm
+                    // types: '(cities)', // Loại địa điểm cần tìm
+                    components: 'country:vn', // Chỉ tìm kiếm trong Việt Nam
+                    location: '10.8231,106.6297', // Tọa độ trung tâm Hồ Chí Minh
+                    radius: '20000', // Bán kính tìm kiếm (đơn vị là mét)
+                    strictBounds: true, // Giới hạn tìm kiếm trong bán kính đã định sẵn
                 }}
                 renderRightButton={() => {return (<View style={{width: 120, flexDirection:"row", justifyContent:"center", alignItems:"center"}}>
                                                     {address.length > 0 ? <CancelIcon onPress={() => {setAddress("")}} /> : null} 
-                                                    <Button style={style.confirmButton} borderRadius={100}>xác nhận</Button>
+                                                    <Button style={style.confirmButton} borderRadius={100}>xác nhận </Button>
                                                 </View>)}}
             >
             </GooglePlacesAutocomplete>
@@ -119,9 +124,7 @@ const GoogleMap = ({}) => {
 
     const moveTo = async () => {
         const camera = await mapRef.current?.getCamera();
-        // console.log("position:");
         if (camera) {
-            console.log(position);
             camera.center = {
                                 latitude: position.latitude,
                                 longitude: position.longitude
@@ -141,25 +144,19 @@ const GoogleMap = ({}) => {
     };
 
     const onPlaceSelected = (details) => {
-        // const position = {
-        //   latitude: details?.geometry.location.lat || 0,
-        //   longitude: details?.geometry.location.lng || 0,
-        // };
-        // setPosition(position);
-        console.log(details);
         setPosition(prev => {return {...prev,latitude: details.geometry.location.lat, longitude: details.geometry.location.lng}})
-        // moveTo();
     };
 
     const onPressMap = (pos) => {
-        // console.log(position);
         setPosition(prev => {return {...prev, latitude:pos.latitude, longitude:pos.longitude}});
-        // moveTo();
+    }
+
+    const goBackScreen = () => {
+
     }
 
     return (
         <View style={style.container}>
-            <SearchAddressComponent />
             <MapView 
                 style={style.map} 
                 provider={PROVIDER_GOOGLE} 
@@ -169,12 +166,15 @@ const GoogleMap = ({}) => {
             >
                 {position && <Marker coordinate={{latitude: position.latitude, longitude: position.longitude}} />}
             </MapView>
+            <View style={style.backIconContainer}>
+                <BackIcon size='md' color='while' onPress={goBackScreen} />
+            </View>
             <SearchAddressComponent onPlaceSelected = {onPlaceSelected} position={position} />
             <Button style = {style.zoomInButton} radius={0} onPress={zoomIn}>
-                <PlusIcon />
+                <PlusIcon size='sm' color='while'/>
             </Button>
             <Button style = {style.zoomOutButton} radius={0} onPress={zoomOut}>
-                <MinusIcon />
+                <MinusIcon size='sm' color='while' />
             </Button>
 
         </View>
@@ -203,10 +203,9 @@ const styles = (theme) => StyleSheet.create({
         elevation: 4,
         padding: 5,
         borderRadius: 8,
-        top: 40,
+        top: 60,
     },
     inputContainer:{
-        // backgroundColor: "blue",
         width: "100%",
         paddingHorizontal: 0,
         paddingVertical: 0,
@@ -230,23 +229,16 @@ const styles = (theme) => StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
-    zoomInButtonContainer: {
-        position: "absolute",
-        width: 40,
-        height: 40,
-        backgroundColor: "white",
-        top: height - 180,
-        left: width - 70,
-    },
     zoomInButton:{
         position: "absolute",
-        width:  40,
+        width:  40, 
         height: 40,
         paddingHorizontal: 0,
         paddingVertical: 0,
         backgroundColor: theme.colors.BackgroundBlue,
-        top: height - 180,
-        left: width - 70,
+        top: height - 140,
+        left: width - 60,
+        justifyContent: "center"
     },
     zoomOutButton:{
         position: "absolute",
@@ -255,9 +247,21 @@ const styles = (theme) => StyleSheet.create({
         paddingHorizontal: 0,
         paddingVertical: 0,
         backgroundColor: theme.colors.BackgroundBlue,
-        top: height - 130,
-        left: width - 70,
+        top: height - 90,
+        left: width - 60,
+        justifyContent: "center"
     },
+    backIconContainer:{
+        position: "absolute",
+        width:  50,
+        height: 50,
+        paddingHorizontal: 0,
+        paddingVertical: 0,
+        top: 0,
+        left: 10,
+        justifyContent: "center",
+        alignItems: "center"
+    }
   })
 
 export default GoogleMap
