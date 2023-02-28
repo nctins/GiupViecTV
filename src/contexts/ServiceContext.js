@@ -211,6 +211,10 @@ const ServiceProvider = ({
     setCurrentScreen("ServiceScreen");
   };
 
+  controller.onCreateAddress = () => {
+    setCurrentScreen("GoogleMapScreen");
+  };
+
   controller.goToPaymentScreen = () => {
     if (post.total == 0) {
       Alert.alert("", "Vui lòng chọn ít nhất 1 dịch vụ");

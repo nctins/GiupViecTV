@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import { StyleSheet, View, Dimensions, SafeAreaView,StatusBar,ScrollView,TextInput,RefreshControl } from "react-native";
+import { StyleSheet, View, Dimensions, SafeAreaView } from "react-native";
 import useThemeStyles from '~hooks/useThemeStyles';
 import Typography from "~components/Typography";
 import Button from '~components/Button';
@@ -13,14 +13,15 @@ import { BackIcon, CancelIcon, PlusIcon } from '~components/Icons';
 import MinusIcon from '~components/Icons/MinusIcon';
 
 const { width, height } = Dimensions.get("window");
-const SearchAddressComponent = ({onPlaceSelected, position}) => {
+
+const SearchAddressComponent = ({onPlaceSelected, position, goBackScreen, address, setAddress}) => {
     const style = useThemeStyles(styles);
     const authContext = useContext(AuthContext);
     const {authAxios} = useContext(AxiosContext);
-    const [address, setAddress] = useState("");
+    // const [address, setAddress] = useState("");
 
     const getAddress = (address) => {
-        console.log(address);
+        // console.log(address);
         return address.streetNumber + " " + address.street + " " + address.subregion + " " + address.region;
     }
 
@@ -38,20 +39,27 @@ const SearchAddressComponent = ({onPlaceSelected, position}) => {
     }
 
     const reverseGeocodeGoogle = async () => {
+        let UrlAPI = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + position.latitude + "," + position.longitude + "&key=" + API_GOOGLE;
         authAxios
-        .get("https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key=" + API_GOOGLE)
+        .get(UrlAPI)
         .then(async (response) => {
-            console.log("oke");
-            console.log(response.data.results);
-            setAddress(response.data.results[0]);
+            let address_obj = response.data.results[0];
+            console.log("address obj");
+            console.log(address_obj);
+            setAddress(address_obj.formatted_address);
         })
         .catch(async (error) => {
             console.log(error);
         });
     }
 
+    const onConfirm = () => {
+        goBackScreen();
+    }
+
     useEffect(() => {
-        reverseGeocode();
+        // reverseGeocode();
+        reverseGeocodeGoogle();
     }, [position]);
 
     return (
@@ -82,7 +90,7 @@ const SearchAddressComponent = ({onPlaceSelected, position}) => {
                 }}
                 renderRightButton={() => {return (<View style={{width: 120, flexDirection:"row", justifyContent:"center", alignItems:"center"}}>
                                                     {address.length > 0 ? <CancelIcon onPress={() => {setAddress("")}} /> : null} 
-                                                    <Button style={style.confirmButton} borderRadius={100}>xác nhận </Button>
+                                                    <Button style={style.confirmButton} borderRadius={100} onPress={onConfirm}>xác nhận </Button>
                                                 </View>)}}
             >
             </GooglePlacesAutocomplete>
@@ -97,7 +105,7 @@ const cal_longitude_Delta = (latitudeDelta) => {
     return latitudeDelta * ASPECT_RATIO;
 }
 
-const GoogleMap = ({}) => { 
+const GoogleMap = ({setModalVisible, address, setAddress}) => { 
     const style = useThemeStyles(styles);
     const authContext = useContext(AuthContext);
     const {authAxios} = useContext(AxiosContext);
@@ -152,7 +160,7 @@ const GoogleMap = ({}) => {
     }
 
     const goBackScreen = () => {
-
+        setModalVisible(false);
     }
 
     return (
@@ -162,14 +170,17 @@ const GoogleMap = ({}) => {
                 provider={PROVIDER_GOOGLE} 
                 ref={mapRef}
                 region={position}
-                onPress={(e) => onPressMap(e.nativeEvent.coordinate)}
+                onPress={(e) => {
+                    // console.log(e.nativeEvent);
+                    onPressMap(e.nativeEvent.coordinate);
+                }}
             >
                 {position && <Marker coordinate={{latitude: position.latitude, longitude: position.longitude}} />}
             </MapView>
             <View style={style.backIconContainer}>
                 <BackIcon size='md' color='while' onPress={goBackScreen} />
             </View>
-            <SearchAddressComponent onPlaceSelected = {onPlaceSelected} position={position} />
+            <SearchAddressComponent onPlaceSelected = {onPlaceSelected} position={position} goBackScreen={goBackScreen} address = {address} setAddress = {setAddress} />
             <Button style = {style.zoomInButton} radius={0} onPress={zoomIn}>
                 <PlusIcon size='sm' color='while'/>
             </Button>
@@ -183,7 +194,11 @@ const GoogleMap = ({}) => {
 
 const styles = (theme) => StyleSheet.create({
     container: {
-        flex: 1,
+        width: Dimensions.get("window").width,
+        height: Dimensions.get("window").height,
+        position: "absolute",
+        top: 0,
+        left: 0,
         backgroundColor: "#fff",
         alignItems: "center",
         justifyContent: "center",

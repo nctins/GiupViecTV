@@ -8,6 +8,7 @@ import PaymentScreen from "./PaymentScreen";
 import ServiceScreen from "./ServiceScreen";
 import { ServiceProvider } from "~contexts/ServiceContext";
 import { POST_TYPE } from "~constants/app_contants";
+import GoogleMap from "~screens/GoogleMapScreen";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -41,6 +42,7 @@ const ServiceTab = ({ route, navigation }) => {
   const [currentScreen, setCurrentScreen] = useState("AddressScreen");
   const contentComponent = {
     AddressScreen: <AddressScreen />,
+    GoogleMapScreen: <GoogleMap />,
     ServiceScreen: <ServiceScreen />,
     PaymentScreen: <PaymentScreen />,
   };
