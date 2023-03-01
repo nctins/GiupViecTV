@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -40,26 +40,26 @@ const AddressScreen = () => {
   const { addressIds, addresses } = useServiceContext();
   const [address_edit, setAddressEdit] = useState({});
   const [address, setAddress] = useState("");
+  const [placeID, setPlaceID] = useState("");
 
   const onEditAddress = (address) => {
     setModalEditVisible(true);
     setAddressEdit(address);
   };
 
-  const ModalGoogleMap = ({address, setAddress}) => {
+  const ModalGoogleMap = ({setPlaceID, setAddress}) => {
     const style = useThemeStyles(modalStyle);
-    
 
     return (
       <Modal animationType="none" transparent={true} visible={modalMapVisible}>
         <View style={style.centeredView}>
-          <GoogleMap setModalVisible = {setModalMapVisible} address = {address} setAddress = {setAddress} />
+          <GoogleMap setModalVisible = {setModalMapVisible} setOriginAddress = {setAddress} setOriginPlaceID = {setPlaceID} />
         </View>
       </Modal>
     );
   };
 
-  const ModalAddress = ({address, setAddress}) => {
+  const ModalAddress = ({address, placeID}) => {
     const style = useThemeStyles(modalStyle);
     const { controller } = useServiceContext();
     const [title, setTitle] = useState("");
@@ -104,6 +104,7 @@ const AddressScreen = () => {
                     size="modalSize"
                     isShadow
                     onPress={() => {
+                      console.log(placeID);
                       controller.createAddress(title, address);
                       setModalVisible(false);
                     }}
@@ -119,13 +120,14 @@ const AddressScreen = () => {
     );
   };
 
-  const ModalEditAddress = () => {
+  const ModalEditAddress = ({originAddress, placeID}) => {
     const style = useThemeStyles(modalStyle);
     const { controller } = useServiceContext();
     const [title, setTitle] = useState(address_edit.title);
     const [address, setAddress] = useState(address_edit.address);
-    // console.log(data);
+    
     const onEdit = () => {
+      console.log(placeID);
       controller.updateAddress({
         title,
         address,
@@ -133,6 +135,13 @@ const AddressScreen = () => {
       })
       setModalEditVisible(false);
     }
+
+    useEffect(() => {
+      if(originAddress && originAddress.length > 0){
+        setAddress(originAddress);
+      }
+    }, [originAddress]);
+
     return (
       <Modal animationType="none" transparent={true} visible={modalEditVisible}>
         <TouchableWithoutFeedback
@@ -155,16 +164,17 @@ const AddressScreen = () => {
                 </View>
                 <View style={style.formInput}>
                   <Typography>Địa chỉ</Typography>
-                  <TextInput
-                    variant="modalForm"
-                    multiline
-                    numberOfLines={4}
-                    textAlignVertical="top"
-                    value={address}
-                    onChangeText={(text) => {
-                      setAddress(text);
-                    }}
-                  />
+                  <Pressable onPress={() => setModalMapVisible(true)}>
+                    <TextInput
+                      variant="modalForm"
+                      multiline
+                      numberOfLines={2}
+                      textAlignVertical="top"
+                      value={address}
+                      editable={false}
+                      style={style.addressInput}
+                    />
+                  </Pressable>
                 </View>
                 <View style={style.footer}>
                   <Button
@@ -208,8 +218,9 @@ const AddressScreen = () => {
           setModalVisible(true);
         }}
       />
-      <ModalAddress address={address} setAddress={setAddress} />
-      <ModalGoogleMap address={address} setAddress={setAddress} />
+      <ModalAddress address={address} placeID = {placeID} />
+      <ModalEditAddress originAddress={address} placeID = {placeID} />
+      <ModalGoogleMap setAddress={setAddress} setPlaceID = {setPlaceID} />
     </View>
   );
 };

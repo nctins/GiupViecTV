@@ -14,29 +14,12 @@ import MinusIcon from '~components/Icons/MinusIcon';
 
 const { width, height } = Dimensions.get("window");
 
-const SearchAddressComponent = ({onPlaceSelected, position, goBackScreen, address, setAddress}) => {
+const SearchAddressComponent = ({onPlaceSelected, position, goBackScreen, setOriginAddress, setOriginPlaceID}) => {
     const style = useThemeStyles(styles);
     const authContext = useContext(AuthContext);
     const {authAxios} = useContext(AxiosContext);
-    // const [address, setAddress] = useState("");
-
-    const getAddress = (address) => {
-        // console.log(address);
-        return address.streetNumber + " " + address.street + " " + address.subregion + " " + address.region;
-    }
-
-    const reverseGeocode = async () => {
-        // Location.setGoogleApiKey(API_GOOGLE);
-        const reverseGeocodeAddress = await Location.reverseGeocodeAsync(
-            {
-                latitude: position.latitude,
-                longitude: position.longitude,
-                // useGoogleMaps: true,
-            }
-        );
-        
-        setAddress(getAddress(reverseGeocodeAddress[0]));
-    }
+    const [address, setAddress] = useState("");
+    const [placeID, setPlaceID] = useState("");
 
     const reverseGeocodeGoogle = async () => {
         let UrlAPI = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + position.latitude + "," + position.longitude + "&key=" + API_GOOGLE;
@@ -44,8 +27,9 @@ const SearchAddressComponent = ({onPlaceSelected, position, goBackScreen, addres
         .get(UrlAPI)
         .then(async (response) => {
             let address_obj = response.data.results[0];
-            console.log("address obj");
-            console.log(address_obj);
+            // console.log("address obj");
+            // console.log(address_obj);
+            setPlaceID(address_obj.place_id);
             setAddress(address_obj.formatted_address);
         })
         .catch(async (error) => {
@@ -54,11 +38,12 @@ const SearchAddressComponent = ({onPlaceSelected, position, goBackScreen, addres
     }
 
     const onConfirm = () => {
+        setOriginPlaceID(placeID);
+        setOriginAddress(address);
         goBackScreen();
     }
 
     useEffect(() => {
-        // reverseGeocode();
         reverseGeocodeGoogle();
     }, [position]);
 
@@ -105,7 +90,7 @@ const cal_longitude_Delta = (latitudeDelta) => {
     return latitudeDelta * ASPECT_RATIO;
 }
 
-const GoogleMap = ({setModalVisible, address, setAddress}) => { 
+const GoogleMap = ({setModalVisible, setOriginAddress, setOriginPlaceID}) => { 
     const style = useThemeStyles(styles);
     const authContext = useContext(AuthContext);
     const {authAxios} = useContext(AxiosContext);
@@ -129,17 +114,6 @@ const GoogleMap = ({setModalVisible, address, setAddress}) => {
         //   setPosition({...position, latitude: location.coords.latitude, longitude: location.coords.longitude});
         })();
     }, []);
-
-    const moveTo = async () => {
-        const camera = await mapRef.current?.getCamera();
-        if (camera) {
-            camera.center = {
-                                latitude: position.latitude,
-                                longitude: position.longitude
-                            };
-            mapRef.current?.animateCamera(camera, { duration: 1000 });
-        }
-    };
 
     const zoomIn = () => {
         const { latitudeDelta, longitudeDelta } = position;
@@ -180,7 +154,13 @@ const GoogleMap = ({setModalVisible, address, setAddress}) => {
             <View style={style.backIconContainer}>
                 <BackIcon size='md' color='while' onPress={goBackScreen} />
             </View>
-            <SearchAddressComponent onPlaceSelected = {onPlaceSelected} position={position} goBackScreen={goBackScreen} address = {address} setAddress = {setAddress} />
+            <SearchAddressComponent 
+                onPlaceSelected = {onPlaceSelected} 
+                position={position} 
+                goBackScreen={goBackScreen} 
+                setOriginAddress = {setOriginAddress} 
+                setOriginPlaceID = {setOriginPlaceID}
+            />
             <Button style = {style.zoomInButton} radius={0} onPress={zoomIn}>
                 <PlusIcon size='sm' color='while'/>
             </Button>
