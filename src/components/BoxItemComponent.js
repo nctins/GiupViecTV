@@ -35,7 +35,7 @@ const styles = (theme) => StyleSheet.create({
         paddingHorizontal: 15,
     },
     viewItem:{
-        width: 70,
+        width: 90,
         flexDirection:"column",
         alignItems: "center",
         padding: 10,
@@ -46,9 +46,6 @@ const BoxItemComponent = (props) => {
     const style = useThemeStyles(styles);
     const navigation = props.navigation;
     const onPressNow = () => {
-        navigation.navigate("ServiceTab", {post_type: POST_TYPE.INSTANT});
-    }
-    const onPressTime = () => {
         navigation.navigate("ServiceTab", {post_type: POST_TYPE.HOURLY});
     }
     return ( 
@@ -59,14 +56,8 @@ const BoxItemComponent = (props) => {
             <View style={style.viewContent}>
                 <TouchableOpacity onPress={onPressNow}>
                     <View style={style.viewItem}>
-                        <AvatarComponent size='sm' type='square' />
-                        <Typography variant="Description">Giúp việc tức thì</Typography>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={onPressTime}>
-                    <View style={style.viewItem}>
-                        <AvatarComponent size='sm' type='square' />
-                        <Typography variant="Description">Giúp việc theo giờ</Typography>
+                        <AvatarComponent size='md' type='square' />
+                        <Typography variant="Description">Tìm người giúp việc</Typography>
                     </View>
                 </TouchableOpacity>
             </View>          
