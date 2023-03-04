@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import { StyleSheet, View, Dimensions, SafeAreaView } from "react-native";
+import { StyleSheet, View, Dimensions, SafeAreaView, Alert } from "react-native";
 import useThemeStyles from '~hooks/useThemeStyles';
 import Typography from "~components/Typography";
 import Button from '~components/Button';
@@ -38,9 +38,19 @@ const SearchAddressComponent = ({onPlaceSelected, position, goBackScreen, setOri
     }
 
     const onConfirm = () => {
-        setOriginPlaceID(placeID);
-        setOriginAddress(address);
-        goBackScreen();
+        if(placeID && placeID.length > 0){
+            setOriginPlaceID(placeID);
+            setOriginAddress(address);
+            goBackScreen();
+        }else{
+            Alert.alert(
+                "Thông báo!",
+                "Địa chỉ hiện tại không đúng! \\n Vui lòng chọn lại địa chỉ.",
+                [
+                  { text: "OK"}
+                ]
+              );
+        }
     }
 
     useEffect(() => {

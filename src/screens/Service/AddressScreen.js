@@ -105,7 +105,7 @@ const AddressScreen = () => {
                     isShadow
                     onPress={() => {
                       console.log(placeID);
-                      controller.createAddress(title, address);
+                      controller.createAddress(title, address, placeID);
                       setModalVisible(false);
                     }}
                   >
@@ -132,6 +132,7 @@ const AddressScreen = () => {
         title,
         address,
         address_id: address_edit.address_id,
+        place_id: placeID,
       })
       setModalEditVisible(false);
     }
