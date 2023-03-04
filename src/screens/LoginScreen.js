@@ -10,7 +10,6 @@ import { AxiosContext } from "~contexts/AxiosContext";
 import * as SecureStore from "expo-secure-store";
 import Toast from "~utils/Toast";
 import LoadingScreen from "./LoadingScreen";
-import { ScrollView } from "react-native-web";
 
 const LoginScreen = ({navigation}) => {
   const authContext = useContext(AuthContext);

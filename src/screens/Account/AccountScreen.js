@@ -14,6 +14,7 @@ import { FacebookIcon, GoogleIcon, RightArrowIcon } from "~components/Icons";
 import AvatarComponent from "~components/AvatarComponent";
 import { AuthContext } from "~contexts/AuthContext";
 import useAxios from "~hooks/useAxios";
+import LoadingScreen from "~screens/LoadingScreen";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -96,23 +97,28 @@ const AccountScreen = ({navigation}) => {
   const authContext = useContext(AuthContext);
   const user = authContext.authState.user;
   const { authAxios } = useAxios();
+  const [isLoading, setIsLoading] = useState(false);
+
   const onLogout = async () => {
+    setIsLoading(true);
     await authAxios.post("auth/signout")
       .then((res)=>{
         console.log(res.data);
         authContext.logout();
         navigation.navigate("StartScreen");
+        setIsLoading(true);
       })
       .catch((err)=>{
         console.log(err);
+        setIsLoading(true);
       });
   }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      {isLoading ? <LoadingScreen /> : null}
       <StatusBar backgroundColor={style.statusBar.backgroundColor} />
       <Header style={style.header} title="Tài khoản" />
-
       {/* user info */}
       <View style={[{ flex: 1 }, style.userInfo.wrapper]}>
         <AvatarComponent img={user.avatar_url} size="lg" containerAvatarStyle ={style.userInfo.avatar} />
@@ -143,10 +149,6 @@ const AccountScreen = ({navigation}) => {
             onToggle={() => setIsNotice((previousState) => !previousState)}
             value={isNotice}
           />
-        {
-          // <SettingItem title={"Đánh giá chúng tôi"} onTouch={() => {}} />
-          // <SettingItem title={"Thay đổi mật khẩu"} onTouch={() => {}} />
-        }
           <SettingItem title={"Phản hồi"} onTouch={() => {navigation.navigate("FeedbackScreen")}} />
         </View>
       </View>

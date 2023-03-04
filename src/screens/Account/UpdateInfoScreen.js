@@ -6,7 +6,9 @@ import {
   StatusBar,
   TouchableOpacity,
   Alert,
-  Platform 
+  Platform, 
+  Pressable,
+  Modal
 } from "react-native";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
@@ -18,6 +20,7 @@ import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
 import * as ImagePicker from 'expo-image-picker';
 import LoadingScreen from "~screens/LoadingScreen";
+import GoogleMap from "~screens/GoogleMapScreen";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -90,10 +93,25 @@ const UpdateInfoScreen = ({navigation}) => {
   const [name,setName] = useState("");
   const [phone,setPhone] = useState("");
   const [MSDD,setMSDD] = useState("");
+  const [address,setAddress] = useState("");
+  const [placeID,setPlaceID] = useState("");
   const [message,setMessage] = useState("");
   const [selectedImage, setSelectedImage] = useState("https://reactnative.dev/img/tiny_logo.png");
   const [imageBase64,setImageBase64] = useState();
   const [isLoading, setIsLoadding] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const ModalGoogleMap = ({setPlaceID, setAddress}) => {
+    const style = useThemeStyles(modalStyle);
+
+    return (
+      <Modal animationType="none" transparent={true} visible={modalVisible}>
+        <View style={style.centeredView}>
+          <GoogleMap setModalVisible = {setModalVisible} setOriginAddress = {setAddress} setOriginPlaceID = {setPlaceID} />
+        </View>
+      </Modal>
+    );
+  };
 
   useEffect(() => {
     getAccount();
@@ -142,6 +160,7 @@ const UpdateInfoScreen = ({navigation}) => {
         setPhone(helper.phone);
         setMSDD(helper.MSDD);
         setSelectedImage(helper.avatar_url);
+        setAddress(helper.address);
       })
       .catch(async (error) => {
         if (error.response) {
@@ -151,7 +170,7 @@ const UpdateInfoScreen = ({navigation}) => {
   }
 
   const updateAccount = () => {
-    if(email.length > 0 && phone.length > 0 && name.length > 0 && MSDD.length > 0){
+    if(email.length > 0 && phone.length > 0 && name.length > 0 && MSDD.length > 0 && address.length > 0){
       setIsLoadding(true);
       authAxios
       .put("helper/" + user.id,{
@@ -160,10 +179,12 @@ const UpdateInfoScreen = ({navigation}) => {
         phone: phone,
         MSDD: MSDD,
         image: imageBase64,
+        address: address,
+        placeID: placeID,
       })
       .then(async (response) => {
         setMessage(response.data.data);
-        authContext.setAuthState({...authContext.authState,user:{id: user.id, name: name, email: email, phone: phone, avatar_url: selectedImage}});
+        authContext.setAuthState({...authContext.authState,user:{id: user.id, name: name, email: email, phone: phone, avatar_url: selectedImage, address: address}});
         setIsLoadding(false);
       })
       .catch(async (error) => {
@@ -203,6 +224,11 @@ const UpdateInfoScreen = ({navigation}) => {
         { text: "OK", onPress: updateAccount}
       ]
     );
+  }
+
+  const onPressAddress = () => {
+    console.log("press address");
+    setModalVisible(true);
   }
 
   return (
@@ -265,7 +291,8 @@ const UpdateInfoScreen = ({navigation}) => {
               keyboardType = 'numeric'
               maxLength={12}
               value={MSDD}
-              onChangeText={(text) => setMSDD(text)}
+              // onChangeText={(text) => setMSDD(text)}
+              editable={false}
             />
           </View>
           <View>
@@ -281,6 +308,19 @@ const UpdateInfoScreen = ({navigation}) => {
               onChangeText={(text) => setPhone(text)}
             />
           </View>
+          <View>
+            <Typography style={style.label}>Địa chỉ:</Typography>
+            <Pressable onPress={onPressAddress}>
+              <TextInput
+                style={style.form.field}
+                placeholder="Địa chỉ của bạn"
+                title={"Địa chỉ"}
+                titleStyle="blackTitle"
+                value={address}
+                editable={false}
+              />
+            </Pressable>
+          </View>
           {messageDisplay()}
         </View>
 
@@ -290,8 +330,47 @@ const UpdateInfoScreen = ({navigation}) => {
           </Button>
         </View>
       </View>
+      <ModalGoogleMap setAddress={setAddress} setPlaceID = {setPlaceID} />
     </View>
   );
 };
+
+const modalStyle = (theme) =>
+  StyleSheet.create({
+    centeredView: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: theme.colors.Transparency,
+    },
+    modalView: {
+      margin: 10,
+      backgroundColor: theme.colors.Gray[0],
+      borderRadius: 10,
+      paddingVertical: 10,
+      paddingHorizontal: 20,
+      // height: 250,
+      width: 320,
+      alignItems: "center",
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      elevation: 5,
+    },
+    formInput: {
+      marginTop: 10,
+    },
+    addressInput: {
+      marginTop: 5,
+      // backgroundColor: theme.colors.Gray[1],
+    },
+    footer: {
+      marginVertical: 15,
+    },
+  });
 
 export default UpdateInfoScreen;

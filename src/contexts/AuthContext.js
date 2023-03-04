@@ -14,6 +14,7 @@ const AuthProvider = ({ children }) => {
       name: null,
       email: null,
       avatar_url: null,
+      address: null,
     }
   });
 
@@ -44,6 +45,7 @@ const AuthProvider = ({ children }) => {
         name: null,
         email: null,
         avatar_url: null,
+        address: null,
       }
     });
   };
