@@ -90,8 +90,8 @@ const ForgotPassScreen = ({ navigation }) => {
           placeholder="Mật khẩu mới"
           title={"Mật khẩu mới"}
           titleStyle="blackTitle"
+          secureTextEntry={true}
           value={new_password}
-          isPassword
           onChangeText={(text) => setNewPassword(text)}
         />
       );

@@ -13,6 +13,7 @@ const TabNavigatorCart = () => {
             screenOptions={{
                 unmountOnBlur: true,
             }}
+            lazy={true}
         >
             <Tab.Screen name='Chờ xử lý' component={CartTab1}></Tab.Screen>
             <Tab.Screen name='Chưa hoàn thành' component={CartTab2}></Tab.Screen>

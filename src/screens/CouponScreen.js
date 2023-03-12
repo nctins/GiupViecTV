@@ -168,6 +168,7 @@ const CouponScreen = ({navigation}) => {
           <TextInput 
             style={style.textInput}
             placeholder="Nhập mã ưu đãi"
+            maxLength={8}
             value={voucherCode}
             onChangeText={(text) => {setVoucherCode(text)}}
           />

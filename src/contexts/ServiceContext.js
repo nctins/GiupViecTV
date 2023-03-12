@@ -119,7 +119,6 @@ const ServiceProvider = ({
         let initServices = {};
         services_obj.forEach((service) => {
           let initServiceValues = {};
-
           if (service.input_format == INPUT_FORMAT.TEXTBOX) {
             initServiceValues = {
               seq_nb: 0,
@@ -212,6 +211,10 @@ const ServiceProvider = ({
     setCurrentScreen("ServiceScreen");
   };
 
+  controller.onCreateAddress = () => {
+    setCurrentScreen("GoogleMapScreen");
+  };
+
   controller.goToPaymentScreen = () => {
     if (post.total == 0) {
       Alert.alert("", "Vui lòng chọn ít nhất 1 dịch vụ");
@@ -224,11 +227,13 @@ const ServiceProvider = ({
     navigation.navigate("HomeScreen");
   };
 
-  controller.createAddress = (title, address) => {
+  controller.createAddress = (title, address, placeID) => {
     const data = {
       address_title: title,
       address: address,
+      place_id: placeID,
     };
+    console.log(data);
     authAxios
       .post(`/customer/${authState.user.id}/address`, data)
       .then((res) => {
@@ -274,11 +279,12 @@ const ServiceProvider = ({
     setPostData({ services: new_services });
   };
 
-  controller.updateAddress = ({ address_id, title, address }) => {
+  controller.updateAddress = ({ address_id, title, address, place_id }) => {
     authAxios
       .put(`/customer/${authState.user.id}/address/${address_id}`, {
         address_title: title,
         address: address,
+        place_id: place_id,
       })
       .then((res) => {
         const address_obj = {

@@ -347,7 +347,7 @@ const PaymentScreen = () => {
               controller.createPost();
             }}
           >
-            Đặt dịch vụ
+            Tìm người giúp việc
           </Button>
           <Button size="sm" onPress={() => controller.backToHomeScreen()}>
             Hủy

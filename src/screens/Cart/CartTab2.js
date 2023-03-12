@@ -4,6 +4,7 @@ import CartItem from '~components/CartItem';
 import useThemeStyles from '~hooks/useThemeStyles';
 import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
+import LoadingScreen from '../LoadingScreen';
 import {POST_STATE} from "../../constants/app_contants";
 
 const styles = (theme) => StyleSheet.create({
@@ -48,6 +49,7 @@ const CartTab2 = ({navigation}) => {
   const {authAxios} = useContext(AxiosContext);
   const [posts,setPosts] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -62,6 +64,7 @@ const CartTab2 = ({navigation}) => {
   },[]);
 
   const getPosts = () => {
+    setIsLoading(true);
     authAxios
       .get("posts")
       .then(async (response) => {
@@ -70,11 +73,13 @@ const CartTab2 = ({navigation}) => {
           return e.post_state === POST_STATE.INCOMPLETE
         })
         setPosts(arrPost);
+        setIsLoading(false);
       })
       .catch(async (error) => {
         if (error.response) {
           console.log(error.response.data);
         }
+        setIsLoading(false);
       });
   }
 
@@ -86,6 +91,7 @@ const CartTab2 = ({navigation}) => {
 
   return (
     <View style={style.default}>
+      {isLoading ? <LoadingScreen /> : null}
       <View style={style.TextInputView}>
         {/* 
           <TextInput 

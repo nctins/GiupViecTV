@@ -52,9 +52,10 @@ const styles = (theme) =>
         alignItems: "flex-start",
       },
       content: {
+        width: 90,
         marginTop: 5,
-        marginLeft: 20,
-        maxWidth: 90,
+        flexDirection: "row",
+        justifyContent: "center",
         textAlignVertical: "center",
       },
     },

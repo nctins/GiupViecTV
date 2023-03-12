@@ -7,7 +7,9 @@ const Tab = createMaterialTopTabNavigator();
 
 const TabNavigatorMessage = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      lazy={true}
+      >
       <Tab.Screen name="Trò chuyện" component={MessageTab}></Tab.Screen>
       <Tab.Screen name="Thông báo" component={NotificationTab}></Tab.Screen>
     </Tab.Navigator>

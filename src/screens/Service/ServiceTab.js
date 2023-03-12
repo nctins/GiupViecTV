@@ -8,6 +8,7 @@ import PaymentScreen from "./PaymentScreen";
 import ServiceScreen from "./ServiceScreen";
 import { ServiceProvider } from "~contexts/ServiceContext";
 import { POST_TYPE } from "~constants/app_contants";
+import { BackIcon } from "~components/Icons";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -18,13 +19,13 @@ const styles = (theme) =>
     },
     header: {
       width: "100%",
-      height: 90,
+      height: 80,
       backgroundColor: theme.colors.BackgroundBlue,
       flexDirection: "row",
-      alignItems: "center",
+      alignItems: "flex-end",
       justifyContent: "center",
-      paddingHorizontal: 15,
-      flex: 1,
+      paddingHorizontal: 10,
+      paddingVertical: 10,
     },
     title: {
       marginLeft: 15,
@@ -32,6 +33,11 @@ const styles = (theme) =>
     },
     statusBar: {
       backgroundColor: theme.colors.BackgroundBlue,
+    },
+    backIconStyle:{
+      position:"absolute",
+      top: 40,
+      left: 10,
     },
   });
 
@@ -45,6 +51,10 @@ const ServiceTab = ({ route, navigation }) => {
     PaymentScreen: <PaymentScreen />,
   };
 
+  const onPressBackIcon = () => {
+    navigation.navigate("HomeScreen");
+  }
+
   return (
     <ServiceProvider
       navigation={navigation}
@@ -54,13 +64,10 @@ const ServiceTab = ({ route, navigation }) => {
       <View style={style.default}>
         <StatusBar backgroundColor={style.statusBar.backgroundColor} />
         <View style={style.header}>
-          <Typography variant="H5" style={style.title}>
-            {post_type == POST_TYPE.HOURLY
-              ? "Giúp việc nhà theo giờ"
-              : "Giúp việc nhà tức thì"}
-          </Typography>
+          <BackIcon style={style.backIconStyle} size="md" color="white" onPress = {onPressBackIcon} />
+          <Typography variant="H5" style={style.title}>Tạo bài đăng</Typography>
         </View>
-        <View style={{ flex: 7 }}>
+        <View style={{ flex: 1 }}>
           <View style={{ flex: 1, marginTop: 20 }}>
             <ProcessNavComponent
               lstItem={[

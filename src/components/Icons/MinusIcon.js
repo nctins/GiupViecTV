@@ -4,11 +4,11 @@ import styles from "./styles";
 import useTheme from "~hooks/useTheme";
 import * as ObjMapper from "object-mapper";
 
-const PlusIcon = ({ size = "md", color = "Gray.4", ...otherProps }) => {
+const MinusIcon = ({ size = "md", color = "Gray.4", ...otherProps }) => {
   const colors = useTheme().colors;
   return (
     <Entypo 
-      name="plus"
+      name="minus"
       size={styles[size]}
       color={ObjMapper.getKeyValue(colors, color)}
       {...otherProps}
@@ -16,4 +16,4 @@ const PlusIcon = ({ size = "md", color = "Gray.4", ...otherProps }) => {
   );
 };
 
-export default PlusIcon;
+export default MinusIcon;

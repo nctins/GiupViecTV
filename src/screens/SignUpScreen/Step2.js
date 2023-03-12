@@ -52,31 +52,28 @@ const Step2 = ({route,navigation}) => {
       .catch(async (error) => {
         setIsLoading(false);
         if (error.response) {
-          console.log("sign Up error");
           let {msg} = error.response.data;
-          let msgAlert = "";
-          if(msg.length == 1){
-            if(msg[0].includes("password")){
-              Alert.alert(
-                "Đăng ký tài khoản không thành công!",
-                msg[0].replace("body",""),
-                [
-                  { text: "OK"}
-                ]
-              );
-              return;
-            }
+          if(Array.isArray(msg) && msg.length > 0){
+            let msgAlert = "";
+            msg.map(e => {
+              msgAlert = msgAlert + e.replace("body","") + '\n';
+            })
+            Alert.alert(
+              "Đăng ký tài khoản không thành công!",
+              msgAlert,
+              [
+                { text: "OK", onPress: () => navigation.pop() }
+              ]
+            );
+          }else{
+            Alert.alert(
+              "Đăng ký tài khoản không thành công!",
+              msg,
+              [
+                { text: "OK"}
+              ]
+            );
           }
-          msg.map(e => {
-            msgAlert = msgAlert + e.replace("body","") + '\n';
-          })
-          Alert.alert(
-            "Đăng ký tài khoản không thành công!",
-            msgAlert,
-            [
-              { text: "OK", onPress: () => navigation.pop() }
-            ]
-          );
         }
       });
   };

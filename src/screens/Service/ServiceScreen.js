@@ -24,7 +24,7 @@ const styles = (theme) =>
       flex: 7,
       justifyContent: "flex-start",
       alignItems: "center",
-      marginTop: 20,
+      marginTop: 10,
     },
     footer: {
       wrapper: {

@@ -5,6 +5,7 @@ import InitNavigator from '~navigation/InitNavigator';
 import { AuthProvider } from '~contexts/AuthContext';
 import { AxiosProvider } from '~contexts/AxiosContext';
 import { SocketProvider } from '~contexts/SocketContext';
+import GoogleMap from '~screens/GoogleMapScreen';
 // import Notifications from '~utils/Notification';
 
 // Notifications.setNotificationHandler();

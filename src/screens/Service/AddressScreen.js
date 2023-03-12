@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -10,10 +10,11 @@ import {
 } from "react-native";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
-import { EditIcon, TrashIcon } from "~components/Icons";
+import { EditIcon, PlusIcon, TrashIcon } from "~components/Icons";
 import Button, { ActionButton } from "~components/Button";
 import useServiceContext from "~hooks/useServiceContext";
 import { TextInput } from "~components/Inputs";
+import GoogleMap from "~screens/GoogleMapScreen";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -34,20 +35,34 @@ const styles = (theme) =>
 const AddressScreen = () => {
   const style = useThemeStyles(styles);
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalMapVisible, setModalMapVisible] = useState(false);
   const [modalEditVisible, setModalEditVisible] = useState(false);
   const { addressIds, addresses } = useServiceContext();
   const [address_edit, setAddressEdit] = useState({});
+  const [address, setAddress] = useState("");
+  const [placeID, setPlaceID] = useState("");
 
   const onEditAddress = (address) => {
     setModalEditVisible(true);
     setAddressEdit(address);
   };
 
-  const ModalAddress = () => {
+  const ModalGoogleMap = ({setPlaceID, setAddress}) => {
+    const style = useThemeStyles(modalStyle);
+
+    return (
+      <Modal animationType="none" transparent={true} visible={modalMapVisible}>
+        <View style={style.centeredView}>
+          <GoogleMap setModalVisible = {setModalMapVisible} setOriginAddress = {setAddress} setOriginPlaceID = {setPlaceID} />
+        </View>
+      </Modal>
+    );
+  };
+
+  const ModalAddress = ({address, placeID}) => {
     const style = useThemeStyles(modalStyle);
     const { controller } = useServiceContext();
     const [title, setTitle] = useState("");
-    const [address, setAddress] = useState("");
 
     return (
       <Modal animationType="none" transparent={true} visible={modalVisible}>
@@ -63,6 +78,7 @@ const AddressScreen = () => {
                   <Typography>Tiêu đề</Typography>
                   <TextInput
                     variant="modalForm"
+                    style={{marginTop: 5}}
                     onChangeText={(text) => {
                       setTitle(text);
                     }}
@@ -71,23 +87,25 @@ const AddressScreen = () => {
                 </View>
                 <View style={style.formInput}>
                   <Typography>Địa chỉ</Typography>
-                  <TextInput
-                    variant="modalForm"
-                    multiline
-                    numberOfLines={4}
-                    textAlignVertical="top"
-                    value={address}
-                    onChangeText={(text) => {
-                      setAddress(text);
-                    }}
-                  />
+                  <Pressable onPress={() => setModalMapVisible(true)}>
+                    <TextInput
+                      variant="modalForm"
+                      multiline
+                      numberOfLines={2}
+                      textAlignVertical="top"
+                      value={address}
+                      editable={false}
+                      style={style.addressInput}
+                    />
+                  </Pressable>
                 </View>
                 <View style={style.footer}>
                   <Button
                     size="modalSize"
                     isShadow
                     onPress={() => {
-                      controller.createAddress(title, address);
+                      console.log(placeID);
+                      controller.createAddress(title, address, placeID);
                       setModalVisible(false);
                     }}
                   >
@@ -102,20 +120,29 @@ const AddressScreen = () => {
     );
   };
 
-  const ModalEditAddress = () => {
+  const ModalEditAddress = ({originAddress, placeID}) => {
     const style = useThemeStyles(modalStyle);
     const { controller } = useServiceContext();
     const [title, setTitle] = useState(address_edit.title);
     const [address, setAddress] = useState(address_edit.address);
-    // console.log(data);
+    
     const onEdit = () => {
+      console.log(placeID);
       controller.updateAddress({
         title,
         address,
         address_id: address_edit.address_id,
+        place_id: placeID,
       })
       setModalEditVisible(false);
     }
+
+    useEffect(() => {
+      if(originAddress && originAddress.length > 0){
+        setAddress(originAddress);
+      }
+    }, [originAddress]);
+
     return (
       <Modal animationType="none" transparent={true} visible={modalEditVisible}>
         <TouchableWithoutFeedback
@@ -138,16 +165,17 @@ const AddressScreen = () => {
                 </View>
                 <View style={style.formInput}>
                   <Typography>Địa chỉ</Typography>
-                  <TextInput
-                    variant="modalForm"
-                    multiline
-                    numberOfLines={4}
-                    textAlignVertical="top"
-                    value={address}
-                    onChangeText={(text) => {
-                      setAddress(text);
-                    }}
-                  />
+                  <Pressable onPress={() => setModalMapVisible(true)}>
+                    <TextInput
+                      variant="modalForm"
+                      multiline
+                      numberOfLines={2}
+                      textAlignVertical="top"
+                      value={address}
+                      editable={false}
+                      style={style.addressInput}
+                    />
+                  </Pressable>
                 </View>
                 <View style={style.footer}>
                   <Button
@@ -191,8 +219,9 @@ const AddressScreen = () => {
           setModalVisible(true);
         }}
       />
-      <ModalAddress />
-      <ModalEditAddress />
+      <ModalAddress address={address} placeID = {placeID} />
+      <ModalEditAddress originAddress={address} placeID = {placeID} />
+      <ModalGoogleMap setAddress={setAddress} setPlaceID = {setPlaceID} />
     </View>
   );
 };
@@ -309,6 +338,10 @@ const modalStyle = (theme) =>
     },
     formInput: {
       marginTop: 10,
+    },
+    addressInput: {
+      marginTop: 5,
+      // backgroundColor: theme.colors.Gray[1],
     },
     footer: {
       marginVertical: 15,
