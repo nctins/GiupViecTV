@@ -8,7 +8,7 @@ const CurrencyText = ({
   color = "Gray.8",
   prefix = ""
 }) => {
-  const text = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  const text = !value ? 0 : value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   return (
     <Typography variant={variant} color={color}>
       {prefix} {text} {currency}
