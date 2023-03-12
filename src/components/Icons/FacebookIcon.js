@@ -9,7 +9,7 @@ const FacebookIcon = ({ size = "md", color = "Azure", ...otherProps }) => {
   return (
     <FontAwesome5
       name="facebook"
-      size={styles[size]}
+      size={styles[size]||size}
       color={ObjMapper.getKeyValue(colors, color)}
       {...otherProps}
     />

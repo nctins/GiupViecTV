@@ -9,7 +9,7 @@ const ClockIcon = ({ size = "md", color = "Gray.4", ...otherProps }) => {
   return (
     <AntDesign
       name="clockcircleo"
-      size={styles[size]}
+      size={styles[size]||size}
       color={ObjMapper.getKeyValue(colors, color)}
       {...otherProps}
     />

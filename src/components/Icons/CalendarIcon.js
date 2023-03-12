@@ -9,7 +9,7 @@ const CalendarIcon = ({ size = "md", color = "Gray.4", ...otherProps }) => {
   return (
     <AntDesign
       name="calendar"
-      size={styles[size]}
+      size={styles[size]||size}
       color={ObjMapper.getKeyValue(colors, color)}
       {...otherProps}
     />

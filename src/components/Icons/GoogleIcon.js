@@ -9,7 +9,7 @@ const GoogleIcon = ({ size = "md", color = "StrawberryRed", ...otherProps }) => 
   return (
     <FontAwesome5
       name="google-plus-g"
-      size={styles[size]}
+      size={styles[size]||size}
       color={ObjMapper.getKeyValue(colors, color)}
       {...otherProps}
     />

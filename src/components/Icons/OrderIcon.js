@@ -10,7 +10,7 @@ const OrderIcon = ({ size = "md", color = "Gray.4", ...otherProps }) => {
   return (
     <MaterialIcons
       name="assignment"
-      size={styles[size]}
+      size={styles[size]||size}
       color={ObjMapper.getKeyValue(colors, color)}
       {...otherProps}
     />
