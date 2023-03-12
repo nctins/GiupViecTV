@@ -1,11 +1,6 @@
-import React from "react";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  StatusBar,
-  TouchableOpacity,
-} from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
+import useServiceContext from "~hooks/useServiceContext";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "./Typography";
 
@@ -60,13 +55,15 @@ const styles = (theme) =>
         marginTop: 5,
         marginLeft: 20,
         maxWidth: 90,
-        textAlignVertical: "center"
+        textAlignVertical: "center",
       },
     },
   });
 
-const ProcessNavComponent = () => {
+const ProcessNavComponent = ({ lstItem, toItem }) => {
   const style = useThemeStyles(styles);
+  const { currentScreen } = useServiceContext();
+  const currentItem = lstItem.indexOf(currentScreen);
   const disableStyle = [style.button.shape, style.button.disable];
   const enableStyle = [style.button.shape, style.button.enable];
   return (
@@ -74,14 +71,28 @@ const ProcessNavComponent = () => {
       <View style={style.wrapper}>
         <View style={style.top}></View>
         <View style={style.bottom}>
-          <TouchableOpacity activeOpacity={1}>
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => {
+              if (currentItem == 1 || currentItem == 2) {
+                toItem(lstItem[0]);
+              }
+            }}
+          >
             <View style={enableStyle}></View>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={1}>
-            <View style={disableStyle}></View>
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => {
+              if (currentItem == 2) {
+                toItem(lstItem[1]);
+              }
+            }}
+          >
+            <View style={currentItem > 0 ? enableStyle : disableStyle}></View>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={1}>
-            <View style={disableStyle}></View>
+          <TouchableOpacity activeOpacity={1} onPress={() => {}}>
+            <View style={currentItem == 2 ? enableStyle : disableStyle}></View>
           </TouchableOpacity>
         </View>
       </View>

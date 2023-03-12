@@ -15,7 +15,10 @@ import { BackIcon, SendIcon } from "~components/Icons";
 import { SocketContext } from "~contexts/SocketContext";
 import { AxiosContext } from "~contexts/AxiosContext";
 import { AuthContext } from "~contexts/AuthContext";
+<<<<<<< HEAD
 import LoadingScreen from "~screens/LoadingScreen";
+=======
+>>>>>>> master
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -32,7 +35,10 @@ const styles = (theme) =>
       flexDirection: "row",
       alignItems: "center",
       paddingHorizontal: 20,
+<<<<<<< HEAD
       paddingTop: 10,
+=======
+>>>>>>> master
     },
     title: {
       marginLeft: 15,
@@ -68,7 +74,11 @@ const MessageDetail = ({ navigation, route }) => {
   const { socket } = useContext(SocketContext);
   const { authAxios } = useContext(AxiosContext);
   const { authState } = useContext(AuthContext);
+<<<<<<< HEAD
   const [isLoading, setIsLoadding] = useState(false);
+=======
+
+>>>>>>> master
   const [messages, setMessages] = useState([]);
   const [enterMsg, setEnterMsg] = useState("");
   const user_id = authState.user.id;
@@ -76,17 +86,26 @@ const MessageDetail = ({ navigation, route }) => {
   const scrollViewRef = useRef();
 
   const onSendMsg = () => {
+<<<<<<< HEAD
     setIsLoadding(true);
+=======
+>>>>>>> master
     authAxios
       .post(`/box-chat/${box_chat_id}/message`, {
         message: enterMsg,
       })
       .then((res) => {
+<<<<<<< HEAD
         setIsLoadding(false);
         const resObj = res.data;
       })
       .catch((err) => {
         setIsLoadding(false);
+=======
+        const resObj = res.data;
+      })
+      .catch((err) => {
+>>>>>>> master
         console.log(err);
       });
     setEnterMsg("");
@@ -99,16 +118,25 @@ const MessageDetail = ({ navigation, route }) => {
   }, [messages]);
 
   useEffect(() => {
+<<<<<<< HEAD
     setIsLoadding(true);
+=======
+>>>>>>> master
     authAxios
       .get(`/box-chat/${box_chat_id}/messages`)
       .then((res) => {
         const resObj = res.data;
+<<<<<<< HEAD
         setIsLoadding(false);
         setMessages([...messages, ...resObj.data]);
       })
       .catch((err) => {
         setIsLoadding(false);
+=======
+        setMessages([...messages, ...resObj.data]);
+      })
+      .catch((err) => {
+>>>>>>> master
         console.log(err.response.data);
         setMessages([]);
       });
@@ -126,7 +154,10 @@ const MessageDetail = ({ navigation, route }) => {
 
   return (
     <View style={style.default}>
+<<<<<<< HEAD
       {isLoading ? <LoadingScreen /> : null}
+=======
+>>>>>>> master
       <View style={style.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <BackIcon color="Gray.0" />

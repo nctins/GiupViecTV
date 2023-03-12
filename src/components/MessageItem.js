@@ -40,7 +40,7 @@ const MessageItem = ({ navigation, ...props }) => {
   const onPressMessageBox = () => {
     navigation.navigate({
       name: "MessageDetail",
-      params: { box_chat_id: data.box_chat_id, sender: data.sender, avatar_url: data.avatar_url },
+      params: { box_chat_id: data.box_chat_id, sender: data.sender, avatar_url: data.avatar_url},
     });
   };
 

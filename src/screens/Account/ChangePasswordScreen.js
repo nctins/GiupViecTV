@@ -2,7 +2,7 @@ import React, {useState, useContext} from "react";
 import { StyleSheet, View, ScrollView, StatusBar, Alert } from "react-native";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
-import { BackIcon } from "~components/Icons";
+import { BackIcon, UserIcon } from "~components/Icons";
 import { TextInput } from "~components/Inputs";
 import Button from "~components/Button";
 import { AuthContext } from "~contexts/AuthContext";
@@ -62,7 +62,11 @@ const ChangePasswordScreen = ({navigation}) => {
   const [newPassword,setNewPassword] = useState("");
   const [newPasswordConfirm,setNewPasswordConfirm] = useState("");
   const [message,setMessage] = useState("");
+<<<<<<< HEAD
   const [isLoading, setIsLoadding] = useState(false);
+=======
+  const [isLoading, setIsLoading] = useState(false);
+>>>>>>> master
 
   const messageDisplay = () => {
     if(message.includes("thành công")){
@@ -78,23 +82,39 @@ const ChangePasswordScreen = ({navigation}) => {
       setNewPasswordConfirm("");
       return;
     }
+<<<<<<< HEAD
     setIsLoadding(true);
     authAxios
       .put("helper/" + user.id + "/updatePassword",{
+=======
+    setIsLoading(true);
+    authAxios
+      .put("customer/" + user.id + "/updatePassword",{
+>>>>>>> master
         oldPassword: oldPassword,
         newPassword: newPassword,
       })
       .then(async (response) => {
+<<<<<<< HEAD
         // console.log(response.data);
+=======
+>>>>>>> master
         setOldPassword("");
         setNewPassword("");
         setNewPasswordConfirm("");
         setMessage(response.data.data);
+<<<<<<< HEAD
         setIsLoadding(false);
       })
       .catch(async (error) => {
         setMessage("");
         setIsLoadding(false);
+=======
+        setIsLoading(false);
+      })
+      .catch(async (error) => {
+        setMessage("");
+>>>>>>> master
         if (error.response) {
           console.log(error.response.data);
           let msgArr = error.response.data.msg;
@@ -108,6 +128,10 @@ const ChangePasswordScreen = ({navigation}) => {
             setMessage(msgArr);
           }
         }
+<<<<<<< HEAD
+=======
+        setIsLoading(false);
+>>>>>>> master
       });
   }
 

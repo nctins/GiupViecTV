@@ -1,5 +1,4 @@
-import React, { useEffect, useContext } from 'react'
-import { StyleSheet, View, SafeAreaView, StatusBar, Image } from "react-native";
+import React from 'react'
 import Spinner from 'react-native-loading-spinner-overlay';
 
 const LoadingScreen = () => {

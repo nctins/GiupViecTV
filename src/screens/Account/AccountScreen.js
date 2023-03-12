@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useState, useEffect, useContext } from "react";
+=======
+import React, { useState, useContext } from "react";
+>>>>>>> master
 import {
   StyleSheet,
   View,
@@ -10,11 +14,14 @@ import {
 import Header from "~components/Header";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
-import { FacebookIcon, GoogleIcon, RightArrowIcon } from "~components/Icons";
+import { RightArrowIcon } from "~components/Icons";
 import AvatarComponent from "~components/AvatarComponent";
 import { AuthContext } from "~contexts/AuthContext";
 import useAxios from "~hooks/useAxios";
+<<<<<<< HEAD
 import LoadingScreen from "~screens/LoadingScreen";
+=======
+>>>>>>> master
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -93,6 +100,8 @@ const settingStyle = (theme) => {
 
 const AccountScreen = ({navigation}) => {
   const style = useThemeStyles(styles);
+  const authContext = useContext(AuthContext);
+  const user = authContext.authState.user;
   const [isNotice, setIsNotice] = useState(false);
   const authContext = useContext(AuthContext);
   const user = authContext.authState.user;
@@ -121,11 +130,15 @@ const AccountScreen = ({navigation}) => {
       <Header style={style.header} title="Tài khoản" />
       {/* user info */}
       <View style={[{ flex: 1 }, style.userInfo.wrapper]}>
-        <AvatarComponent img={user.avatar_url} size="lg" containerAvatarStyle ={style.userInfo.avatar} />
+        <AvatarComponent 
+          img={user.avatar_url}
+          size="lg" 
+          containerAvatarStyle ={style.userInfo.avatar} 
+        />
         <View style={style.userInfo.account}>
           <Typography variant="SubTitle">{user.name}</Typography>
           <Typography variant="Description" color="Gray.3">
-            {user.email}
+          {user.email}
           </Typography>
         </View>
       </View>

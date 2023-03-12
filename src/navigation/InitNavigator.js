@@ -16,7 +16,7 @@ const InitNavigator = () => {
             <Stack.Screen name="Step1" component={Step1} options={{ headerShown: false }} />
             <Stack.Screen name="Step2" component={Step2} options={{ headerShown: false }} />
             <Stack.Screen name="HomeScreen" component={RootComponent} options={{ headerShown: false }} />
-            <Stack.Screen name="ForgotPassScreen" component={ForgotPassScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="ForgotPassScreen" component={ForgotPassScreen} options={{ headerShown: false }} /> 
         </Stack.Navigator>
     );
 }

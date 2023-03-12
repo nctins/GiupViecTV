@@ -13,14 +13,14 @@ const AuthProvider = ({ children }) => {
       id: null,
       name: null,
       email: null,
+      phone: null,
       avatar_url: null,
-      address: null,
     }
   });
 
   useEffect(()=>{
     const updateAuthState = async ()=>{
-      let auth_info = await SecureStore.getItemAsync("helper_auth_info")
+      let auth_info = await SecureStore.getItemAsync("customer_auth_info")
       if (auth_info) {
         const {token, refreshToken, user} = JSON.parse(auth_info);
         setAuthState({
@@ -35,7 +35,7 @@ const AuthProvider = ({ children }) => {
   },[])
 
   const logout = async () => {
-    await SecureStore.deleteItemAsync("helper_auth_info");
+    await SecureStore.deleteItemAsync("customer_auth_info");
     setAuthState({
       token: null,
       refreshToken: null,
@@ -44,8 +44,8 @@ const AuthProvider = ({ children }) => {
         id: null,
         name: null,
         email: null,
+        phone: null,
         avatar_url: null,
-        address: null,
       }
     });
   };

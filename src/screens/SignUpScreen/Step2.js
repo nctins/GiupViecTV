@@ -20,6 +20,7 @@ const Step2 = ({route,navigation}) => {
   const styled = useThemeStyles(styles);
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+<<<<<<< HEAD
   const { email, phone, name, MSDD } = route.params;   
   const [isLoading, setIsLoadding] = useState(false);
 
@@ -37,6 +38,15 @@ const Step2 = ({route,navigation}) => {
     if(password !== passwordConfirm){
       Alert.alert(
         "Thông báo!",
+=======
+  const { email, phone, name } = route.params;   
+  const [isLoading, setIsLoading] = useState(false);
+
+  const onSignUp = async () => {
+    if(password !== passwordConfirm){
+      Alert.alert(
+        "Đăng ký tài khoản không thành công!",
+>>>>>>> master
         "Xác nhận mật khẩu không đúng!",
         [
           { text: "OK"}
@@ -45,13 +55,20 @@ const Step2 = ({route,navigation}) => {
       setPasswordConfirm("");
       return;
     }
+<<<<<<< HEAD
     setIsLoadding(true);
     publicAxios
       .post("auth/helper/signup", {
+=======
+    setIsLoading(true);
+    publicAxios
+      .post("auth/customer/signup", {
+>>>>>>> master
         email: email,
         phone: phone,
         name: name,
         password: password,
+<<<<<<< HEAD
         MSDD: MSDD,
       })
       .then(async (response) => {
@@ -84,6 +101,36 @@ const Step2 = ({route,navigation}) => {
               msgAlert = msgAlert + e.replace("body","") + '\n';
             });
           }
+=======
+      })
+      .then(async (response) => {
+        setIsLoading(false);
+        console.log("sign Up");
+        console.log(response.data);
+        navigation.popToTop();
+      })
+      .catch(async (error) => {
+        setIsLoading(false);
+        if (error.response) {
+          console.log("sign Up error");
+          let {msg} = error.response.data;
+          let msgAlert = "";
+          if(msg.length == 1){
+            if(msg[0].includes("password")){
+              Alert.alert(
+                "Đăng ký tài khoản không thành công!",
+                msg[0].replace("body",""),
+                [
+                  { text: "OK"}
+                ]
+              );
+              return;
+            }
+          }
+          msg.map(e => {
+            msgAlert = msgAlert + e.replace("body","") + '\n';
+          })
+>>>>>>> master
           Alert.alert(
             "Đăng ký tài khoản không thành công!",
             msgAlert,

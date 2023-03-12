@@ -4,34 +4,32 @@ import { LOGIN_BG } from "assets/images";
 import Button from "~components/Button";
 import Typography from "~components/Typography";
 import { TextInput } from "~components/Inputs";
-import { Pressable, View, Alert, KeyboardAvoidingView } from "react-native";
+import { Pressable, View, Alert } from "react-native";
 import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
 import * as SecureStore from "expo-secure-store";
-import Toast from "~utils/Toast";
 import LoadingScreen from "./LoadingScreen";
+import Toast from "~utils/Toast";
 
 const LoginScreen = ({navigation}) => {
   const authContext = useContext(AuthContext);
   const { publicAxios } = useContext(AxiosContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const [isLoading, setIsLoadding] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const setToken = async (value) => {
-    await SecureStore.setItemAsync("helper_auth_info", value);
+    await SecureStore.setItemAsync("customer_auth_info", value);
   };
   
   const onLogin = async () => {
-    setIsLoadding(true);
+    setIsLoading(true);
     publicAxios
-      .post("auth/helper/signin", {
+      .post("auth/customer/signin", {
         email: email,
         password: password,
       })
       .then(async (response) => {
-        setIsLoadding(false);
         const { token, refreshToken, user } = response.data;
         authContext.setAuthState({
           token,
@@ -42,13 +40,13 @@ const LoginScreen = ({navigation}) => {
         await setToken(JSON.stringify({ token, refreshToken, user }));
         setEmail("");
         setPassword("");
+        setIsLoading(false);
         Toast.createToast("Xin chào, " + user.name);
         navigation.push('HomeScreen', { params: 'example' })
       })
       .catch(async (error) => {
-        setIsLoadding(false);
+        setIsLoading(false);
         if (error.response) {
-          // console.log(error.response.data);
           let msg = error.response.data.msg;
           let rsMsg = "";
           if(Array.isArray(msg)){

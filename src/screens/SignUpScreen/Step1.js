@@ -16,11 +16,18 @@ const Step1 = ({navigation}) => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
+<<<<<<< HEAD
   const [MSDD, setMSDD] = useState("");
 
   const onPressNextButton = () => {
     if(email.length > 0 && phone.length > 0 && name.length > 0 && MSDD.length > 0){
       navigation.push('Step2', {email: email, phone: phone, name: name, MSDD: MSDD})
+=======
+
+  const onPressNextButton = () => {
+    if(email.length > 0 && phone.length > 0 && name.length > 0){
+      navigation.push('Step2', {email: email, phone: phone, name: name})
+>>>>>>> master
     }else{
       Alert.alert(
         "Thông báo!",
@@ -42,7 +49,11 @@ const Step1 = ({navigation}) => {
           Đăng ký
         </Typography>
       </View>
+<<<<<<< HEAD
       <View style={{ alignItems: "center", marginTop:10 }}>
+=======
+      <View style={{ alignItems: "center", marginTop:30 }}>
+>>>>>>> master
         <View>
         <Typography style={styled.label}>Email:</Typography>
         <TextInput 
@@ -59,6 +70,7 @@ const Step1 = ({navigation}) => {
           title={"Tên"}
           value={name}
           onChangeText={(value) => {setName(value)}}
+<<<<<<< HEAD
         />
         </View>
         <View>
@@ -70,6 +82,8 @@ const Step1 = ({navigation}) => {
           keyboardType = 'numeric'
           maxLength={12}
           onChangeText={(value) => {setMSDD(value)}}
+=======
+>>>>>>> master
         />
         </View>
         <View>
@@ -77,9 +91,15 @@ const Step1 = ({navigation}) => {
         <TextInput
           placeholder="Mọi người liên lạc bạn theo số này nè"
           title={"Số điện thoại"}
+<<<<<<< HEAD
           value={phone}
           keyboardType = 'numeric'
           maxLength={10}
+=======
+          keyboardType = 'numeric'
+          maxLength={10}
+          value={phone}
+>>>>>>> master
           onChangeText={(value) => {setPhone(value)}}
         />
         </View>
@@ -100,8 +120,12 @@ const Step1 = ({navigation}) => {
           </View>
         </View>
       </View>
+<<<<<<< HEAD
       */}
       <View style={{ alignItems: "center", marginTop:150 }}>
+=======
+      <View style={{ alignItems: "center", marginTop:50 }}>
+>>>>>>> master
         <Button size="lg" isShadow onPress={onPressNextButton}>
           Tiếp theo
         </Button>

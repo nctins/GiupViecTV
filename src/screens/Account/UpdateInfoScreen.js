@@ -5,10 +5,14 @@ import {
   ScrollView,
   StatusBar,
   TouchableOpacity,
+<<<<<<< HEAD
   Alert,
   Platform, 
   Pressable,
   Modal
+=======
+  Alert
+>>>>>>> master
 } from "react-native";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
@@ -20,7 +24,10 @@ import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
 import * as ImagePicker from 'expo-image-picker';
 import LoadingScreen from "~screens/LoadingScreen";
+<<<<<<< HEAD
 import GoogleMap from "~screens/GoogleMapScreen";
+=======
+>>>>>>> master
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -92,6 +99,7 @@ const UpdateInfoScreen = ({navigation}) => {
   const [email,setEmail] = useState("");
   const [name,setName] = useState("");
   const [phone,setPhone] = useState("");
+<<<<<<< HEAD
   const [MSDD,setMSDD] = useState("");
   const [address,setAddress] = useState("");
   const [placeID,setPlaceID] = useState("");
@@ -112,6 +120,12 @@ const UpdateInfoScreen = ({navigation}) => {
       </Modal>
     );
   };
+=======
+  const [message,setMessage] = useState("");
+  const [selectedImage, setSelectedImage] = useState("https://reactnative.dev/img/tiny_logo.png");
+  const [imageBase64,setImageBase64] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+>>>>>>> master
 
   useEffect(() => {
     getAccount();
@@ -151,6 +165,7 @@ const UpdateInfoScreen = ({navigation}) => {
   }
 
   const getAccount = async () => {
+<<<<<<< HEAD
     authAxios
       .get("helper/" + user.id)
       .then(async (response) => {
@@ -163,6 +178,22 @@ const UpdateInfoScreen = ({navigation}) => {
         setAddress(helper.address);
       })
       .catch(async (error) => {
+=======
+    setIsLoading(true);
+    authAxios
+      .get("customer/" + user.id)
+      .then(async (response) => {
+        // console.log(response.data);
+        let customer = response.data.data;
+        setEmail(customer.email);
+        setName(customer.name);
+        setPhone(customer.phone);
+        setSelectedImage(customer.avatar_url);
+        setIsLoading(false);
+      })
+      .catch(async (error) => {
+        setIsLoading(false);
+>>>>>>> master
         if (error.response) {
           console.log(error.response.data);
         }
@@ -170,6 +201,7 @@ const UpdateInfoScreen = ({navigation}) => {
   }
 
   const updateAccount = () => {
+<<<<<<< HEAD
     if(email.length > 0 && phone.length > 0 && name.length > 0 && MSDD.length > 0 && address.length > 0){
       setIsLoadding(true);
       authAxios
@@ -186,6 +218,22 @@ const UpdateInfoScreen = ({navigation}) => {
         setMessage(response.data.data);
         authContext.setAuthState({...authContext.authState,user:{id: user.id, name: name, email: email, phone: phone, avatar_url: selectedImage, address: address}});
         setIsLoadding(false);
+=======
+    if(email.length > 0 && phone.length > 0 && name.length > 0){
+      setIsLoading(true);
+      authAxios
+      .put("customer/" + user.id,{
+        email: email,
+        name: name,
+        phone: phone,
+        image: imageBase64,
+      })
+      .then(async (response) => {
+        // console.log(response.data.data);
+        setMessage(response.data.data);
+        authContext.setAuthState({...authContext.authState,user:{id: user.id, name: name, email: email, phone: phone, avatar_url: selectedImage}});
+        setIsLoading(false);
+>>>>>>> master
       })
       .catch(async (error) => {
         setMessage("");
@@ -193,12 +241,21 @@ const UpdateInfoScreen = ({navigation}) => {
           console.log(error.response.data);
           let msgArr = error.response.data.msg;
           msgArr.map((e) => {
+<<<<<<< HEAD
             e = e.replace("body","");
             setMessage(prev => prev.concat('\n').concat(e));
           })
           setIsLoadding(false);
           // setMessage(error.response.data.msg);
         }
+=======
+            e = e.split(":");
+            setMessage(prev => prev.concat('\n').concat(e[1]));
+          })
+          // setMessage(error.response.data.msg);
+        }
+        setIsLoading(false);
+>>>>>>> master
       });
     }else{
       Alert.alert(
@@ -209,6 +266,10 @@ const UpdateInfoScreen = ({navigation}) => {
         ]
       );
     }
+<<<<<<< HEAD
+=======
+    
+>>>>>>> master
   }
 
   const onPressButtonSave = () => {
@@ -225,11 +286,14 @@ const UpdateInfoScreen = ({navigation}) => {
       ]
     );
   }
+<<<<<<< HEAD
 
   const onPressAddress = () => {
     console.log("press address");
     setModalVisible(true);
   }
+=======
+>>>>>>> master
 
   return (
     <View style={style.default}>
@@ -258,6 +322,7 @@ const UpdateInfoScreen = ({navigation}) => {
 
         {/* form */}
         <View style={[{ flex: 3 }, style.form.wrapper]}>
+<<<<<<< HEAD
           <View>
             <Typography style={style.label}>Email:</Typography>
             <TextInput
@@ -325,6 +390,38 @@ const UpdateInfoScreen = ({navigation}) => {
         </View>
 
         <View style={[{ flex: 1 }, style.form.button]}>
+=======
+          <TextInput
+            style={style.form.field}
+            placeholder=""
+            title={"Email"}
+            titleStyle="blackTitle"
+            value={email}
+            onChangeText={(text) => setEmail(text)}
+            editable = {false}
+          />
+          <TextInput
+            style={style.form.field}
+            placeholder=""
+            title={"Họ và tên"}
+            titleStyle="blackTitle"
+            value={name}
+            onChangeText={(text) => setName(text)}
+          />
+          <TextInput
+            style={style.form.field}
+            placeholder=""
+            title={"Số điện thoại"}
+            titleStyle="blackTitle"
+            value={phone}
+            onChangeText={(text) => setPhone(text)}
+          />
+
+          {messageDisplay()}
+        </View>
+
+        <View style={[{ flex: 2 }, style.form.button]}>
+>>>>>>> master
           <Button size="sm" radius={4} style={{ width: 130, padding: 10 }} onPress={onPressButtonSave}>
             Lưu
           </Button>

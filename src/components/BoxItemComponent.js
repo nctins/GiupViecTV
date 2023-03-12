@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet,TouchableOpacity } from "react-native";
 import useThemeStyles from '~hooks/useThemeStyles';
 import Typography from "~components/Typography";
 import Button from './Button';
 import AvatarComponent from './AvatarComponent';
+import { POST_TYPE } from '~constants/app_contants';
 
 const styles = (theme) => StyleSheet.create({
     default: {
@@ -43,21 +44,31 @@ const styles = (theme) => StyleSheet.create({
 
 const BoxItemComponent = (props) => {
     const style = useThemeStyles(styles);
-
+    const navigation = props.navigation;
+    const onPressNow = () => {
+        navigation.navigate("ServiceTab", {post_type: POST_TYPE.INSTANT});
+    }
+    const onPressTime = () => {
+        navigation.navigate("ServiceTab", {post_type: POST_TYPE.HOURLY});
+    }
     return ( 
         <View style={style.default}>
             <View style={style.viewTitle}>
                 <Typography variant="H7">Dịch vụ</Typography>
             </View> 
             <View style={style.viewContent}>
-                <View style={style.viewItem}>
-                    <AvatarComponent size='sm' type='square' />
-                    <Typography variant="Description">Giúp việc tức thì</Typography>
-                </View>
-                <View style={style.viewItem}>
-                    <AvatarComponent size='sm' type='square' />
-                    <Typography variant="Description">Giúp việc theo giờ</Typography>
-                </View>
+                <TouchableOpacity onPress={onPressNow}>
+                    <View style={style.viewItem}>
+                        <AvatarComponent size='sm' type='square' />
+                        <Typography variant="Description">Giúp việc tức thì</Typography>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={onPressTime}>
+                    <View style={style.viewItem}>
+                        <AvatarComponent size='sm' type='square' />
+                        <Typography variant="Description">Giúp việc theo giờ</Typography>
+                    </View>
+                </TouchableOpacity>
             </View>          
         </View>
      );

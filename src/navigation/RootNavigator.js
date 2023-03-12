@@ -1,12 +1,11 @@
 import React, { useContext, useEffect } from "react";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeScreen from "~screens/Home/HomeScreen";
-import AccountNavigator from "./AccountNavigator";
-import HistoryNavigator from "./HistoryNavigator";
-import OrderNavigator from "./OrderNavigator";
-import MessageNavigator from "./MessageNavigator"
-import { HomeIcon, OrderIcon, UserIcon, MessageIcon, ClockIcon} from "~components/Icons";
 import HomeNavigator from "./HomeNavigator";
+import CartNavigator from "./CartNavigator";
+import MessageNavigator from "./MessageNavigator";
+import CouponNavigator from "./CouponNavigator";
+import AccountNavigator from "./AccountNavigator";
+import { HomeIcon, OrderIcon, UserIcon, MessageIcon, GiftIcon} from "~components/Icons";
 import { AuthContext } from "~contexts/AuthContext";
 import Toast from "~utils/Toast";
 
@@ -22,13 +21,13 @@ const RootComponent = ({ navigation }) => {
       logout();
       navigation.navigate('StartScreen');
     }
-  },[authState])
+  },[authState]);
 
   return (
     <TAB_NAV.Navigator 
       screenOptions={{
         headerShown: false,
-        unmountOnBlur: true
+        unmountOnBlur: true,
       }}
       initialRouteName = "Trang chủ"
     >
@@ -48,10 +47,10 @@ const RootComponent = ({ navigation }) => {
         }}
       />
       <TAB_NAV.Screen 
-        name="Đơn hàng của tôi" 
-        component={OrderNavigator} 
+        name="Đơn hàng" 
+        component={CartNavigator} 
         options={{
-          tabBarLabel: 'Đơn hàng của tôi',
+          tabBarLabel: 'Đơn hàng',
           tabBarIcon: ({ focused, color, size }) => {
             if(focused){
               color = "BackgroundBlue";
@@ -59,21 +58,6 @@ const RootComponent = ({ navigation }) => {
               color = "Gray.6";
             }
             return <OrderIcon color={color} size={sizeIcon} />
-          },
-        }}
-      />
-      <TAB_NAV.Screen 
-        name="Lịch sử" 
-        component={HistoryNavigator} 
-        options={{
-          tabBarLabel: 'Lịch sử',
-          tabBarIcon: ({ focused, color, size }) => {
-            if(focused){
-              color = "BackgroundBlue";
-            }else{
-              color = "Gray.6";
-            }
-            return <ClockIcon color={color} size={sizeIcon} />
           },
         }}
       />
@@ -89,6 +73,21 @@ const RootComponent = ({ navigation }) => {
               color = "Gray.6";
             }
             return <MessageIcon color={color} size={sizeIcon} />
+          },
+        }}
+      />
+      <TAB_NAV.Screen 
+        name="Ưu đãi" 
+        component={CouponNavigator} 
+        options={{
+          tabBarLabel: 'Ưu đãi',
+          tabBarIcon: ({ focused, color, size }) => {
+            if(focused){
+              color = "BackgroundBlue";
+            }else{
+              color = "Gray.6";
+            }
+            return <GiftIcon color={color} size={sizeIcon} />
           },
         }}
       />

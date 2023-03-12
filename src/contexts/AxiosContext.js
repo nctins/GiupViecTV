@@ -52,7 +52,7 @@ const AxiosProvider = ({ children }) => {
           token: tokenRefreshResponse.data.token,
         });
         await SecureStore.setItemAsync(
-          "helper_auth_info",
+          "customer_auth_info",
           JSON.stringify({
             token: tokenRefreshResponse.data.token,
             refreshToken: authContext.authState.refreshToken,
@@ -72,6 +72,7 @@ const AxiosProvider = ({ children }) => {
             id: null,
             name: null,
             email: null,
+            phone: null
           },
         });
       });

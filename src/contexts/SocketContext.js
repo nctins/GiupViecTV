@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { io } from "socket.io-client";
 import { API_URL } from "~constants/api";
 import { AuthContext } from "./AuthContext";
@@ -18,8 +18,7 @@ const SocketProvider = ({ children }) => {
       },
     });
     setSocket(socketio)
-  },[authState])
-  
+  },[authState]);
 
   return (
     <Provider

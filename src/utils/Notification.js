@@ -18,7 +18,10 @@ Notifications.registerForPushNotifications = async function () {
     }
 
     if (finalStatus !== "granted") {
+<<<<<<< HEAD
       console.log("hello");
+=======
+>>>>>>> master
       return;
     }
 
