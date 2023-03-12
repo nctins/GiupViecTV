@@ -73,3 +73,21 @@ export const EVALUATE = [
 
 export const DEFAULT_IMAGE_ERROR = "https://res.cloudinary.com/dru3umoml/image/upload/v1670421546/images/601082646d6bf4446451b0a4_6002086f72b72717ae01d954_google-doc-error-message_g1wpwa.png"
 export const DEFAULT_AVATAR = "https://reactnative.dev/img/tiny_logo.png";
+
+// APP
+export const TIMESERVING_HOURS = 3; // 3h
+export const TIMESERVING_MILISEC = 10800000; // 3 * 60 * 60 *1000 = 10800000 miliseconds
+export const BREAK_TIME_MINUS = 30; // 30 minus
+export const BREAK_TIME_MILISEC = 1800000; // 3 * 60 * 1000 = 1800000 miliseconds
+
+// const for convert Date.getDay() to app day
+export const JS_DAYS = [SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY];
+export const DAYS = [MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SATURDAY];
+
+export const MONDAY = 0;
+export const TUESDAY = 1;
+export const WEDNESDAY = 2;
+export const THURSDAY = 3;
+export const FRIDAY = 4;
+export const SATURDAY = 5;
+export const SUNDAY = 6;
