@@ -31,6 +31,7 @@ const ServiceProvider = ({
   const [post, setPost] = useState({
     customer_name: authState.user.name,
     address: "",
+    place_id: "",
     phone_number: authState.user.phone,
     date: initdatetime,
     time: initdatetime,
@@ -198,8 +199,14 @@ const ServiceProvider = ({
     authAxios
       .post("/post", data)
       .then((res) => {
-        console.log(res.data.msg);
-        navigation.navigate("HomeScreen");
+        console.log(res.data.data);
+        if(res.data.data){
+          Alert.alert("", "Đã tìm được người giúp việc!");
+          navigation.navigate("Đơn hàng");
+        }else{
+          Alert.alert("", "Không có người giúp việc nào rảnh trong thời gian này, vui lòng thay đổi thời gian khác!");
+          setCurrentScreen("ServiceScreen");
+        }
       })
       .catch((err) => {
         console.log(err.response.data);
@@ -209,10 +216,6 @@ const ServiceProvider = ({
   controller.onChooseAddress = (address_id) => {
     setPostData({ address: addresses[address_id].address });
     setCurrentScreen("ServiceScreen");
-  };
-
-  controller.onCreateAddress = () => {
-    setCurrentScreen("GoogleMapScreen");
   };
 
   controller.goToPaymentScreen = () => {
@@ -233,7 +236,6 @@ const ServiceProvider = ({
       address: address,
       place_id: placeID,
     };
-    console.log(data);
     authAxios
       .post(`/customer/${authState.user.id}/address`, data)
       .then((res) => {
