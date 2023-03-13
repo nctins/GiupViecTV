@@ -33,7 +33,7 @@ const CartScreen = () => {
   return (
     <SafeAreaView  style={{flex:1}}>
         <StatusBar backgroundColor={style.statusBar.backgroundColor} barStyle="light-content" />
-        <Header style={style.header} title="Đơn hàng" />
+        <Header style={style.header} title="Lịch hẹn" />
         <TabNavigatorCart />
     </SafeAreaView >
   )

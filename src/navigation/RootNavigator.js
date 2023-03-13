@@ -48,10 +48,10 @@ const RootComponent = ({ navigation }) => {
         }}
       />
       <TAB_NAV.Screen 
-        name="Đơn hàng" 
+        name="Lịch hẹn" 
         component={CartNavigator} 
         options={{
-          tabBarLabel: 'Đơn hàng',
+          tabBarLabel: 'Lịch hẹn',
           tabBarIcon: ({ focused, color, size }) => {
             if(focused){
               color = "BackgroundBlue";

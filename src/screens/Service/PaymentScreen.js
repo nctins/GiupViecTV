@@ -186,7 +186,7 @@ const PaymentScreen = () => {
           </View>
         </View>
         <Typography variant="MiniDescription" color="AlizarinRed">
-          Đơn hàng cần thêm {Caculator.toCharMonney(price_miss)} để sử dụng mã
+          Cần thêm {Caculator.toCharMonney(price_miss)} để sử dụng mã
           này
         </Typography>
       </View>

@@ -202,7 +202,7 @@ const ServiceProvider = ({
         console.log(res.data.data);
         if(res.data.data){
           Alert.alert("", "Đã tìm được người giúp việc!");
-          navigation.navigate("Đơn hàng");
+          navigation.navigate("Lịch hẹn");
         }else{
           Alert.alert("", "Không có người giúp việc nào rảnh trong thời gian này, vui lòng thay đổi thời gian khác!");
           setCurrentScreen("ServiceScreen");

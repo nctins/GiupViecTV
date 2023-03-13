@@ -268,7 +268,7 @@ const CartDetail = (props) => {
     authAxios
       .get(`rating/post/${post_id}`)
       .then((res) => {
-        console.log(res.data.data);
+        // console.log(res.data.data);
         setRatingDetail(res.data.data);
       })
       .catch((err) => {
@@ -412,12 +412,12 @@ const CartDetail = (props) => {
           <View style={modalStyle.modalView}>
             <View style={modalStyle.wrapper}>
               <View style={modalStyle.header}>
-                <Typography variant="H7">Hủy đơn hàng</Typography>
+                <Typography variant="H7">Hủy lịch hẹn</Typography>
               </View>
               <View style={modalStyle.content}>
                 <View style={modalStyle.formItem}>
                   <Typography variant="SubTitle">
-                    Lý do hủy đơn hàng:{" "}
+                    Lý do hủy:{" "}
                   </Typography>
                   <TextInput
                     variant="modalForm"
@@ -537,7 +537,9 @@ const CartDetail = (props) => {
 
     const [ratings, setRatings] = useState([]);
     useEffect(() => {
-      getRatings();
+      if(user_review_modal) {
+        getRatings();
+      }
     }, [user_review_modal]);
 
     const getRatings = () => {
@@ -622,13 +624,13 @@ const CartDetail = (props) => {
             }}
           />
           <Typography variant="H5" style={style.titleHeader}>
-            Chi tiết đơn hàng
+            Chi tiết lịch hẹn
           </Typography>
         </View>
         <ScrollView style={style.viewContent}>
           <View style={style.viewItemContent1}>
             <Typography variant="TextBold" style={style.title}>
-              Tình trạng đơn hàng
+              Tình trạng
             </Typography>
             <View style={style.label}>
               <Typography variant="Description" style={{}}>
@@ -724,7 +726,7 @@ const CartDetail = (props) => {
                     // buttonStyle={modalStyle.starStyle}
                     containerStyle={{ maxWidth: 150 }}
                     starSize={20}
-                    rating={post.customer.rank}
+                    rating={post.helper.rank}
                   />
                 </View>
                 {post.helper.rank > 0 && (
