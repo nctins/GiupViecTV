@@ -49,7 +49,7 @@ export const POST_STATE = {
 };
 
 export const LIMIT_ADDRESS_LENGTH = {
-  LENGTH: 30,
+  LENGTH: 60,
 };
 
 // constant for notification table

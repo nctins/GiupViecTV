@@ -21,11 +21,11 @@ const styles = (theme) => StyleSheet.create({
     infoView: {
         width: "50%",
         height: 80,
-        backgroundColor: "white",
+        backgroundColor: theme.colors.Gray[0],
         flexDirection: "column",
-        justifyContent: "space-between",
+        justifyContent: "space-around",
         paddingVertical: 10,
-        marginLeft: 5
+        marginLeft: 8,
     },
 })
 
@@ -44,7 +44,8 @@ const RightInfoCartItem1 = (props) => {
 
     return (
         <View style={rightStyle.default}>
-            <Typography variant="TextBold">Waiting ...</Typography>
+            {/* <Typography variant="TextBold">Waiting ...</Typography> */}
+            <Typography variant="TextBold"></Typography>
             <Typography variant="TextBold">{post.total} VNĐ</Typography>
         </View>
     );
@@ -207,12 +208,12 @@ const CartItem = (props) => {
         }
     }
 
-    const getNamePost = () => {
-        if(post.post_type === POST_TYPE.INSTANT){
-            return POST_TYPE.INSTANT_NA;
-        }
-        return POST_TYPE.HOURLY_NA;
-    }
+    // const getNamePost = () => {
+    //     if(post.post_type === POST_TYPE.INSTANT){
+    //         return POST_TYPE.INSTANT_NA;
+    //     }
+    //     return POST_TYPE.HOURLY_NA;
+    // }
 
     const formatAddress = () => {
         if(post.address.length > LIMIT_ADDRESS_LENGTH.LENGTH){
@@ -221,15 +222,18 @@ const CartItem = (props) => {
             return post.address;
         }
     }
-    
+    const formatDateTime = () => {
+        const date = new Date(post.date);
+        return `${post.time.substring(0,5)}, ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+    }
     return ( 
         <TouchableOpacity onPress={onPressCart}>
             <View style={style.default}>
             <AvatarComponent img={logo} containerAvatarStyle={{}} avatarStyle={{}} size={"lg"} style={"circle"}/>
                 <View style={style.infoView}>
-                    <Typography variant="Text">{getNamePost()}</Typography>
-                    <Typography variant="MiniDescription" style={{marginLeft: 5}}>{formatAddress()}</Typography>
-                    <Typography variant="Description">{post.time.substring(0,5)}, {post.date.substring(0,10)}</Typography>
+                    <Typography variant="Text">{formatDateTime()}</Typography>
+                    <Typography variant="Description">{formatAddress()}</Typography>
+                    {/* <Typography variant="Text">{getNamePost()}</Typography> */}
                 </View>
                 {setRightItem()}
             </View>
