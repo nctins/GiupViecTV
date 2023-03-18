@@ -120,7 +120,7 @@ const ServiceScreen = () => {
                   <Typography style={{ marginBottom: 5 }}>Ngày:</Typography>
                   <DateInput
                     value={post.date}
-                    onChange={(event, selectedTime) => {
+                    onChange={(selectedTime) => {
                       setPostData({ date: selectedTime });
                     }}
                   />
@@ -129,7 +129,7 @@ const ServiceScreen = () => {
                   <Typography style={{ marginBottom: 5 }}>Giờ:</Typography>
                   <TimeInput
                     value={post.time}
-                    onChange={(event, selectedTime) => {
+                    onChange={(selectedTime) => {
                       setPostData({ time: selectedTime });
                     }}
                   />
