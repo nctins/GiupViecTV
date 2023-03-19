@@ -5,6 +5,7 @@ import Typography from "~components/Typography";
 import AvatarComponent from './AvatarComponent';
 import {POST_STATE, POST_TYPE, LIMIT_ADDRESS_LENGTH, PAYMENT_METHOD_CONDITION} from "../constants/app_contants";
 import logoImage from '../../assets/images/icons/logo.png';
+import DateFormater from '~utils/Dateformater';
 
 const logo = Image.resolveAssetSource(logoImage).uri;
 
@@ -224,7 +225,7 @@ const CartItem = (props) => {
     }
     const formatDateTime = () => {
         const date = new Date(post.date);
-        return `${post.time.substring(0,5)}, ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+        return `${post.time.substring(0,5)}, ${DateFormater(date)}`
     }
     return ( 
         <TouchableOpacity onPress={onPressCart}>
