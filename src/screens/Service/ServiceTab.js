@@ -65,7 +65,7 @@ const ServiceTab = ({ route, navigation }) => {
         <StatusBar backgroundColor={style.statusBar.backgroundColor} />
         <View style={style.header}>
           <BackIcon style={style.backIconStyle} size="md" color="white" onPress = {onPressBackIcon} />
-          <Typography variant="H5" style={style.title}>Tạo bài đăng</Typography>
+          <Typography variant="H5" style={style.title}>Tìm người giúp việc</Typography>
         </View>
         <View style={{ flex: 1 }}>
           <View style={{ flex: 1, marginTop: 20 }}>

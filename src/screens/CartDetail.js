@@ -325,7 +325,7 @@ const CartDetail = (props) => {
   };
 
   const onDelete = () => {
-    Alert.alert("", "Bạn có muốn xóa bài đăng này không?", [
+    Alert.alert("", "Bạn có muốn xóa lịch hẹn này không?", [
       { text: "Cancel", onPress: () => {} },
       {
         text: "OK",
