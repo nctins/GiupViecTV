@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import { StyleSheet, View, Dimensions, SafeAreaView, Alert } from "react-native";
+import { StyleSheet, View, Dimensions, SafeAreaView, Alert, PermissionsAndroid} from "react-native";
 import useThemeStyles from '~hooks/useThemeStyles';
 import Typography from "~components/Typography";
 import Button from '~components/Button';
@@ -11,6 +11,7 @@ import * as Location from 'expo-location';
 import { API_GOOGLE } from "../constants/api";
 import { BackIcon, CancelIcon, PlusIcon } from '~components/Icons';
 import MinusIcon from '~components/Icons/MinusIcon';
+import Toast from '~utils/Toast';
 
 const { width, height } = Dimensions.get("window");
 
@@ -100,7 +101,7 @@ const cal_longitude_Delta = (latitudeDelta) => {
     return latitudeDelta * ASPECT_RATIO;
 }
 
-const GoogleMap = ({setModalVisible, setOriginAddress, setOriginPlaceID}) => { 
+const GoogleMap = ({setModalVisible, addressEdit, setOriginAddress, setOriginPlaceID}) => { 
     const style = useThemeStyles(styles);
     const authContext = useContext(AuthContext);
     const {authAxios} = useContext(AxiosContext);
@@ -110,20 +111,128 @@ const GoogleMap = ({setModalVisible, setOriginAddress, setOriginPlaceID}) => {
                                             longitudeDelta: cal_longitude_Delta(0.01)});
     const mapRef = useRef(null);
 
-    useEffect(() => {
-        (async () => {
+    // useEffect(() => {
+    //     (async () => {
 
-            let { status } = await Location.requestForegroundPermissionsAsync();
-            if (status !== 'granted') {
-                setErrorMsg('Permission to access location was denied');
-                return;
-            }
+    //         let { status } = await Location.requestForegroundPermissionsAsync();
+    //         if (status !== 'granted') {
+    //             setErrorMsg('Permission to access location was denied');
+    //             return;
+    //         }
           
-            let location = await Location.getCurrentPositionAsync({});
-        //   console.log(location);
-        //   setPosition({...position, latitude: location.coords.latitude, longitude: location.coords.longitude});
-        })();
+    //         let location = await Location.getCurrentPositionAsync({});
+    //     //   console.log(location);
+    //       setPosition({...position, latitude: location.coords.latitude, longitude: location.coords.longitude});
+    //     })();
+
+    //     if(addressEdit && addressEdit.length > 0){
+    //         let queryAddress = addressEdit.replace(" ","%");
+    //         let UrlAPI = "https://maps.googleapis.com/maps/api/geocode/json?address=" + queryAddress + "&key=" + API_GOOGLE;
+
+    //         authAxios
+    //             .get(UrlAPI)
+    //             .then(async (response) => {
+    //                 let address_obj = response.data.results[0];
+    //                 // console.log(address_obj);
+    //                 setPosition({...position,latitude: address_obj.geometry.location.lat, longitude: address_obj.geometry.location.lng});
+    //             })
+    //             .catch(async (error) => {
+    //                 console.log(error);
+    //             });
+    //     }
+    // }, []);
+
+    useEffect(() => {
+        const requestLocationPermission = async () => {
+            try {
+              const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                {
+                  title: 'Location Access Required',
+                  message: 'This App needs to Access your location',
+                },
+              );
+              if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                //To Check, If Permission is granted
+                getOneTimeLocation();
+                // subscribeLocationLocation();
+              } else {
+                Toast('Permission Denied');
+              }
+            } catch (err) {
+              console.warn(err);
+            }
+        };
+        requestLocationPermission();
+
+        if(addressEdit && addressEdit.length > 0){
+            let queryAddress = addressEdit.replace(" ","%");
+            let UrlAPI = "https://maps.googleapis.com/maps/api/geocode/json?address=" + queryAddress + "&key=" + API_GOOGLE;
+
+            authAxios
+                .get(UrlAPI)
+                .then(async (response) => {
+                    let address_obj = response.data.results[0];
+                    // console.log(address_obj);
+                    setPosition({...position,latitude: address_obj.geometry.location.lat, longitude: address_obj.geometry.location.lng});
+                })
+                .catch(async (error) => {
+                    console.log(error);
+                });
+        }
+
     }, []);
+
+    const getOneTimeLocation = () => {
+        Geolocation.getCurrentPosition(
+          //Will give you the current location
+          (position) => {
+            //getting the Longitude from the location json
+            const currentLongitude = 
+              JSON.stringify(position.coords.longitude);
+    
+            //getting the Latitude from the location json
+            const currentLatitude = 
+              JSON.stringify(position.coords.latitude);
+    
+            setPosition({...position,latitude: currentLatitude, longitude: currentLongitude});
+          },
+          (error) => {
+            Toast("Cần phải có quyền lấy địa chỉ!");
+            setModalVisible(false);
+          },
+          {
+            enableHighAccuracy: false,
+            timeout: 30000,
+            maximumAge: 1000
+          },
+        );
+    };
+    
+    const subscribeLocationLocation = () => {
+        watchID = Geolocation.watchPosition(
+          (position) => {
+            //Will give you the location on location change
+            setLocationStatus('You are Here');
+            console.log(position);
+    
+            //getting the Longitude from the location json        
+            const currentLongitude =
+              JSON.stringify(position.coords.longitude);
+    
+            //getting the Latitude from the location json
+            const currentLatitude = 
+              JSON.stringify(position.coords.latitude);
+          },
+          (error) => {
+            setLocationStatus(error.message);
+          },
+          {
+            enableHighAccuracy: false,
+            maximumAge: 1000
+          },
+        );
+    };
 
     const zoomIn = () => {
         const { latitudeDelta, longitudeDelta } = position;

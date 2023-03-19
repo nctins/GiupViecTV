@@ -47,13 +47,13 @@ const AddressScreen = () => {
     setAddressEdit(address);
   };
 
-  const ModalGoogleMap = ({setPlaceID, setAddress}) => {
+  const ModalGoogleMap = ({addressEdit, setPlaceID, setAddress}) => {
     const style = useThemeStyles(modalStyle);
 
     return (
       <Modal animationType="none" transparent={true} visible={modalMapVisible}>
         <View style={style.centeredView}>
-          <GoogleMap setModalVisible = {setModalMapVisible} setOriginAddress = {setAddress} setOriginPlaceID = {setPlaceID} />
+          <GoogleMap setModalVisible = {setModalMapVisible} addressEdit = {addressEdit} setOriginAddress = {setAddress} setOriginPlaceID = {setPlaceID} />
         </View>
       </Modal>
     );
@@ -221,7 +221,7 @@ const AddressScreen = () => {
       />
       <ModalAddress address={address} placeID = {placeID} />
       <ModalEditAddress originAddress={address} placeID = {placeID} />
-      <ModalGoogleMap setAddress={setAddress} setPlaceID = {setPlaceID} />
+      <ModalGoogleMap addressEdit={address_edit.address} setAddress={setAddress} setPlaceID = {setPlaceID} />
     </View>
   );
 };
