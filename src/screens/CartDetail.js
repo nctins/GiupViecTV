@@ -1,29 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  StatusBar,
-  Linking,
-  Modal,
-  Pressable,
-  TouchableWithoutFeedback,
-  Alert,
-} from "react-native";
+import {StyleSheet, View, ScrollView, StatusBar, Linking, Modal, Pressable, TouchableWithoutFeedback, Alert} from "react-native";
+import { WebView } from 'react-native-webview';
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
 import { BackIcon } from "~components/Icons";
 import Button from "~components/Button";
 import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
-import {
-  POST_STATE,
-  POST_TYPE,
-  LIMIT_ADDRESS_LENGTH,
-  PAYMENT_METHOD_CONDITION,
-  PAYMENT_METHOD,
-  EVALUATE,
-} from "../constants/app_contants";
+import { SocketContext } from "~contexts/SocketContext";
+import {POST_STATE, PAYMENT_METHOD, EVALUATE} from "../constants/app_contants";
 import CurrencyText from "~components/CurrencyText";
 import { TextInput } from "~components/Inputs";
 import Toast from "~utils/Toast";
@@ -206,12 +191,29 @@ const styles = (theme) =>
       },
       starColor: theme.colors.ZincYellow,
     },
+    paymentModal: {
+      container: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        // backgroundColor: theme.colors.Transparency,
+      },
+      webViewContainer: {
+        width: "100%",
+        height: "100%",
+      },
+      backButton: {
+        width: 50,
+        height: 30,
+      }
+    }
   });
 
 const CartDetail = (props) => {
   const style = useThemeStyles(styles);
   const { authState } = useContext(AuthContext);
   const { authAxios } = useContext(AxiosContext);
+  const { socket } = useContext(SocketContext);
   const navigation = props.navigation;
   const route = props.route;
   const { post_id } = route.params.post;
@@ -219,12 +221,41 @@ const CartDetail = (props) => {
   const [cancel_modal, setCancelModal] = useState(false);
   const [review_modal, setReviewModal] = useState(false);
   const [user_review_modal, setUserReviewModal] = useState(false);
+  const [uri, setUri] = useState("https://github.com/facebook/react-native");
+  const [payment_modal, setPaymentModal] = useState(false);
+  const [isPayment, setIsPayment] = useState(false);
   const [post, setPost] = useState(init_post);
   const [rating_detail, setRatingDetail] = useState(null);
 
   useEffect(() => {
     getPostDetail();
   }, []);
+
+  useEffect(() => {
+    const listener = (data) => {
+      if(data.isPayment || data.isPayment == "1"){
+        Alert.alert("", "Thanh toán thành công!", [
+          {
+            text: "OK",
+            onPress: () => {
+              authAxios
+                .put(`post`, {post_id: post_id, post_state: POST_STATE.COMPLETE, helper_id: post.helper.id})
+                .then((res) => {
+                  console.log(res.data.data);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            },
+          },
+        ]);
+      }
+      setUri("");
+      setPaymentModal(false);
+    };
+    socket.on(post.post_id, listener);
+    return () => socket.off(post.post_id);
+  }, [post]);
 
   const getPostDetail = () => {
     // console.log(`post/${post.post_id}`);
@@ -249,6 +280,8 @@ const CartDetail = (props) => {
             phone: res_obj.helper_phone,
             rank: res_obj.helper_rank,
           },
+          payment_method: res_obj.payment_method,
+          post_id: res_obj.post_id,
           total: res_obj.total,
           coupon_price: res_obj.coupon_price,
         };
@@ -377,6 +410,38 @@ const CartDetail = (props) => {
           <Typography variant="Description">Tiền mặt</Typography>
         )}
       </View>
+    );
+  };
+
+  const onPaymentVnpay = () => {
+    authAxios
+      .post(`payment/createPayment`, {post_id: post.post_id, amount: post.total.toString(), orderDescription: "Thanh toán lịch hẹn", language: "vi" })
+      .then((res) => {
+        // console.log(res.data.data);
+        setUri(res.data.data);
+        setPaymentModal(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  const PaymentModal = () => {
+    const modalStyle = style.paymentModal;
+
+    return (
+      <Modal animationType="none" transparent={true} visible={payment_modal}>
+        <View style={modalStyle.container}>
+          <View style={modalStyle.webViewContainer}>
+            <WebView
+              source={{
+                uri: uri,
+              }}
+              style={modalStyle.container}
+            />
+          </View>
+        </View>
+      </Modal>
     );
   };
 
@@ -612,6 +677,7 @@ const CartDetail = (props) => {
       </Modal>
     );
   };
+
   return (
     <>
       <View style={style.default}>
@@ -772,12 +838,22 @@ const CartDetail = (props) => {
                 Đánh giá
               </Button>
             )}
+            {post.payment_method == PAYMENT_METHOD.VNPAY && post_state == POST_STATE.INCOMPLETE && (
+              <Button
+                style={style.reviewBtn}
+                size="modalBtn"
+                onPress={onPaymentVnpay}
+              >
+                Thanh toán
+              </Button>
+            )}
           </View>
         </ScrollView>
       </View>
       <CancelModal />
       <ReviewModal />
       <UserReviewModal />
+      <PaymentModal />
     </>
   );
 };

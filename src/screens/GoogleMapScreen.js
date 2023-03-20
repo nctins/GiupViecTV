@@ -7,8 +7,8 @@ import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import * as Location from 'expo-location';
 import { API_GOOGLE } from "../constants/api";
+import Geolocation from '@react-native-community/geolocation';
 import { BackIcon, CancelIcon, PlusIcon } from '~components/Icons';
 import MinusIcon from '~components/Icons/MinusIcon';
 import Toast from '~utils/Toast';
@@ -188,14 +188,12 @@ const GoogleMap = ({setModalVisible, addressEdit, setOriginAddress, setOriginPla
           //Will give you the current location
           (position) => {
             //getting the Longitude from the location json
-            const currentLongitude = 
-              JSON.stringify(position.coords.longitude);
+            const currentLongitude = position.coords.longitude;
     
             //getting the Latitude from the location json
-            const currentLatitude = 
-              JSON.stringify(position.coords.latitude);
-    
-            setPosition({...position,latitude: currentLatitude, longitude: currentLongitude});
+            const currentLatitude = position.coords.latitude;
+
+            setPosition(prev => {return {...prev, latitude: currentLatitude, longitude: currentLongitude}});
           },
           (error) => {
             Toast("Cần phải có quyền lấy địa chỉ!");
