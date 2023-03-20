@@ -469,8 +469,8 @@ const PaymentMethod = () => {
           ]}
           activeOpacity={1}
           onPress={() => {
-            // setPostData({ payment_method: PAYMENT_METHOD.VNPAY });
-            Toast.createToast("thanh toán online hiện không khả dụng")
+            setPostData({ payment_method: PAYMENT_METHOD.VNPAY });
+            // Toast.createToast("thanh toán online hiện không khả dụng")
           }}
         >
           <VNPayIcon />
