@@ -157,7 +157,7 @@ const GoogleMap = ({setModalVisible, addressEdit, setOriginAddress, setOriginPla
                 getOneTimeLocation();
                 // subscribeLocationLocation();
               } else {
-                Toast('Permission Denied');
+                Toast.createToast('Permission Denied');
               }
             } catch (err) {
               console.warn(err);
@@ -196,7 +196,7 @@ const GoogleMap = ({setModalVisible, addressEdit, setOriginAddress, setOriginPla
             setPosition(prev => {return {...prev, latitude: currentLatitude, longitude: currentLongitude}});
           },
           (error) => {
-            Toast("Cần phải có quyền lấy địa chỉ!");
+            Toast.createToast("Cần phải có quyền lấy địa chỉ!");
             setModalVisible(false);
           },
           {
