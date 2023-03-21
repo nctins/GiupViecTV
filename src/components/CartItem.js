@@ -180,7 +180,7 @@ const RightInfoCartItem4 = (props) => {
         <View style={rightStyle.default}>
             {displayHelper()}
             <View style={rightStyle.viewItem2} >
-                <Typography variant="Description" style={{color: "red"}}>Đàm phán giá không thành công</Typography>
+                {/* <Typography variant="Description" style={{color: "red"}}>Đàm phán giá không thành công</Typography> */}
             </View>
         </View>
     );
