@@ -91,3 +91,19 @@ export const THURSDAY = 3;
 export const FRIDAY = 4;
 export const SATURDAY = 5;
 export const SUNDAY = 6;
+
+export const VNPAY_RESPONSE_CODE = {
+  CODE_00: "Thanh toán thành công",
+  CODE_07: "Trừ tiền thành công.\nGiao dịch bị nghi ngờ (liên quan tới lừa đảo, giao dịch bất thường).",
+  CODE_09: "Thẻ/Tài khoản của bạn chưa đăng ký dịch vụ InternetBanking tại ngân hàng.",
+  CODE_10: "Bạn xác thực thông tin thẻ/tài khoản không đúng quá 3 lần",
+  CODE_11: "Đã hết hạn chờ thanh toán. \nXin bạn vui lòng thực hiện lại giao dịch.",
+  CODE_12: "Thẻ/Tài khoản của bạn đã bị khóa.",
+  CODE_13: "Bạn nhập sai mật khẩu xác thực giao dịch (OTP). \nXin bạn vui lòng thực hiện lại giao dịch.",
+  CODE_24: "Bạn đã hủy thanh toán",
+  CODE_51: "Tài khoản của bạn không đủ số dư để thực hiện giao dịch.",
+  CODE_65: "Tài khoản của bạn đã vượt quá hạn mức giao dịch trong ngày.",
+  CODE_75: "Ngân hàng thanh toán đang bảo trì.",
+  CODE_79: "Nhập sai mật khẩu thanh toán quá số lần quy định.",
+  CODE: "Phát sinh lỗi khi giao dịch. \nvui lòng liên hệ admin để biết thêm thông tin chi tiết!",
+};

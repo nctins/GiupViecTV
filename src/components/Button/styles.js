@@ -10,6 +10,10 @@ const styles = (theme) =>
       backgroundColor: theme.colors.Gray[0],
       color: theme.colors.BackgroundBlue,
     },
+    cancel:{
+      backgroundColor: theme.colors.StrawberryRed,
+      color: theme.colors.Gray[0],
+    },
     lg: {
       width: 304,
       padding: 15,
