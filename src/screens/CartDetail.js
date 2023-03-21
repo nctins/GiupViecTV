@@ -14,11 +14,11 @@ import { TextInput } from "~components/Inputs";
 import Toast from "~utils/Toast";
 import StarRatingComponent from "~components/StarRatingComponent";
 import CommentComponent from "~components/CommentComponent";
+import DateFormater from "~utils/Dateformater";
 
 const dateTimeFormater = (date, time) => {
   const time_string = time.slice(0, 5);
-  const date_obj = new Date(date);
-  return `${time_string}, ${date_obj.getDate()}/${date_obj.getMonth()}/${date_obj.getFullYear()}`;
+  return `${time_string}, ${DateFormater(date)}`;
 };
 
 const { width, height } = Dimensions.get("window");

@@ -80,18 +80,6 @@ export const TIMESERVING_MILISEC = 10800000; // 3 * 60 * 60 *1000 = 10800000 mil
 export const BREAK_TIME_MINUS = 30; // 30 minus
 export const BREAK_TIME_MILISEC = 1800000; // 3 * 60 * 1000 = 1800000 miliseconds
 
-// const for convert Date.getDay() to app day
-export const JS_DAYS = [SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY];
-export const DAYS = [MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SATURDAY];
-
-export const MONDAY = 0;
-export const TUESDAY = 1;
-export const WEDNESDAY = 2;
-export const THURSDAY = 3;
-export const FRIDAY = 4;
-export const SATURDAY = 5;
-export const SUNDAY = 6;
-
 export const VNPAY_RESPONSE_CODE = {
   CODE_00: "Thanh toán thành công",
   CODE_07: "Trừ tiền thành công.\nGiao dịch bị nghi ngờ (liên quan tới lừa đảo, giao dịch bất thường).",
@@ -107,3 +95,15 @@ export const VNPAY_RESPONSE_CODE = {
   CODE_79: "Nhập sai mật khẩu thanh toán quá số lần quy định.",
   CODE: "Phát sinh lỗi khi giao dịch. \nvui lòng liên hệ admin để biết thêm thông tin chi tiết!",
 };
+
+export const MONDAY = 0;
+export const TUESDAY = 1;
+export const WEDNESDAY = 2;
+export const THURSDAY = 3;
+export const FRIDAY = 4;
+export const SATURDAY = 5;
+export const SUNDAY = 6;
+
+// const for convert Date.getDay() to app day
+export const JS_DAYS = [SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY];
+export const DAYS = [MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SATURDAY];

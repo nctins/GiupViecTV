@@ -6,6 +6,7 @@ import {
   POST_TYPE,
 } from "~constants/app_contants";
 import Caculator from "~utils/Caculator";
+import { DateObj2String } from "~utils/Dateformater";
 import Toast from "~utils/Toast";
 import { AuthContext } from "./AuthContext";
 import { AxiosContext } from "./AxiosContext";
@@ -187,7 +188,7 @@ const ServiceProvider = ({
       customer_name: post.customer_name,
       customer_phone: post.phone_number,
       address: post.address,
-      date: post.date.toISOString().slice(0, 10),
+      date: DateObj2String(post.date),
       time: post.time.toLocaleTimeString(),
       note: post.note,
       total: Caculator.calcTotalOrder(post),
