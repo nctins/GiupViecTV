@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import {StyleSheet, View, ScrollView, StatusBar, Linking, Modal, Pressable, TouchableWithoutFeedback, Alert} from "react-native";
+import {StyleSheet, View, ScrollView, StatusBar, Linking, Modal, Pressable, TouchableWithoutFeedback, Alert, Dimensions} from "react-native";
 import { WebView } from 'react-native-webview';
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
@@ -8,7 +8,7 @@ import Button from "~components/Button";
 import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
 import { SocketContext } from "~contexts/SocketContext";
-import {POST_STATE, PAYMENT_METHOD, EVALUATE} from "../constants/app_contants";
+import {POST_STATE, PAYMENT_METHOD, EVALUATE, VNPAY_RESPONSE_CODE} from "../constants/app_contants";
 import CurrencyText from "~components/CurrencyText";
 import { TextInput } from "~components/Inputs";
 import Toast from "~utils/Toast";
@@ -20,6 +20,8 @@ const dateTimeFormater = (date, time) => {
   const time_string = time.slice(0, 5);
   return `${time_string}, ${DateFormater(date)}`;
 };
+
+const { width, height } = Dimensions.get("window");
 
 const init_post = {
   address: "",
@@ -202,9 +204,17 @@ const styles = (theme) =>
         width: "100%",
         height: "100%",
       },
-      backButton: {
-        width: 50,
-        height: 30,
+      cancelButton: {
+        width: 60,
+        height: 60,
+        position: "absolute",
+        top: height - 200,
+        left: width - 100,
+        paddingHorizontal: 0,
+        paddingVertical: 0,
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center"
       }
     }
   });
@@ -242,11 +252,24 @@ const CartDetail = (props) => {
                 .put(`post`, {post_id: post_id, post_state: POST_STATE.COMPLETE, helper_id: post.helper.id})
                 .then((res) => {
                   console.log(res.data.data);
+                  getPostDetail();
                 })
                 .catch((err) => {
                   console.log(err);
                 });
             },
+          },
+        ]);
+      }else if(data.isPayment == "0" && data.code){
+        let msg = ""
+        msg = VNPAY_RESPONSE_CODE['CODE_' + data.code]
+        if(msg.length <= 0){
+          msg = VNPAY_RESPONSE_CODE.CODE;
+        }
+        Alert.alert("Thanh toán không thành công!", msg, [
+          {
+            text: "OK",
+            onPress: () => {},
           },
         ]);
       }
@@ -415,10 +438,10 @@ const CartDetail = (props) => {
 
   const onPaymentVnpay = () => {
     authAxios
-      .post(`payment/createPayment`, {post_id: post.post_id, amount: post.total.toString(), orderDescription: "Thanh toán lịch hẹn", language: "vi" })
+      .post(`payment/createPayment`, {post_id: post.post_id})
       .then((res) => {
-        // console.log(res.data.data);
-        setUri(res.data.data);
+        console.log(res.data.data);
+        setUri(res.data.data.uri);
         setPaymentModal(true);
       })
       .catch((err) => {
@@ -428,6 +451,19 @@ const CartDetail = (props) => {
 
   const PaymentModal = () => {
     const modalStyle = style.paymentModal;
+
+    const onCancel = () => {
+      Alert.alert("", "Bạn có muốn hủy thanh toán không?", [
+        { text: "Cancel", onPress: () => {} },
+        {
+          text: "OK",
+          onPress: () => {
+            setPaymentModal(false); 
+            setUri("");
+          },
+        },
+      ]);
+    }
 
     return (
       <Modal animationType="none" transparent={true} visible={payment_modal}>
@@ -439,6 +475,7 @@ const CartDetail = (props) => {
               }}
               style={modalStyle.container}
             />
+            <Button style={modalStyle.cancelButton} radius={100} variant="cancel" onPress={onCancel} >Hủy</Button>
           </View>
         </View>
       </Modal>
