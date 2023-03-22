@@ -154,8 +154,7 @@ const GoogleMap = ({setModalVisible, addressEdit, setOriginAddress, setOriginPla
               );
               if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                 //To Check, If Permission is granted
-                getOneTimeLocation();
-                // subscribeLocationLocation();
+                // getOneTimeLocation();
               } else {
                 Toast.createToast('Permission Denied');
               }
@@ -202,31 +201,6 @@ const GoogleMap = ({setModalVisible, addressEdit, setOriginAddress, setOriginPla
           {
             enableHighAccuracy: false,
             timeout: 30000,
-            maximumAge: 1000
-          },
-        );
-    };
-    
-    const subscribeLocationLocation = () => {
-        watchID = Geolocation.watchPosition(
-          (position) => {
-            //Will give you the location on location change
-            setLocationStatus('You are Here');
-            console.log(position);
-    
-            //getting the Longitude from the location json        
-            const currentLongitude =
-              JSON.stringify(position.coords.longitude);
-    
-            //getting the Latitude from the location json
-            const currentLatitude = 
-              JSON.stringify(position.coords.latitude);
-          },
-          (error) => {
-            setLocationStatus(error.message);
-          },
-          {
-            enableHighAccuracy: false,
             maximumAge: 1000
           },
         );

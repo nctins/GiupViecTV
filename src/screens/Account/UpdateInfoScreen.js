@@ -105,7 +105,13 @@ const UpdateInfoScreen = ({navigation}) => {
     let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      console.log('Permission to access camera roll is required!');
+      // console.log('Permission to access camera roll is required!');
+      Alert.alert("", "Cần cấp quyền tải lên hình ảnh!", [
+        {
+          text: "OK",
+          onPress: () => {},
+        },
+      ]);
       return;
     }
 
