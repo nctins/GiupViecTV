@@ -7,6 +7,8 @@ import {
   Modal,
   TouchableWithoutFeedback,
   Alert,
+  Keyboard,
+  SafeAreaView
 } from "react-native";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
@@ -47,6 +49,13 @@ const AddressScreen = () => {
     setAddressEdit(address);
   };
 
+  const checkInput = (title, address, placeID) => {
+    if(title.length > 0 && address.length > 0 && placeID.length > 0){
+      return true;
+    }
+    return false;
+  }
+
   const ModalGoogleMap = ({addressEdit, setPlaceID, setAddress}) => {
     const style = useThemeStyles(modalStyle);
 
@@ -72,7 +81,7 @@ const AddressScreen = () => {
           }}
         >
           <View style={style.centeredView}>
-            <TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
               <View style={style.modalView}>
                 <View style={style.formInput}>
                   <Typography>Tiêu đề</Typography>
@@ -105,8 +114,12 @@ const AddressScreen = () => {
                     isShadow
                     onPress={() => {
                       console.log(placeID);
-                      controller.createAddress(title, address, placeID);
-                      setModalVisible(false);
+                      if(checkInput(title, address, placeID)){
+                        controller.createAddress(title, address, placeID);
+                        setModalVisible(false);
+                      }else{
+                        Alert.alert("Thông báo", "Vui lòng chọn địa chỉ và tiêu đề đầy đủ!");
+                      }
                     }}
                   >
                     OK
@@ -128,13 +141,17 @@ const AddressScreen = () => {
     
     const onEdit = () => {
       console.log(placeID);
-      controller.updateAddress({
-        title,
-        address,
-        address_id: address_edit.address_id,
-        place_id: placeID,
-      })
-      setModalEditVisible(false);
+      if(checkInput(title, address, placeID)){
+        controller.updateAddress({
+          title,
+          address,
+          address_id: address_edit.address_id,
+          place_id: placeID,
+        })
+        setModalEditVisible(false);
+      }else{
+        Alert.alert("Thông báo", "Vui lòng chọn địa chỉ và tiêu đề đầy đủ!");
+      } 
     }
 
     useEffect(() => {
@@ -151,7 +168,7 @@ const AddressScreen = () => {
           }}
         >
           <View style={style.centeredView}>
-            <TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} >
               <View style={style.modalView}>
                 <View style={style.formInput}>
                   <Typography>Tiêu đề</Typography>

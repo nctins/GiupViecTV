@@ -1,15 +1,15 @@
 import React, { useContext, useState } from "react";
-
 import { BgImageLayout } from "~components/Layout";
 import { LOGIN_BG } from "assets/images";
-import Button from "~components/Button";
+import Button, { IconButton }  from "~components/Button";
 import Typography from "~components/Typography";
 import { TextInput } from "~components/Inputs";
-import { Alert, View } from "react-native";
+import { Alert, View, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
 import * as SecureStore from "expo-secure-store";
 import Validation from "~utils/Validation";
+import { BackIcon } from "~components/Icons";
 
 const ForgotPassScreen = ({ navigation }) => {
   const authContext = useContext(AuthContext);
@@ -124,7 +124,11 @@ const ForgotPassScreen = ({ navigation }) => {
 
   return (
     <BgImageLayout background={LOGIN_BG}>
-      <View style={{ flex: 3 }}></View>
+    <TouchableWithoutFeedback style={{flex:1}} onPress={() => {Keyboard.dismiss();}}>
+      <View style={{flex:1}}>
+      <View style={{ flex: 3, alignItems: "flex-start" }}>
+        <IconButton style={{ margin: 20 }} icon={<BackIcon color="Gray.0" onPress={() => {navigation.pop()}} />} />
+      </View>
       <View style={{ flex: 3, alignItems: "center", justifyContent: "center" }}>
         <Typography variant="H7" color="Gray.8" style={{ marginBottom: 10 }}>
           {displayTitle()}
@@ -151,6 +155,8 @@ const ForgotPassScreen = ({ navigation }) => {
         </Button>
       </View>
       <View style={{ flex: 2 }}></View>
+      </View>
+    </TouchableWithoutFeedback>
     </BgImageLayout>
   );
 };

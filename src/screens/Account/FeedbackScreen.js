@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { StyleSheet, View, ScrollView, StatusBar, Alert } from "react-native";
+import { StyleSheet, View, ScrollView, StatusBar, Alert, TouchableWithoutFeedback, Keyboard } from "react-native";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
 import { BackIcon } from "~components/Icons";
@@ -92,6 +92,7 @@ const FeedbackScreen = ({navigation}) => {
   }
 
   return (
+    <TouchableWithoutFeedback style={{flex:1}} onPress={() => {Keyboard.dismiss();}}>
     <View style={style.default}>
       {isLoading ? <LoadingScreen /> : null}
       <StatusBar backgroundColor={style.statusBar.backgroundColor} />
@@ -131,6 +132,7 @@ const FeedbackScreen = ({navigation}) => {
         </View>
       </View>
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 
