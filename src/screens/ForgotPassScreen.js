@@ -10,6 +10,8 @@ import { AxiosContext } from "~contexts/AxiosContext";
 import * as SecureStore from "expo-secure-store";
 import Validation from "~utils/Validation";
 import { BackIcon } from "~components/Icons";
+import SafeView from "~components/SafeView";
+import StatusBar from "~components/StatusBar";
 
 const ForgotPassScreen = ({ navigation }) => {
   const authContext = useContext(AuthContext);
@@ -124,39 +126,42 @@ const ForgotPassScreen = ({ navigation }) => {
 
   return (
     <BgImageLayout background={LOGIN_BG}>
-    <TouchableWithoutFeedback style={{flex:1}} onPress={() => {Keyboard.dismiss();}}>
-      <View style={{flex:1}}>
-      <View style={{ flex: 3, alignItems: "flex-start" }}>
-        <IconButton style={{ margin: 20 }} icon={<BackIcon color="Gray.0" onPress={() => {navigation.pop()}} />} />
-      </View>
-      <View style={{ flex: 3, alignItems: "center", justifyContent: "center" }}>
-        <Typography variant="H7" color="Gray.8" style={{ marginBottom: 10 }}>
-          {displayTitle()}
-        </Typography>
-        <View style={{ marginBottom: 20 }}>{displayInput()}</View>
-        <Button
-          variant="primary"
-          size="sm"
-          onPress={() => {
-            if (access_token) {
-              onChangePassword();
-              return;
-            }
-            if (input_email) {
-              onSubmitEmail();
-              return;
-            } else {
-              onSubmitOtp();
-              return;
-            }
-          }}
-        >
-          Tiếp tục
-        </Button>
-      </View>
-      <View style={{ flex: 2 }}></View>
-      </View>
-    </TouchableWithoutFeedback>
+    <StatusBar />
+    <SafeView>
+      <TouchableWithoutFeedback style={{flex:1}} onPress={() => {Keyboard.dismiss();}}>
+        <View style={{flex:1}}>
+        <View style={{ flex: 3, alignItems: "flex-start", margin:20 }}>
+          <BackIcon color="Gray.0" onPress={() => {navigation.pop()}} />
+        </View>
+        <View style={{ flex: 3, alignItems: "center", justifyContent: "center" }}>
+          <Typography variant="H7" color="Gray.8" style={{ marginBottom: 10 }}>
+            {displayTitle()}
+          </Typography>
+          <View style={{ marginBottom: 20 }}>{displayInput()}</View>
+          <Button
+            variant="primary"
+            size="sm"
+            onPress={() => {
+              if (access_token) {
+                onChangePassword();
+                return;
+              }
+              if (input_email) {
+                onSubmitEmail();
+                return;
+              } else {
+                onSubmitOtp();
+                return;
+              }
+            }}
+          >
+            Tiếp tục
+          </Button>
+        </View>
+        <View style={{ flex: 2 }}></View>
+        </View>
+      </TouchableWithoutFeedback>
+    </SafeView>
     </BgImageLayout>
   );
 };
