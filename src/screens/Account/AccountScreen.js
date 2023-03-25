@@ -1,12 +1,5 @@
 import React, { useState, useContext } from "react";
-import {
-  StyleSheet,
-  View,
-  SafeAreaView,
-  StatusBar,
-  Switch,
-  TouchableOpacity
-} from "react-native";
+import { StyleSheet, View, Switch, TouchableOpacity } from "react-native";
 import Header from "~components/Header";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
@@ -14,31 +7,13 @@ import { RightArrowIcon } from "~components/Icons";
 import AvatarComponent from "~components/AvatarComponent";
 import { AuthContext } from "~contexts/AuthContext";
 import useAxios from "~hooks/useAxios";
+import SafeView from "~components/SafeView";
+import StatusBar from "~components/StatusBar";
 
-const styles = (theme) =>
-  StyleSheet.create({
-    default: {
-      flex: 1,
-    },
-    statusBar: {
-      backgroundColor: theme.colors.BackgroundBlue,
-    },
-    header: {
-      default: {
-        width: "100%",
-        height: "15%",
-        backgroundColor: theme.colors.BackgroundBlue,
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-      },
-      title: {
-        color: "white",
-      },
-    },
+const styles = (theme) => StyleSheet.create({
     setting: settingStyle(theme),
     userInfo: userInfoStyle(theme),
-  });
+});
 
 const userInfoStyle = (theme) => {
   return {
@@ -108,48 +83,50 @@ const AccountScreen = ({navigation}) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar backgroundColor={style.statusBar.backgroundColor} />
-      <Header style={style.header} title="Tài khoản" />
-
-      {/* user info */}
-      <View style={[{ flex: 1 }, style.userInfo.wrapper]}>
-        <AvatarComponent 
-          img={user.avatar_url}
-          size="lg" 
-          containerAvatarStyle ={style.userInfo.avatar} 
-        />
-        <View style={style.userInfo.account}>
-          <Typography variant="SubTitle">{user.name}</Typography>
-          <Typography variant="Description" color="Gray.3">
-          {user.email}
-          </Typography>
-        </View>
-      </View>
-
-      {/* setting menu */}
-      <View style={{ flex: 3 }}>
-        <View style={style.setting.settingMenu}>
-          <Typography variant="TextBold">Tài khoản của tôi</Typography>
-          <SettingItem
-            title={"Chỉnh sửa thông tin cá nhân"}
-            onTouch={() => {navigation.navigate("UpdateInfoScreen")}}
+    <>
+      <StatusBar/>
+      <SafeView>
+        <Header title="Tài khoản" />
+        
+        {/* user info */}
+        <View style={[{ flex: 1 }, style.userInfo.wrapper]}>
+          <AvatarComponent 
+            img={user.avatar_url}
+            size="lg" 
+            containerAvatarStyle ={style.userInfo.avatar} 
           />
-          <SettingItem title={"Thay đổi mật khẩu"} onTouch={() => {navigation.navigate("ChangePasswordScreen")}} />
-          {/*<SettingItem title={"Liên kết tài khoản"} onTouch={() => {navigation.navigate("AccountLinkScreen")}} /> */}
-          <SettingItem title={"Đăng xuất"} onTouch={() => onLogout()} />
+          <View style={style.userInfo.account}>
+            <Typography variant="SubTitle">{user.name}</Typography>
+            <Typography variant="Description" color="Gray.3">
+            {user.email}
+            </Typography>
+          </View>
         </View>
-        <View style={style.setting.settingMenu}>
-          <Typography variant="TextBold">Tổng quát</Typography>
-          <SwitchSettingItem
-            title="Thông báo"
-            onToggle={() => setIsNotice((previousState) => !previousState)}
-            value={isNotice}
-          />
-          <SettingItem title={"Phản hồi"} onTouch={() => {navigation.navigate("FeedbackScreen")}} />
+
+        {/* setting menu */}
+        <View style={{ flex: 3 }}>
+          <View style={style.setting.settingMenu}>
+            <Typography variant="TextBold">Tài khoản của tôi</Typography>
+            <SettingItem
+              title={"Chỉnh sửa thông tin cá nhân"}
+              onTouch={() => {navigation.navigate("UpdateInfoScreen")}}
+            />
+            <SettingItem title={"Thay đổi mật khẩu"} onTouch={() => {navigation.navigate("ChangePasswordScreen")}} />
+            {/*<SettingItem title={"Liên kết tài khoản"} onTouch={() => {navigation.navigate("AccountLinkScreen")}} /> */}
+            <SettingItem title={"Đăng xuất"} onTouch={() => onLogout()} />
+          </View>
+          <View style={style.setting.settingMenu}>
+            <Typography variant="TextBold">Tổng quát</Typography>
+            <SwitchSettingItem
+              title="Thông báo"
+              onToggle={() => setIsNotice((previousState) => !previousState)}
+              value={isNotice}
+            />
+            <SettingItem title={"Phản hồi"} onTouch={() => {navigation.navigate("FeedbackScreen")}} />
+          </View>
         </View>
-      </View>
-    </SafeAreaView>
+      </SafeView>
+    </>
   );
 };
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { StyleSheet, View, SafeAreaView,StatusBar,ScrollView,TextInput,RefreshControl } from "react-native";
+import { StyleSheet, View, ScrollView, TextInput, RefreshControl } from "react-native";
 import Button from '~components/Button';
 import CouponComponent from '~components/CouponComponent';
 import Header from '~components/Header';
@@ -8,6 +8,8 @@ import Typography from "~components/Typography";
 import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
 import LoadingScreen from './LoadingScreen';
+import StatusBar from '~components/StatusBar';
+import SafeView from '~components/SafeView';
 
 const styles = (theme) => StyleSheet.create({
   default:{
@@ -159,35 +161,37 @@ const CouponScreen = ({navigation}) => {
   }
 
   return (
-    <SafeAreaView  style={{flex:1}}>
+    <>
+      <StatusBar/>
       {isLoading ? <LoadingScreen /> : null}
-      <StatusBar backgroundColor={style.statusBar.backgroundColor}/>
-      <Header style={style.header} title="CouponScreen" />
-      <View style={{flexDirection:"column"}}>
-        <View style={style.viewInput}>
-          <TextInput 
-            style={style.textInput}
-            placeholder="Nhập mã ưu đãi"
-            maxLength={8}
-            value={voucherCode}
-            onChangeText={(text) => {setVoucherCode(text)}}
-          />
-          <Button style = {style.button} radius={5} onPress={onPressGetCoupon}>Áp dụng</Button>
+      <SafeView>
+        <Header title="Ưu đãi" />
+        <View style={{flexDirection:"column"}}>
+          <View style={style.viewInput}>
+            <TextInput 
+              style={style.textInput}
+              placeholder="Nhập mã ưu đãi"
+              maxLength={8}
+              value={voucherCode}
+              onChangeText={(text) => {setVoucherCode(text)}}
+            />
+            <Button style = {style.button} radius={5} onPress={onPressGetCoupon}>Áp dụng</Button>
+          </View>
+          {displayMessage()}
         </View>
-        {displayMessage()}
-      </View>
-      <ScrollView 
-        contentContainerStyle={style.content}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-          />
-        }
-      >
-        {displayListCoupon()}
-      </ScrollView>
-    </SafeAreaView >
+        <ScrollView 
+          contentContainerStyle={style.content}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
+          }
+        >
+          {displayListCoupon()}
+        </ScrollView>
+      </SafeView >
+    </>
   )
 }
 export default CouponScreen

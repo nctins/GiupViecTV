@@ -15,6 +15,8 @@ import { BackIcon, SendIcon } from "~components/Icons";
 import { SocketContext } from "~contexts/SocketContext";
 import { AxiosContext } from "~contexts/AxiosContext";
 import { AuthContext } from "~contexts/AuthContext";
+import SafeView from "~components/SafeView";
+import StatusBar from "~components/StatusBar";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -26,7 +28,7 @@ const styles = (theme) =>
     },
     header: {
       width: "100%",
-      height: 90,
+      height: 60,
       backgroundColor: theme.colors.BackgroundBlue,
       flexDirection: "row",
       alignItems: "center",
@@ -35,6 +37,8 @@ const styles = (theme) =>
     title: {
       marginLeft: 15,
       color: theme.colors.Gray[0],
+      height: 30,
+      paddingTop: 8,
     },
     content: {
       flex: 1,
@@ -117,49 +121,52 @@ const MessageDetail = ({ navigation, route }) => {
   }, [messages]);
 
   return (
-    <View style={style.default}>
-      <View style={style.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <BackIcon color="Gray.0" />
-        </TouchableOpacity>
-        <AvatarComponent
-          containerAvatarStyle={{ marginLeft: 10 }}
-          avatarStyle={{}}
-          img={avatar_url}
-          size={"md"}
-          style={"circle"}
-        />
-        <Typography variant="H5" style={style.title}>
-          {sender}
-        </Typography>
-      </View>
-      <ScrollView
-        style={style.content}
-        ref={scrollViewRef}
-        onContentSizeChange={() =>
-          scrollViewRef.current.scrollToEnd({ animated: true })
-        }
-      >
-        {messages.map((ele, idx) => (
-          <MessageDetailItem
-            key={idx}
-            content={ele.msg}
-            isMySelf={ele.from_user_id == user_id}
-          />
-        ))}
-      </ScrollView>
-      <View style={style.TextInputView}>
-        <TextInput
-          style={style.textInput}
-          value={enterMsg}
-          onChangeText={(text) => setEnterMsg(text)}
-          placeholder="Nhập tin nhắn"
-        />
-        <TouchableOpacity onPress={() => onSendMsg()}>
-          <SendIcon color="blue" style={{ marginLeft: 15 }} />
-        </TouchableOpacity>
-      </View>
-    </View>
+    <>
+      <StatusBar/>
+      <SafeView>
+        <View style={style.default}>
+          <View style={style.header}>
+            <BackIcon color="Gray.0" onPress={() => navigation.goBack()} size={16}/>
+            <AvatarComponent
+              containerAvatarStyle={{ marginLeft: 10 }}
+              avatarStyle={{}}
+              img={avatar_url}
+              size={"md"}
+              style={"circle"}
+            />
+            <Typography variant="H6" style={style.title}>
+              {sender}
+            </Typography>
+          </View>
+          <ScrollView
+            style={style.content}
+            ref={scrollViewRef}
+            onContentSizeChange={() =>
+              scrollViewRef.current.scrollToEnd({ animated: true })
+            }
+          >
+            {messages.map((ele, idx) => (
+              <MessageDetailItem
+                key={idx}
+                content={ele.msg}
+                isMySelf={ele.from_user_id == user_id}
+              />
+            ))}
+          </ScrollView>
+          <View style={style.TextInputView}>
+            <TextInput
+              style={style.textInput}
+              value={enterMsg}
+              onChangeText={(text) => setEnterMsg(text)}
+              placeholder="Nhập tin nhắn"
+            />
+            <TouchableOpacity onPress={() => onSendMsg()}>
+              <SendIcon color="blue" style={{ marginLeft: 15 }} />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </SafeView>
+    </>
   );
 };
 export default MessageDetail;

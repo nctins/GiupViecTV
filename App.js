@@ -6,6 +6,7 @@ import { AuthProvider } from '~contexts/AuthContext';
 import { AxiosProvider } from '~contexts/AxiosContext';
 import { SocketProvider } from '~contexts/SocketContext';
 import GoogleMap from '~screens/GoogleMapScreen';
+import SafeViewProvider from '~contexts/SafeViewProvider';
 // import Notifications from '~utils/Notification';
 
 // Notifications.setNotificationHandler();
@@ -20,9 +21,11 @@ export default function App() {
       <ThemeProvider>
         <AxiosProvider>
           <SocketProvider>
-            <NavigationContainer>
-              <InitNavigator />
-            </NavigationContainer>
+            <SafeViewProvider>
+              <NavigationContainer>
+                <InitNavigator />
+              </NavigationContainer>
+            </SafeViewProvider>
           </SocketProvider>
         </AxiosProvider>
       </ThemeProvider>

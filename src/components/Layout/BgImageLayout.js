@@ -2,7 +2,6 @@ import React from "react";
 import { View, ImageBackground, Dimensions } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { DEFAULT_BG } from "assets/images";
-import { StatusBarHeight } from "~constants/statusBarHeight";
 const BgImageLayout = ({ background = DEFAULT_BG, children }) => {
   return (
     <ImageBackground
@@ -11,13 +10,7 @@ const BgImageLayout = ({ background = DEFAULT_BG, children }) => {
       resizeMode={"cover"}
     >
       <StatusBar style="light" />
-      <View
-        style={{
-          width: "100%",
-          height: Dimensions.get("window").height - StatusBarHeight,
-          marginTop: StatusBarHeight,
-        }}
-      >
+      <View style={{flex:1}}>
         {children}
       </View>
     </ImageBackground>

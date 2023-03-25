@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext  } from 'react'
-import { StyleSheet, View, SafeAreaView,StatusBar, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 import { SliderBox } from "react-native-image-slider-box";
 import useThemeStyles from '~hooks/useThemeStyles';
 import { BgImageLayout } from '~components/Layout';
@@ -11,25 +11,18 @@ import CouponComponent from '~components/CouponComponent';
 import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
 import {DEFAULT_IMAGE_ERROR} from '../constants/app_contants';
+import SafeView from '~components/SafeView';
+import StatusBar from '~components/StatusBar';
 
 const styles = (theme) => StyleSheet.create({
-  default:{
-    flex:1,
-    flexDirection: "column",
-  },
-  statusBar:{
-    backgroundColor: theme.colors.BackgroundBlue,
-  },
   hiUserView:{
     width: "100%",
-    height: 100,
+    height: 80,
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 20,
   },
   nameAndAddressView:{
-    width: "100%",
-    height: "100%",
     flexDirection: "column",
     justifyContent: "space-between",
     paddingVertical: 25,
@@ -48,7 +41,6 @@ const styles = (theme) => StyleSheet.create({
     marginTop: 20,
     flexDirection: "column",
     alignItems: "center",
-    // backgroundColor: "red"
   },
   couponView:{
     width: "100%",
@@ -158,34 +150,36 @@ const HomeScreen = ({navigation}) => {
   return (
     <BgImageLayout background={HOME_BG}>
       <StatusBar />
-      <View style={style.hiUserView}>
-        <AvatarComponent img={user.avatar_url} size='lg' />
-        <View style={style.nameAndAddressView}>
-          <Typography variant="H7">Xin chào, {user.name}</Typography>
-          <Typography variant="Description" style={{marginLeft: 0}}>{user.email}</Typography>
-          <Typography variant="Description" style={{marginLeft: 0}}>{user.phone}</Typography>
+      <SafeView>
+        <View style={style.hiUserView}>
+          <AvatarComponent img={user.avatar_url} size='lg' />
+          <View style={style.nameAndAddressView}>
+            <Typography variant="H7">Xin chào, {user.name}</Typography>
+            <Typography variant="Description" style={{marginLeft: 0}}>{user.email}</Typography>
+            <Typography variant="Description" style={{marginLeft: 0}}>{user.phone}</Typography>
+          </View>
         </View>
-      </View>
-      <View style={style.ItemView} >
-        <BoxItemComponent navigation={navigation} />
-      </View>
-      <View style={style.AdsView} >
-        <SliderBox
-          images={imagesAds}
-          onCurrentImagePressed={index => console.log(`image ${index} pressed`)}
-          autoplay={true}
-          circleLoop={true}
-          autoplayInterval={5000}
-        />
-      </View>
-      <View style={style.couponView} >
-        <View style={style.couponTittleView}>
-          <Typography variant="H7">Ưu đãi</Typography>
-        </View> 
-        <ScrollView horizontal={true} style={style.couponContentView}>
-          {displayListCoupon()}
-        </ScrollView>
-      </View>
+        <View style={style.ItemView} >
+          <BoxItemComponent navigation={navigation} />
+        </View>
+        <View style={style.AdsView} >
+          <SliderBox
+            images={imagesAds}
+            onCurrentImagePressed={index => console.log(`image ${index} pressed`)}
+            autoplay={true}
+            circleLoop={true}
+            autoplayInterval={5000}
+          />
+        </View>
+        <View style={style.couponView} >
+          <View style={style.couponTittleView}>
+            <Typography variant="H7">Ưu đãi</Typography>
+          </View> 
+          <ScrollView horizontal={true} style={style.couponContentView}>
+            {displayListCoupon()}
+          </ScrollView>
+        </View>
+      </SafeView>
     </BgImageLayout>
   )
 }

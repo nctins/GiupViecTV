@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
-import {StyleSheet, View, ScrollView, StatusBar, Linking, Modal, Pressable, TouchableWithoutFeedback, Alert, Dimensions} from "react-native";
+import {StyleSheet, View, ScrollView, Linking, Modal, Pressable, TouchableWithoutFeedback, Alert, Dimensions} from "react-native";
 import { WebView } from 'react-native-webview';
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
-import { BackIcon } from "~components/Icons";
 import Button from "~components/Button";
 import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
@@ -15,6 +14,9 @@ import Toast from "~utils/Toast";
 import StarRatingComponent from "~components/StarRatingComponent";
 import CommentComponent from "~components/CommentComponent";
 import DateFormater from "~utils/Dateformater";
+import DetailHeader from "~components/DetailHeader";
+import StatusBar from "~components/StatusBar";
+import SafeView from "~components/SafeView";
 
 const dateTimeFormater = (date, time) => {
   const time_string = time.slice(0, 5);
@@ -50,19 +52,6 @@ const styles = (theme) =>
       flex: 1,
       backgroundColor: theme.colors.Gray[1],
       flexDirection: "column",
-    },
-    header: {
-      width: "100%",
-      height: 90,
-      backgroundColor: theme.colors.BackgroundBlue,
-      flexDirection: "row",
-      alignItems: "center",
-      // justifyContent: "center",
-      paddingHorizontal: 15,
-    },
-    titleHeader: {
-      marginLeft: 15,
-      color: theme.colors.Gray[0],
     },
     title: {
       color: theme.colors.Gray[8],
@@ -717,176 +706,168 @@ const CartDetail = (props) => {
 
   return (
     <>
-      <View style={style.default}>
-        <StatusBar backgroundColor={style.statusBar.backgroundColor} />
-        <View style={style.header}>
-          <BackIcon
-            color="Gray.0"
-            onPress={() => {
-              navigation.navigate("CartScreen");
-            }}
-          />
-          <Typography variant="H5" style={style.titleHeader}>
-            Chi tiết lịch hẹn
-          </Typography>
-        </View>
-        <ScrollView style={style.viewContent}>
-          <View style={style.viewItemContent1}>
-            <Typography variant="TextBold" style={style.title}>
-              Tình trạng
-            </Typography>
-            <View style={style.label}>
-              <Typography variant="Description" style={{}}>
-                {displayPostState()}
-              </Typography>
-            </View>
-          </View>
-          <View style={[style.viewItemContent2]}>
-            <View style={{ flexDirection: "row", justifyContent: "center" }}>
+      <StatusBar/>
+      <SafeView>
+        <DetailHeader title="Chi tiết lịch hẹn" navigation={navigation}/>
+        <View style={style.default}>
+          <ScrollView style={style.viewContent}>
+            <View style={style.viewItemContent1}>
               <Typography variant="TextBold" style={style.title}>
-                Thông tin khách hàng
+                Tình trạng
               </Typography>
+              <View style={style.label}>
+                <Typography variant="Description" style={{}}>
+                  {displayPostState()}
+                </Typography>
+              </View>
             </View>
-            <Typography variant="Description">
-              Họ và tên: {post.customer.name}{" "}
-            </Typography>
-            <Typography variant="Description">
-              Địa chỉ: {post.address}{" "}
-            </Typography>
-            <Typography variant="Description">
-              Thời gian: {dateTimeFormater(post.date, post.time)}
-            </Typography>
-            <Typography variant="Description">
-              Số điện thoại: {post.customer.phone}
-            </Typography>
-          </View>
-          <View style={[style.viewItemContent2]}>
-            <View style={{ flexDirection: "row", justifyContent: "center" }}>
-              <Typography variant="TextBold" style={style.title}>
-                Dịch vụ
-              </Typography>
-            </View>
-            {post.services.map((ele, idx) => {
-              return (
-                <PriceItem
-                  key={idx}
-                  title={ele.service_name}
-                  value={ele.total}
-                />
-              );
-            })}
-            <CouponItem title={"Ưu đãi"} value={post.coupon_price} />
-            <PriceItem title={"Tổng cộng"} value={post.total} />
-            <PaymentMethodItem value={post.payment_method} />
-          </View>
-          {post.helper.id != "" && (
             <View style={[style.viewItemContent2]}>
               <View style={{ flexDirection: "row", justifyContent: "center" }}>
                 <Typography variant="TextBold" style={style.title}>
-                  Thông tin người giúp việc
+                  Thông tin khách hàng
                 </Typography>
               </View>
               <Typography variant="Description">
-                Họ và tên: {post.helper.name}
+                Họ và tên: {post.customer.name}{" "}
               </Typography>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Typography variant="Description">
-                  Số điện thoại: {post.helper.phone}
-                </Typography>
-                <View style={{ flexDirection: "row" }}>
-                  <Pressable
-                    style={{ marginRight: 8 }}
-                    onPress={() => onCall(post.helper.phone)}
-                  >
-                    <Typography variant="Description" color="PersianBlue">
-                      [gọi điện]
-                    </Typography>
-                  </Pressable>
-                  <Pressable onPress={() => onChat()}>
-                    <Typography variant="Description" color="PersianBlue">
-                      [nhắn tin]
-                    </Typography>
-                  </Pressable>
-                </View>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Typography variant="Description">
-                    Hạng người giúp việc:
-                  </Typography>
-                  <StarRatingComponent
-                    // buttonStyle={modalStyle.starStyle}
-                    containerStyle={{ maxWidth: 150 }}
-                    starSize={20}
-                    rating={post.helper.rank}
-                  />
-                </View>
-                {post.helper.rank > 0 && (
-                  <Pressable
-                    style={{ marginRight: 8 }}
-                    onPress={() => {
-                      setUserReviewModal(true);
-                    }}
-                  >
-                    <Typography variant="Description" color="PersianBlue">
-                      [Xem chi tiết]
-                    </Typography>
-                  </Pressable>
-                )}
-              </View>
+              <Typography variant="Description">
+                Địa chỉ: {post.address}{" "}
+              </Typography>
+              <Typography variant="Description">
+                Thời gian: {dateTimeFormater(post.date, post.time)}
+              </Typography>
+              <Typography variant="Description">
+                Số điện thoại: {post.customer.phone}
+              </Typography>
             </View>
-          )}
-          <View style={style.btnGroup}>
-            {post_state == POST_STATE.INCOMPLETE && (
-              <Button
-                style={style.cancelBtn}
-                size="modalBtn"
-                onPress={() => onCancel()}
-              >
-                Hủy
-              </Button>
+            <View style={[style.viewItemContent2]}>
+              <View style={{ flexDirection: "row", justifyContent: "center" }}>
+                <Typography variant="TextBold" style={style.title}>
+                  Dịch vụ
+                </Typography>
+              </View>
+              {post.services.map((ele, idx) => {
+                return (
+                  <PriceItem
+                    key={idx}
+                    title={ele.service_name}
+                    value={ele.total}
+                  />
+                );
+              })}
+              <CouponItem title={"Ưu đãi"} value={post.coupon_price} />
+              <PriceItem title={"Tổng cộng"} value={post.total} />
+              <PaymentMethodItem value={post.payment_method} />
+            </View>
+            {post.helper.id != "" && (
+              <View style={[style.viewItemContent2]}>
+                <View style={{ flexDirection: "row", justifyContent: "center" }}>
+                  <Typography variant="TextBold" style={style.title}>
+                    Thông tin người giúp việc
+                  </Typography>
+                </View>
+                <Typography variant="Description">
+                  Họ và tên: {post.helper.name}
+                </Typography>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Typography variant="Description">
+                    Số điện thoại: {post.helper.phone}
+                  </Typography>
+                  <View style={{ flexDirection: "row" }}>
+                    <Pressable
+                      style={{ marginRight: 8 }}
+                      onPress={() => onCall(post.helper.phone)}
+                    >
+                      <Typography variant="Description" color="PersianBlue">
+                        [gọi điện]
+                      </Typography>
+                    </Pressable>
+                    <Pressable onPress={() => onChat()}>
+                      <Typography variant="Description" color="PersianBlue">
+                        [nhắn tin]
+                      </Typography>
+                    </Pressable>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Typography variant="Description">
+                      Hạng người giúp việc:
+                    </Typography>
+                    <StarRatingComponent
+                      // buttonStyle={modalStyle.starStyle}
+                      containerStyle={{ maxWidth: 150 }}
+                      starSize={20}
+                      rating={post.helper.rank}
+                    />
+                  </View>
+                  {post.helper.rank > 0 && (
+                    <Pressable
+                      style={{ marginRight: 8 }}
+                      onPress={() => {
+                        setUserReviewModal(true);
+                      }}
+                    >
+                      <Typography variant="Description" color="PersianBlue">
+                        [Xem chi tiết]
+                      </Typography>
+                    </Pressable>
+                  )}
+                </View>
+              </View>
             )}
-            {post_state == POST_STATE.PROCESSING && (
-              <Button
-                style={style.cancelBtn}
-                size="modalBtn"
-                onPress={() => onDelete()}
-              >
-                Xóa
-              </Button>
-            )}
-            {post_state == POST_STATE.COMPLETE && !rating_detail && (
-              <Button
-                style={style.reviewBtn}
-                size="modalBtn"
-                onPress={() => onReview()}
-              >
-                Đánh giá
-              </Button>
-            )}
-            {post.payment_method == PAYMENT_METHOD.VNPAY && post_state == POST_STATE.INCOMPLETE && (
-              <Button
-                style={style.reviewBtn}
-                size="modalBtn"
-                onPress={onPaymentVnpay}
-              >
-                Thanh toán
-              </Button>
-            )}
-          </View>
-        </ScrollView>
-      </View>
+            <View style={style.btnGroup}>
+              {post_state == POST_STATE.INCOMPLETE && (
+                <Button
+                  style={style.cancelBtn}
+                  size="modalBtn"
+                  onPress={() => onCancel()}
+                >
+                  Hủy
+                </Button>
+              )}
+              {post_state == POST_STATE.PROCESSING && (
+                <Button
+                  style={style.cancelBtn}
+                  size="modalBtn"
+                  onPress={() => onDelete()}
+                >
+                  Xóa
+                </Button>
+              )}
+              {post_state == POST_STATE.COMPLETE && !rating_detail && (
+                <Button
+                  style={style.reviewBtn}
+                  size="modalBtn"
+                  onPress={() => onReview()}
+                >
+                  Đánh giá
+                </Button>
+              )}
+              {post.payment_method == PAYMENT_METHOD.VNPAY && post_state == POST_STATE.INCOMPLETE && (
+                <Button
+                  style={style.reviewBtn}
+                  size="modalBtn"
+                  onPress={onPaymentVnpay}
+                >
+                  Thanh toán
+                </Button>
+              )}
+            </View>
+          </ScrollView>
+        </View>
+      </SafeView>
       <CancelModal />
       <ReviewModal />
       <UserReviewModal />
