@@ -1,12 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  StatusBar,
-  TouchableOpacity,
-  Alert
-} from "react-native";
+import {StyleSheet, View, StatusBar, TouchableOpacity, Alert, TouchableWithoutFeedback, Keyboard } from "react-native";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
 import { BackIcon } from "~components/Icons";
@@ -105,7 +98,13 @@ const UpdateInfoScreen = ({navigation}) => {
     let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      console.log('Permission to access camera roll is required!');
+      // console.log('Permission to access camera roll is required!');
+      Alert.alert("", "Cần cấp quyền tải lên hình ảnh!", [
+        {
+          text: "OK",
+          onPress: () => {},
+        },
+      ]);
       return;
     }
 
@@ -204,6 +203,7 @@ const UpdateInfoScreen = ({navigation}) => {
   }
 
   return (
+    <TouchableWithoutFeedback style={{flex:1}} onPress={() => {Keyboard.dismiss();}}>
     <View style={style.default}>
       {isLoading ? <LoadingScreen /> : null}
       <StatusBar backgroundColor={style.statusBar.backgroundColor} />
@@ -266,6 +266,7 @@ const UpdateInfoScreen = ({navigation}) => {
         </View>
       </View>
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 

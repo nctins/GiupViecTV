@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { BgImageLayout } from "~components/Layout";
 import { SIGNUP_BG } from "assets/images";
-import { StyleSheet, View, Alert } from "react-native";
+import { StyleSheet, View, Alert, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { TextInput } from "~components/Inputs";
 import Button, { IconButton } from "~components/Button";
 import { BackIcon } from "~components/Icons";
@@ -80,44 +80,48 @@ const Step2 = ({route,navigation}) => {
 
   return (
     <BgImageLayout background={SIGNUP_BG}>
-      {isLoading ? <LoadingScreen /> : null}
-      <View style={{ flex: 1, alignItems: "flex-start" }}>
-        <IconButton style={{ margin: 20 }} icon={<BackIcon color="Gray.0" onPress={() => {navigation.pop()}} />} />
+    <TouchableWithoutFeedback style={{flex:1}} onPress={() => {Keyboard.dismiss();}}>
+      <View style={{flex:1}}>
+        {isLoading ? <LoadingScreen /> : null}
+        <View style={{ flex: 1, alignItems: "flex-start" }}>
+          <IconButton style={{ margin: 20 }} icon={<BackIcon color="Gray.0" onPress={() => {navigation.pop()}} />} />
+        </View>
+        <View style={[{ flex: 5 }, styled.centerBox]}>
+          <View>
+            <Typography style={styled.label}>Password:</Typography>
+            <TextInput 
+              secureTextEntry={true}
+              placeholder="Nhập mật khẩu" 
+              title={"Mật khẩu"} 
+              value = {password}
+              onChangeText={(value) => {setPassword(value)}}
+            />
+          </View>
+          <View>
+            <Typography style={styled.label}>Confim Password:</Typography>
+            <TextInput
+              secureTextEntry={true}
+              placeholder="Nhập lại mật khẩu"
+              title={"Xác nhận mật khẩu"}
+              value={passwordConfirm}
+              onChangeText={(value) => {setPasswordConfirm(value)}}
+            />
+          </View>
+        </View>
+        <View style={{ flex: 2 }}>
+          <View style={[{ flex: 3 }, styled.centerBox]}>
+            <Button size="lg" isShadow onPress={onSignUp}>
+              Tiếp theo
+            </Button>
+          </View>
+          <View style={{ flex: 2, alignItems:"center" }}>
+            <Typography variant="SubTitle" color="Gray.6">
+              Điều khoản và Chính sách
+            </Typography>
+          </View>
+        </View>
       </View>
-      <View style={[{ flex: 5 }, styled.centerBox]}>
-        <View>
-          <Typography style={styled.label}>Password:</Typography>
-          <TextInput 
-            secureTextEntry={true}
-            placeholder="Nhập mật khẩu" 
-            title={"Mật khẩu"} 
-            value = {password}
-            onChangeText={(value) => {setPassword(value)}}
-          />
-        </View>
-        <View>
-          <Typography style={styled.label}>Confim Password:</Typography>
-          <TextInput
-            secureTextEntry={true}
-            placeholder="Nhập lại mật khẩu"
-            title={"Xác nhận mật khẩu"}
-            value={passwordConfirm}
-            onChangeText={(value) => {setPasswordConfirm(value)}}
-          />
-        </View>
-      </View>
-      <View style={{ flex: 2 }}>
-        <View style={[{ flex: 3 }, styled.centerBox]}>
-          <Button size="lg" isShadow onPress={onSignUp}>
-            Tiếp theo
-          </Button>
-        </View>
-        <View style={{ flex: 2, alignItems:"center" }}>
-          <Typography variant="SubTitle" color="Gray.6">
-            Điều khoản và Chính sách
-          </Typography>
-        </View>
-      </View>
+    </TouchableWithoutFeedback>
     </BgImageLayout>
   );
 };

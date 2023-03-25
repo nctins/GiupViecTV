@@ -1,5 +1,5 @@
 import React, {useState, useContext} from "react";
-import { StyleSheet, View, ScrollView, StatusBar, Alert } from "react-native";
+import { StyleSheet, View, ScrollView, StatusBar, Alert, TouchableWithoutFeedback, Keyboard } from "react-native";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
 import { BackIcon, UserIcon } from "~components/Icons";
@@ -125,6 +125,7 @@ const ChangePasswordScreen = ({navigation}) => {
   }
 
   return (
+    <TouchableWithoutFeedback style={{flex:1}} onPress={() => {Keyboard.dismiss();}}>
     <View style={style.default}>
       {isLoading ? <LoadingScreen /> : null}
       <StatusBar backgroundColor={style.statusBar.backgroundColor} />
@@ -182,6 +183,7 @@ const ChangePasswordScreen = ({navigation}) => {
         </View>
       </View>
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 

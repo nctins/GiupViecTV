@@ -15,7 +15,7 @@ import Toast from '~utils/Toast';
 
 const { width, height } = Dimensions.get("window");
 
-const SearchAddressComponent = ({onPlaceSelected, position, goBackScreen, setOriginAddress, setOriginPlaceID}) => {
+const SearchAddressComponent = ({onPlaceSelected, position, setPosition, goBackScreen, setOriginAddress, setOriginPlaceID}) => {
     const style = useThemeStyles(styles);
     const authContext = useContext(AuthContext);
     const {authAxios} = useContext(AxiosContext);
@@ -39,24 +39,54 @@ const SearchAddressComponent = ({onPlaceSelected, position, goBackScreen, setOri
     }
 
     const onConfirm = () => {
-        if(placeID && placeID.length > 0){
-            setOriginPlaceID(placeID);
-            setOriginAddress(address);
-            goBackScreen();
-        }else{
-            Alert.alert(
-                "Thông báo!",
-                "Địa chỉ hiện tại không đúng! \\n Vui lòng chọn lại địa chỉ.",
-                [
-                  { text: "OK"}
-                ]
-              );
-        }
+        let queryAddress = address.replace(" ","%");
+        let UrlAPI = "https://maps.googleapis.com/maps/api/geocode/json?address=" + queryAddress + "&components=country:vn&key=" + API_GOOGLE;
+
+        authAxios
+            .get(UrlAPI)
+            .then(async (response) => {
+                let address_obj = response.data.results[0];
+                if(address_obj){
+                    console.log(address_obj);
+                    Alert.alert(
+                        "Địa chỉ hiện tại của bạn là:",
+                        address_obj.formatted_address,
+                        [
+                          { text: "OK", onPress: () => {
+                            setOriginAddress(address_obj.formatted_address);
+                            setOriginPlaceID(address_obj.place_id);
+                            goBackScreen();
+                          }}
+                        ]
+                      );
+                }else{
+                    Alert.alert(
+                            "Thông báo!",
+                            "Địa chỉ hiện tại không đúng! \\n Vui lòng chọn lại địa chỉ.",
+                            [
+                              { text: "OK", onPress: () => {
+                                    setAddress("");
+                              }}
+                            ]
+                          );
+                }
+            })
+            .catch(async (error) => {
+                console.log(error);
+            });
     }
 
     useEffect(() => {
         reverseGeocodeGoogle();
     }, [position]);
+
+    const rightButtonComponent = () => {
+        return (
+            <View style={{width: 120, flexDirection:"row", justifyContent:"center", alignItems:"center"}}>
+                {address.length > 0 ? <CancelIcon onPress={() => {setAddress("")}} /> : null}
+                <Button style={style.confirmButton} borderRadius={100} onPress={onConfirm}>xác nhận</Button>
+            </View>)
+    }
 
     return (
         <View style={style.searchContainer}>
@@ -65,7 +95,7 @@ const SearchAddressComponent = ({onPlaceSelected, position, goBackScreen, setOri
                 placeholder= "Nhập địa chỉ của bạn"
                 fetchDetails={true}
                 currentLocation={true}
-                autoFillOnNotFound={true}
+                // autoFillOnNotFound={true}
                 onPress={(data, details) => {
                     // 'details' is provided when fetchDetails = true
                     onPlaceSelected(details);
@@ -74,6 +104,7 @@ const SearchAddressComponent = ({onPlaceSelected, position, goBackScreen, setOri
                     value: address,
                     onChangeText: setAddress,
                 }}
+                onTimeout={() => {console.log("time out")}}
                 onFail={error => console.error(error)}
                 query={{
                     key: API_GOOGLE,
@@ -84,10 +115,7 @@ const SearchAddressComponent = ({onPlaceSelected, position, goBackScreen, setOri
                     radius: '20000', // Bán kính tìm kiếm (đơn vị là mét)
                     strictBounds: true, // Giới hạn tìm kiếm trong bán kính đã định sẵn
                 }}
-                renderRightButton={() => {return (<View style={{width: 120, flexDirection:"row", justifyContent:"center", alignItems:"center"}}>
-                                                    {address.length > 0 ? <CancelIcon onPress={() => {setAddress("")}} /> : null} 
-                                                    <Button style={style.confirmButton} borderRadius={100} onPress={onConfirm}>xác nhận </Button>
-                                                </View>)}}
+                renderRightButton={rightButtonComponent}
             >
             </GooglePlacesAutocomplete>
         </View>
@@ -154,8 +182,7 @@ const GoogleMap = ({setModalVisible, addressEdit, setOriginAddress, setOriginPla
               );
               if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                 //To Check, If Permission is granted
-                getOneTimeLocation();
-                // subscribeLocationLocation();
+                // getOneTimeLocation();
               } else {
                 Toast.createToast('Permission Denied');
               }
@@ -167,7 +194,7 @@ const GoogleMap = ({setModalVisible, addressEdit, setOriginAddress, setOriginPla
 
         if(addressEdit && addressEdit.length > 0){
             let queryAddress = addressEdit.replace(" ","%");
-            let UrlAPI = "https://maps.googleapis.com/maps/api/geocode/json?address=" + queryAddress + "&key=" + API_GOOGLE;
+            let UrlAPI = "https://maps.googleapis.com/maps/api/geocode/json?address=" + queryAddress + "&components=country:vn&key=" + API_GOOGLE;
 
             authAxios
                 .get(UrlAPI)
@@ -202,31 +229,6 @@ const GoogleMap = ({setModalVisible, addressEdit, setOriginAddress, setOriginPla
           {
             enableHighAccuracy: false,
             timeout: 30000,
-            maximumAge: 1000
-          },
-        );
-    };
-    
-    const subscribeLocationLocation = () => {
-        watchID = Geolocation.watchPosition(
-          (position) => {
-            //Will give you the location on location change
-            setLocationStatus('You are Here');
-            console.log(position);
-    
-            //getting the Longitude from the location json        
-            const currentLongitude =
-              JSON.stringify(position.coords.longitude);
-    
-            //getting the Latitude from the location json
-            const currentLatitude = 
-              JSON.stringify(position.coords.latitude);
-          },
-          (error) => {
-            setLocationStatus(error.message);
-          },
-          {
-            enableHighAccuracy: false,
             maximumAge: 1000
           },
         );
@@ -274,7 +276,8 @@ const GoogleMap = ({setModalVisible, addressEdit, setOriginAddress, setOriginPla
             <SearchAddressComponent 
                 onPlaceSelected = {onPlaceSelected} 
                 position={position} 
-                goBackScreen={goBackScreen} 
+                setPosition={setPosition} 
+                goBackScreen={goBackScreen}
                 setOriginAddress = {setOriginAddress} 
                 setOriginPlaceID = {setOriginPlaceID}
             />
