@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
 import AvatarComponent from "./AvatarComponent";
+import DateFormater from "~utils/Dateformater";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -63,7 +64,7 @@ const MessageItem = ({ navigation, ...props }) => {
           </Typography>
         </View>
         <View style={style.rightInfoStyle}>
-          <Typography variant="Text">{`${date_time.getDate()}/${date_time.getMonth()}/${date_time.getFullYear()}`}</Typography>
+          <Typography variant="Text">{`${DateFormater(date_time)}`}</Typography>
         </View>
       </View>
     </TouchableOpacity>
