@@ -9,6 +9,8 @@ import Typography from "~components/Typography";
 import useTheme from "~hooks/useTheme";
 import ObjMapper from "object-mapper";
 import useThemeStyles from "~hooks/useThemeStyles";
+import SafeView from "~components/SafeView";
+import StatusBar from "~components/StatusBar";
 
 const Step1 = ({navigation}) => {
   const theme = useTheme();
@@ -33,71 +35,74 @@ const Step1 = ({navigation}) => {
   
   return (
     <BgImageLayout background={SIGNUP_BG}>
-      <TouchableWithoutFeedback style={{flex:1}} onPress={() => {Keyboard.dismiss();}}>
-      <View style={{flex:1}}>
-        <View style={{ alignItems: "flex-start" }}>
-          <IconButton style={{ margin: 20 }} icon={<BackIcon color="Gray.0" onPress={() => {navigation.pop()}} />} />
-        </View>
-        <View style={{ alignItems: "center", marginVertical: 20 }}>
-          <Typography variant="H5" color="Gray.0">
-            Đăng ký
-          </Typography>
-        </View>
-        <View style={{ alignItems: "center", marginTop:30 }}>
-          <View>
-          <Typography style={styled.label}>Email:</Typography>
-          <TextInput 
-            placeholder="Hứa không gửi email spam" 
-            title={"Email"} 
-            value={email}
-            onChangeText={(value) => {setEmail(value)}}
-          />
+      <StatusBar/>
+      <SafeView>
+        <TouchableWithoutFeedback style={{flex:1}} onPress={() => {Keyboard.dismiss();}}>
+        <View style={{flex:1}}>
+          <View style={{ alignItems: "flex-start", margin: 20 }}>
+            <BackIcon color="Gray.0" onPress={() => {navigation.pop()}} />
           </View>
-          <View>
-          <Typography style={styled.label}>Họ và tên:</Typography>
-          <TextInput
-            placeholder="Bạn thích mọi người gọi bạn là gì ?"
-            title={"Tên"}
-            value={name}
-            onChangeText={(value) => {setName(value)}}
-          />
+          <View style={{ alignItems: "center", marginVertical: 20 }}>
+            <Typography variant="H5" color="Gray.0">
+              Đăng ký
+            </Typography>
           </View>
-          <View>
-          <Typography style={styled.label}>Phone:</Typography>
-          <TextInput
-            placeholder="Mọi người liên lạc bạn theo số này nè"
-            title={"Số điện thoại"}
-            keyboardType = 'numeric'
-            maxLength={10}
-            value={phone}
-            onChangeText={(value) => {setPhone(value)}}
-          />
+          <View style={{ alignItems: "center", marginTop:30 }}>
+            <View>
+            <Typography style={styled.label}>Email:</Typography>
+            <TextInput 
+              placeholder="Hứa không gửi email spam" 
+              title={"Email"} 
+              value={email}
+              onChangeText={(value) => {setEmail(value)}}
+            />
+            </View>
+            <View>
+            <Typography style={styled.label}>Họ và tên:</Typography>
+            <TextInput
+              placeholder="Bạn thích mọi người gọi bạn là gì ?"
+              title={"Tên"}
+              value={name}
+              onChangeText={(value) => {setName(value)}}
+            />
+            </View>
+            <View>
+            <Typography style={styled.label}>Phone:</Typography>
+            <TextInput
+              placeholder="Mọi người liên lạc bạn theo số này nè"
+              title={"Số điện thoại"}
+              keyboardType = 'numeric'
+              maxLength={10}
+              value={phone}
+              onChangeText={(value) => {setPhone(value)}}
+            />
+            </View>
           </View>
-        </View>
-        {/* 
-        <View style={{ alignItems: "center", marginTop:50 }}>
-          <View style={styled.card}>
-            <Typography style={styled.cardTitle}>Đăng ký với</Typography>
-            <View
-              style={{ flexDirection: "row", justifyContent: "space-around" }}
-            >
-              <View style={styled.circleIcon}>
-                <FacebookIcon />
-              </View>
-              <View style={styled.circleIcon}>
-                <GoogleIcon />
+          {/* 
+          <View style={{ alignItems: "center", marginTop:50 }}>
+            <View style={styled.card}>
+              <Typography style={styled.cardTitle}>Đăng ký với</Typography>
+              <View
+                style={{ flexDirection: "row", justifyContent: "space-around" }}
+              >
+                <View style={styled.circleIcon}>
+                  <FacebookIcon />
+                </View>
+                <View style={styled.circleIcon}>
+                  <GoogleIcon />
+                </View>
               </View>
             </View>
           </View>
+          */}
+          <View style={{ alignItems: "center", marginTop:200 }}>
+            <Button size="lg" isShadow onPress={onPressNextButton}>
+              Tiếp theo
+            </Button>
+          </View>
         </View>
-        */}
-        <View style={{ alignItems: "center", marginTop:200 }}>
-          <Button size="lg" isShadow onPress={onPressNextButton}>
-            Tiếp theo
-          </Button>
-        </View>
-      </View>
-      </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>
+      </SafeView>
     </BgImageLayout>
   );
 };

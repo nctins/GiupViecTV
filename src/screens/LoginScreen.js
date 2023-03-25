@@ -11,6 +11,8 @@ import { AxiosContext } from "~contexts/AxiosContext";
 import * as SecureStore from "expo-secure-store";
 import LoadingScreen from "./LoadingScreen";
 import Toast from "~utils/Toast";
+import SafeView from "~components/SafeView";
+import StatusBar from "~components/StatusBar";
 
 const LoginScreen = ({navigation}) => {
   const authContext = useContext(AuthContext);
@@ -71,49 +73,52 @@ const LoginScreen = ({navigation}) => {
 
   return (
     <BgImageLayout background={LOGIN_BG}>
-      <TouchableWithoutFeedback style={{flex:1}} onPress={() => {Keyboard.dismiss();}}>
-      <View style={{flex:1}}>
-        {isLoading ? <LoadingScreen /> : null}
-        <View style={{ flex: 3 }}></View>
-        <View style={{ flex: 3, alignItems: "center", justifyContent: "center" }}>
-          <Typography variant="H4" color="Gray.8" style={{ marginBottom: 10 }}>
-            Đăng nhập
-          </Typography>
-          <View style={{ marginBottom: 20 }}>
-            <TextInput
-              style={{ marginBottom: 20 }}
-              placeholder="Nhập email"
-              title={"Email"}
-              titleStyle="blackTitle"
-              value={email}
-              onChangeText={(text) => setEmail(text)}
-            />
-            <TextInput
-              placeholder="Nhập mật khẩu"
-              title={"Mật khẩu"}
-              titleStyle="blackTitle"
-              isPassword
-              value={password}
-              onChangeText={(text)=>setPassword(text)}
-            />
-            <Pressable onPress={()=>{navigation.navigate("ForgotPassScreen")}}>
-              <Typography variant="Text" style={{ alignSelf: "flex-end" }}>
-                Quên mật khẩu?
-              </Typography>
-            </Pressable>
+      <StatusBar/>
+      <SafeView>
+        <TouchableWithoutFeedback style={{flex:1}} onPress={() => {Keyboard.dismiss();}}>
+        <View style={{flex:1}}>
+          {isLoading ? <LoadingScreen /> : null}
+          <View style={{ flex: 3 }}></View>
+          <View style={{ flex: 3, alignItems: "center", justifyContent: "center" }}>
+            <Typography variant="H4" color="Gray.8" style={{ marginBottom: 10 }}>
+              Đăng nhập
+            </Typography>
+            <View style={{ marginBottom: 20 }}>
+              <TextInput
+                style={{ marginBottom: 20 }}
+                placeholder="Nhập email"
+                title={"Email"}
+                titleStyle="blackTitle"
+                value={email}
+                onChangeText={(text) => setEmail(text)}
+              />
+              <TextInput
+                placeholder="Nhập mật khẩu"
+                title={"Mật khẩu"}
+                titleStyle="blackTitle"
+                isPassword
+                value={password}
+                onChangeText={(text)=>setPassword(text)}
+              />
+              <Pressable onPress={()=>{navigation.navigate("ForgotPassScreen")}}>
+                <Typography variant="Text" style={{ alignSelf: "flex-end" }}>
+                  Quên mật khẩu?
+                </Typography>
+              </Pressable>
+            </View>
+            <Button variant="primary" size="sm" onPress={() => onLogin()}>
+              Đăng nhập
+            </Button>
           </View>
-          <Button variant="primary" size="sm" onPress={() => onLogin()}>
-            Đăng nhập
-          </Button>
+          <View style={{ flex: 2, alignItems: "center", justifyContent: "center" }}>
+            <Typography>
+              Bạn chưa có tài khoản? 
+              <Typography variant="TextBold" onPress={() => {navigation.push('Step1', { params: 'example' })}}> Đăng ký ngay!</Typography>
+            </Typography>
+          </View>
         </View>
-        <View style={{ flex: 2, alignItems: "center", justifyContent: "center" }}>
-          <Typography>
-            Bạn chưa có tài khoản? 
-            <Typography variant="TextBold" onPress={() => {navigation.push('Step1', { params: 'example' })}}> Đăng ký ngay!</Typography>
-          </Typography>
-        </View>
-      </View>
-      </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>
+      </SafeView>
     </BgImageLayout>
   );
 };

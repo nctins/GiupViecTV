@@ -12,6 +12,8 @@ import useThemeStyles from "~hooks/useThemeStyles";
 import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
 import LoadingScreen from "~screens/LoadingScreen";
+import SafeView from "~components/SafeView";
+import StatusBar from "~components/StatusBar";
 
 const Step2 = ({route,navigation}) => {
   const authContext = useContext(AuthContext);
@@ -80,48 +82,51 @@ const Step2 = ({route,navigation}) => {
 
   return (
     <BgImageLayout background={SIGNUP_BG}>
-    <TouchableWithoutFeedback style={{flex:1}} onPress={() => {Keyboard.dismiss();}}>
-      <View style={{flex:1}}>
-        {isLoading ? <LoadingScreen /> : null}
-        <View style={{ flex: 1, alignItems: "flex-start" }}>
-          <IconButton style={{ margin: 20 }} icon={<BackIcon color="Gray.0" onPress={() => {navigation.pop()}} />} />
+    <SafeView>
+      <StatusBar/>
+      <TouchableWithoutFeedback style={{flex:1}} onPress={() => {Keyboard.dismiss();}}>
+        <View style={{flex:1}}>
+          {isLoading ? <LoadingScreen /> : null}
+          <View style={{ flex: 1, alignItems: "flex-start", margin: 20 }}>
+            <BackIcon color="Gray.0" onPress={() => {navigation.pop()}} />
+          </View>
+          <View style={[{ flex: 5 }, styled.centerBox]}>
+            <View>
+              <Typography style={styled.label}>Password:</Typography>
+              <TextInput 
+                secureTextEntry={true}
+                placeholder="Nhập mật khẩu" 
+                title={"Mật khẩu"} 
+                value = {password}
+                onChangeText={(value) => {setPassword(value)}}
+              />
+            </View>
+            <View>
+              <Typography style={styled.label}>Confim Password:</Typography>
+              <TextInput
+                secureTextEntry={true}
+                placeholder="Nhập lại mật khẩu"
+                title={"Xác nhận mật khẩu"}
+                value={passwordConfirm}
+                onChangeText={(value) => {setPasswordConfirm(value)}}
+              />
+            </View>
+          </View>
+          <View style={{ flex: 2 }}>
+            <View style={[{ flex: 3 }, styled.centerBox]}>
+              <Button size="lg" isShadow onPress={onSignUp}>
+                Tiếp theo
+              </Button>
+            </View>
+            <View style={{ flex: 2, alignItems:"center" }}>
+              <Typography variant="SubTitle" color="Gray.6">
+                Điều khoản và Chính sách
+              </Typography>
+            </View>
+          </View>
         </View>
-        <View style={[{ flex: 5 }, styled.centerBox]}>
-          <View>
-            <Typography style={styled.label}>Password:</Typography>
-            <TextInput 
-              secureTextEntry={true}
-              placeholder="Nhập mật khẩu" 
-              title={"Mật khẩu"} 
-              value = {password}
-              onChangeText={(value) => {setPassword(value)}}
-            />
-          </View>
-          <View>
-            <Typography style={styled.label}>Confim Password:</Typography>
-            <TextInput
-              secureTextEntry={true}
-              placeholder="Nhập lại mật khẩu"
-              title={"Xác nhận mật khẩu"}
-              value={passwordConfirm}
-              onChangeText={(value) => {setPasswordConfirm(value)}}
-            />
-          </View>
-        </View>
-        <View style={{ flex: 2 }}>
-          <View style={[{ flex: 3 }, styled.centerBox]}>
-            <Button size="lg" isShadow onPress={onSignUp}>
-              Tiếp theo
-            </Button>
-          </View>
-          <View style={{ flex: 2, alignItems:"center" }}>
-            <Typography variant="SubTitle" color="Gray.6">
-              Điều khoản và Chính sách
-            </Typography>
-          </View>
-        </View>
-      </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+    </SafeView>
     </BgImageLayout>
   );
 };
