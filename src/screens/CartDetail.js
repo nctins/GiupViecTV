@@ -718,7 +718,6 @@ const CartDetail = (props) => {
     let post_date = post_obj.date instanceof Date ? post_obj.date : new Date(post_obj.date);
     const time = post.time;
     post_date.setHours( time.slice(0,2), time.slice(3,5), 0, 0 );
-    console.log(current, post_date);
     return current >= post_date;
   }
 
