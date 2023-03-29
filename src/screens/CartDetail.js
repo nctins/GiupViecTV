@@ -300,7 +300,7 @@ const CartDetail = (props) => {
         };
         setPost(new_post);
         setPostState(res_obj.post_state);
-        setIsOverdue(checkCanComplete(res_obj));
+        setIsOverdue(checkOverdue(res_obj));
 
         if (res_obj.post_state == POST_STATE.COMPLETE) {
           getRatingDetail(post_id);
@@ -706,7 +706,7 @@ const CartDetail = (props) => {
     );
   };
 
-  const checkCanComplete = (post_obj) => {
+  const checkOverdue = (post_obj) => {
     // console.log(post_obj);
     if (!post_obj || post_obj.post_state != POST_STATE.INCOMPLETE) {
       return false;
