@@ -232,10 +232,6 @@ const CartDetail = (props) => {
   }, []);
 
   useEffect(() => {
-    checkCanComplete();
-  }, [post]);
-
-  useEffect(() => {
     const listener = (data) => {
       if(data.isPayment || data.isPayment == "1"){
         Alert.alert("", "Thanh toán thành công!", [
