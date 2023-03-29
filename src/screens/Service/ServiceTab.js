@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, ScrollView, StatusBar } from "react-native";
+import { StyleSheet, View } from "react-native";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
 import ProcessNavComponent from "~components/ProcessNavComponent";
@@ -9,6 +9,9 @@ import ServiceScreen from "./ServiceScreen";
 import { ServiceProvider } from "~contexts/ServiceContext";
 import { POST_TYPE } from "~constants/app_contants";
 import { BackIcon } from "~components/Icons";
+import SafeView from "~components/SafeView";
+import StatusBar from "~components/StatusBar";
+import DetailHeader from "~components/DetailHeader";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -56,34 +59,39 @@ const ServiceTab = ({ route, navigation }) => {
   }
 
   return (
-    <ServiceProvider
-      navigation={navigation}
-      post_type={post_type}
-      externalState={{ currentScreen: [currentScreen, setCurrentScreen] }}
-    >
-      <View style={style.default}>
-        <StatusBar backgroundColor={style.statusBar.backgroundColor} />
-        <View style={style.header}>
-          <BackIcon style={style.backIconStyle} size="md" color="white" onPress = {onPressBackIcon} />
-          <Typography variant="H5" style={style.title}>Tìm người giúp việc</Typography>
-        </View>
-        <View style={{ flex: 1 }}>
-          <View style={{ flex: 1, marginTop: 20 }}>
-            <ProcessNavComponent
-              lstItem={[
-                "AddressScreen",
-                "ServiceScreen",
-                "PaymentScreen",
-              ]}
-              toItem={(item) => {
-                setCurrentScreen(item);
-              }}
-            />
+    <>
+      <StatusBar/>
+      <SafeView>
+        <ServiceProvider
+          navigation={navigation}
+          post_type={post_type}
+          externalState={{ currentScreen: [currentScreen, setCurrentScreen] }}
+        >
+          <View style={style.default}>
+            {/* <View style={style.header}>
+              <BackIcon style={style.backIconStyle} size="md" color="white" onPress = {onPressBackIcon} />
+              <Typography variant="H5" style={style.title}>Tìm người giúp việc</Typography>
+            </View> */}
+            <DetailHeader navigation={navigation} title="Tìm người giúp việc"/>
+            <View style={{ flex: 1 }}>
+              <View style={{ flex: 1, marginTop: 20 }}>
+                <ProcessNavComponent
+                  lstItem={[
+                    "AddressScreen",
+                    "ServiceScreen",
+                    "PaymentScreen",
+                  ]}
+                  toItem={(item) => {
+                    setCurrentScreen(item);
+                  }}
+                />
+              </View>
+              {contentComponent[currentScreen]}
+            </View>
           </View>
-          {contentComponent[currentScreen]}
-        </View>
-      </View>
-    </ServiceProvider>
+        </ServiceProvider>
+      </SafeView>
+    </>
   );
 };
 

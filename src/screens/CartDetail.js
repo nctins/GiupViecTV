@@ -225,10 +225,15 @@ const CartDetail = (props) => {
   const [isPayment, setIsPayment] = useState(false);
   const [post, setPost] = useState(init_post);
   const [rating_detail, setRatingDetail] = useState(null);
+  const [is_overdue, setIsOverdue] = useState(false);
 
   useEffect(() => {
     getPostDetail();
   }, []);
+
+  useEffect(() => {
+    checkCanComplete();
+  }, [post]);
 
   useEffect(() => {
     const listener = (data) => {
@@ -299,6 +304,7 @@ const CartDetail = (props) => {
         };
         setPost(new_post);
         setPostState(res_obj.post_state);
+        setIsOverdue(checkCanComplete(res_obj));
 
         if (res_obj.post_state == POST_STATE.COMPLETE) {
           getRatingDetail(post_id);
@@ -704,6 +710,22 @@ const CartDetail = (props) => {
     );
   };
 
+  const checkCanComplete = (post_obj) => {
+    // console.log(post_obj);
+    if (!post_obj || post_obj.post_state != POST_STATE.INCOMPLETE) {
+      return false;
+    }
+    if (!post_obj.date) {
+      return false;
+    }
+    const current = new Date();
+    let post_date = post_obj.date instanceof Date ? post_obj.date : new Date(post_obj.date);
+    const time = post.time;
+    post_date.setHours( time.slice(0,2), time.slice(3,5), 0, 0 );
+    console.log(current, post_date);
+    return current >= post_date;
+  }
+
   return (
     <>
       <StatusBar/>
@@ -855,14 +877,17 @@ const CartDetail = (props) => {
                   Đánh giá
                 </Button>
               )}
-              {post.payment_method == PAYMENT_METHOD.VNPAY && post_state == POST_STATE.INCOMPLETE && (
-                <Button
-                  style={style.reviewBtn}
-                  size="modalBtn"
-                  onPress={onPaymentVnpay}
-                >
-                  Thanh toán
-                </Button>
+              {
+                post.payment_method == PAYMENT_METHOD.VNPAY 
+                && is_overdue
+                &&(
+                  <Button
+                    style={style.reviewBtn}
+                    size="modalBtn"
+                    onPress={onPaymentVnpay}
+                  >
+                    Thanh toán
+                  </Button>
               )}
             </View>
           </ScrollView>
