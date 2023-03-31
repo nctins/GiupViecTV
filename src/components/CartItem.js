@@ -23,8 +23,7 @@ const styles = (theme) => StyleSheet.create({
         height: "100%",
         flexDirection: "column",
         justifyContent: "space-around",
-        paddingVertical: 8,
-        paddingHorizontal: 8,
+        padding: 8,
         borderEndWidth: 1,
         borderEndColor: theme.colors.Gray[3]
     },
@@ -34,7 +33,7 @@ const styles = (theme) => StyleSheet.create({
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        paddingVertical: 10,
+        padding: 8,
         backgroundColor: "#f0fbff",
     },
     textItem: {
@@ -84,6 +83,9 @@ const CartItem = ({ navigation, post }) => {
                 <View style={style.rightContainer}>
                     <Typography variant="TextBold">{post.total} VNĐ</Typography>
                     <Typography variant="MiniDescription">{displayPaymentMethod()}</Typography>
+                    {post.post_state === POST_STATE.CANCEL && (
+                        <Typography color='StrawberryRed' style={{marginTop:5}} variant='MiniDescription'>Lý do hủy: "{post.reason_cancel}"</Typography>
+                    )}
                 </View>
             </View>
         </TouchableOpacity>
