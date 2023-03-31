@@ -21,9 +21,9 @@ export const VOUCHER_TYPE = {
   DISCOUNT_PRICE: 1, // voucher tính theo số tiền
 };
 export const PAYMENT_METHOD_CONDITION = {
-  ALL: 0,
-  COD: 1, // áp dụng cho đơn hàng có payment method COD
-  VNPAY: 2, // áp dụng cho đơn hàng có payment method VNPAY,
+  ALL: 2,
+  COD: 0, // áp dụng cho đơn hàng có payment method COD
+  VNPAY: 1, // áp dụng cho đơn hàng có payment method VNPAY,
   VNPAY_NA: "VNPAY",
   COD_NA: "Tiền mặt",
   ALL_NA: "Mọi hình thức thanh toán",
