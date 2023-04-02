@@ -18,13 +18,28 @@ const styles = (theme) => StyleSheet.create({
         flexDirection: 'row',
         justifyContent: "flex-end",
     },
-    content: {
+    leftContent: {
         width: "60%",
         backgroundColor: theme.colors.Gray[0],
-        borderRadius: 5,
+        borderRadius: 10,
+        borderTopLeftRadius: 0,
         paddingHorizontal: 10,
-        paddingVertical: 5,
-    }
+        paddingVertical: 10,
+    },
+    rightContent: {
+        width: "60%",
+        backgroundColor: theme.colors.BackgroundBlue,
+        borderRadius: 10,
+        borderBottomRightRadius: 0,
+        paddingHorizontal: 10,
+        paddingVertical: 10,
+
+    },
+    leftText: {},
+    rightText: {
+        backgroundColor: theme.colors.BackgroundBlue,
+        color: theme.colors.Gray[0]
+    },
 })
 
 const MessageDetailItem = (props) => {
@@ -32,8 +47,10 @@ const MessageDetailItem = (props) => {
 
     return ( 
         <View style={props.isMySelf ? style.defaultRight : style.defaultLeft}>
-            <View style={style.content}>
-                <Typography variant="Text">{props.content}</Typography>
+            <View style={props.isMySelf ? style.rightContent : style.leftContent}>
+                <Typography style={props.isMySelf ? style.rightText : style.leftText} variant="Text">
+                    {props.content}
+                </Typography>
             </View>
         </View>
      );
