@@ -4,6 +4,7 @@ import useThemeStyles from '~hooks/useThemeStyles';
 import Typography from "~components/Typography";
 import { LIMIT_ADDRESS_LENGTH, PAYMENT_METHOD_CONDITION, POST_STATE } from "../constants/app_contants";
 import DateFormater from '~utils/Dateformater';
+import { currencyWithDot } from '~utils/StringFormat';
 
 const styles = (theme) => StyleSheet.create({
     wrapper: {
@@ -71,6 +72,18 @@ const CartItem = ({ navigation, post }) => {
             return PAYMENT_METHOD_CONDITION.ALL_NA;
         }
     }
+    const displayCurrency = () => {
+        const currency = currencyWithDot(post.total);
+        if (currency.length >= 9) {
+            return (
+            <>
+                <Typography variant="TextBold">{currencyWithDot(post.total)}</Typography>
+                <Typography variant="TextBold">VNĐ</Typography>
+            </>
+            )
+        }
+        return <Typography variant="TextBold">{currencyWithDot(post.total)} VNĐ</Typography>
+    }
 
     return (
         <TouchableOpacity onPress={onPressCart}>
@@ -81,7 +94,7 @@ const CartItem = ({ navigation, post }) => {
                     <Typography style={style.textItem} variant="Description">{displayAddress()}</Typography>
                 </View>
                 <View style={style.rightContainer}>
-                    <Typography variant="TextBold">{post.total} VNĐ</Typography>
+                    {displayCurrency()}
                     <Typography variant="MiniDescription">{displayPaymentMethod()}</Typography>
                     {post.post_state === POST_STATE.CANCEL && (
                         <Typography color='StrawberryRed' style={{marginTop:5}} variant='MiniDescription'>Lý do hủy: "{post.reason_cancel}"</Typography>

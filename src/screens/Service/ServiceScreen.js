@@ -33,9 +33,11 @@ const styles = (theme) =>
         backgroundColor: theme.colors.BackgroundBlue,
       },
       title: {
-        flex: 1,
+        // flex: 1,
+        height: 30,
         flexDirection: "row",
         justifyContent: "space-between",
+        alignItems: "center",
         margin: 5,
       },
       button: {
@@ -158,10 +160,10 @@ const ServiceScreen = () => {
       </View>
       <View style={style.footer.wrapper}>
         <View style={style.footer.title}>
-          <Typography variant="H6" color="Gray.0">
-            Tổng tiền:
+          <Typography variant="H6" color="Gray.0" style={{height: 30, padding: 5}}>
+            Tổng cộng:
           </Typography>
-          <CurrencyText value={post.total} variant="H6" color="Gray.0" />
+          <CurrencyText value={post.total} variant="H6" color="Gray.0" style={{height: 30, padding: 5}}/>
         </View>
         <View style={style.footer.button}>
           <Button variant="secondary" size="sm" onPress={()=>controller.goToPaymentScreen()}>
