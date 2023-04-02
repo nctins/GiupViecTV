@@ -2,7 +2,7 @@ import React from 'react'
 import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import useThemeStyles from '~hooks/useThemeStyles';
 import Typography from "~components/Typography";
-import { LIMIT_ADDRESS_LENGTH, PAYMENT_METHOD_CONDITION } from "../constants/app_contants";
+import { LIMIT_ADDRESS_LENGTH, PAYMENT_METHOD_CONDITION, POST_STATE } from "../constants/app_contants";
 import DateFormater from '~utils/Dateformater';
 
 const styles = (theme) => StyleSheet.create({
