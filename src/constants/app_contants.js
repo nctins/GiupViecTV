@@ -51,6 +51,7 @@ export const POST_STATE = {
 export const LIMIT_ADDRESS_LENGTH = {
   LENGTH: 60,
 };
+export const LIMIT_MESSAGE_LENGTH = 50;
 
 // constant for notification table
 export const ICON_CODE = {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, View,StyleSheet } from "react-native";
+import { Image, View,StyleSheet, } from "react-native";
 import useThemeStyles from '~hooks/useThemeStyles';
 
 const styles = (theme) => StyleSheet.create({
@@ -40,10 +40,11 @@ const AvatarComponent = ({
     ...other}) => {
 
     const style = useThemeStyles(styles);
+    const sizeStyle = style[size] ? style[size] : {width: size, height: size};
     return ( 
         <View style={[containerAvatarStyle]}>
             <Image 
-                style={[avatarStyle,style[size],style[type]]}
+                style={[avatarStyle, sizeStyle, style[type]]}
                 source={{
                     uri: img,
                 }}
