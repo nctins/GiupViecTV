@@ -35,6 +35,22 @@ const styles = (theme) =>
       paddingVertical: 5,
       paddingHorizontal: 15,
     },
+    dot_not_view: {
+      width: 7,
+      height: 7,
+      borderRadius: 100,
+      backgroundColor: theme.colors.StrawberryRed,
+      position: "absolute",
+      top: 2,
+      right: 2,
+    },
+    icon_wrapper: {
+      width: 28,
+      height: 28,
+      alignItems: "center",
+      justifyContent: "center",
+      position: "relative",
+    },
   });
 
 const NotificationItem = (props) => {
@@ -44,6 +60,7 @@ const NotificationItem = (props) => {
   const content = data.content;
   const create_date = data.create_date;
   const icon_code = data.icon_code;
+  const is_view = data.is_view;
 
   const genderIcon = (code) => {
     switch (code) {
@@ -57,31 +74,32 @@ const NotificationItem = (props) => {
   };
   const onPress = () => {
     if (props.onPress) {
-      return props.onPress();
+      props.onPress();
     }
     return;
   };
 
   return (
       <View style={style.default}>
-          <Pressable onPress={() => onPress()}>
-        <View style={style.title}>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            {genderIcon(icon_code)}
-            <Typography variant="Subtitle" style={{ marginLeft: 8 }}>
-              {title}
-            </Typography>
+        <Pressable onPress={() => onPress()}>
+          <View style={style.title}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View style={style.icon_wrapper}>
+                {genderIcon(icon_code)} 
+                {!is_view && <View style={style.dot_not_view}/>}
+              </View>
+              <Typography variant="Subtitle" style={{ marginLeft: 8 }}>{title}</Typography>
+            </View>
+            <View>
+              <Typography variant="MiniDescription" style={{ marginLeft: 0 }}>
+                {DateFormater(create_date)}
+              </Typography>
+            </View>
           </View>
-          <View>
-            <Typography variant="MiniDescription" style={{ marginLeft: 0 }}>
-              {DateFormater(create_date)}
-            </Typography>
+          <View style={style.content}>
+            <Typography variant="Description">{content}</Typography>
           </View>
-        </View>
-        <View style={style.content}>
-          <Typography variant="Description">{content}</Typography>
-        </View>
-    </Pressable>
+        </Pressable>
       </View>
   );
 };
