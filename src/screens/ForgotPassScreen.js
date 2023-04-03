@@ -88,11 +88,11 @@ const ForgotPassScreen = ({ navigation }) => {
     if (access_token) {
       return (
         <TextInput
+          secureTextEntry={true}
           style={{ margin: 20 }}
           placeholder="Mật khẩu mới"
           title={"Mật khẩu mới"}
           titleStyle="blackTitle"
-          secureTextEntry={true}
           value={new_password}
           onChangeText={(text) => setNewPassword(text)}
         />

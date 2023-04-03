@@ -60,8 +60,10 @@ const styles = (theme) => StyleSheet.create({
   },
   couponContentView:{
     flexGrow: 1,
+    width: "100%",
     flexDirection: "row",
     paddingHorizontal: 5,
+    // backgroundColor: "red"
   },
   couponItemStyle:{
     width: 300,

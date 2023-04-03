@@ -87,7 +87,7 @@ const CouponComponent = ({navigation,voucher_info, containerStyle,isHome = false
                 <View style={style.viewTitle}>
                     <View style={[style.title,isHome?{width:"100%"}:null]}>
                         <Typography variant="TextBold">{title}</Typography>
-                        {!isHome? <Typography variant="Description" style={{}}>Hạn dùng:{deadline}</Typography>:null} 
+                        {!isHome? <Typography variant="Description" style={{}}>Hạn dùng: {deadline}</Typography>:null} 
                     </View>
                     {!isHome?<View style={style.viewButton}><Button style={style.button} radius={5} onPress={() => {navigation.navigate("Trang chủ")}}>Dùng ngay</Button></View> : null}
                 </View>

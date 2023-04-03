@@ -47,9 +47,14 @@ const Step2 = ({route,navigation}) => {
       })
       .then(async (response) => {
         setIsLoading(false);
-        console.log("sign Up");
+        Alert.alert(
+          "",
+          "Đăng ký tài khoản thành công",
+          [
+            { text: "OK", onPress:() => navigation.popToTop()}
+          ]
+        );
         console.log(response.data);
-        navigation.popToTop();
       })
       .catch(async (error) => {
         setIsLoading(false);
@@ -115,7 +120,7 @@ const Step2 = ({route,navigation}) => {
           <View style={{ flex: 2 }}>
             <View style={[{ flex: 3 }, styled.centerBox]}>
               <Button size="lg" isShadow onPress={onSignUp}>
-                Tiếp theo
+                Đăng ký
               </Button>
             </View>
             <View style={{ flex: 2, alignItems:"center" }}>
