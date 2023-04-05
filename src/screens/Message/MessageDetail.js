@@ -17,6 +17,7 @@ import { AxiosContext } from "~contexts/AxiosContext";
 import { AuthContext } from "~contexts/AuthContext";
 import SafeView from "~components/SafeView";
 import StatusBar from "~components/StatusBar";
+import SOCKET_ACT from "~constants/socket_contant";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -111,13 +112,14 @@ const MessageDetail = ({ navigation, route }) => {
   }, []);
 
   useEffect(() => {
-    const listener = (msg) => {
-      // console.log(msg);
-      setMessages([...messages, msg]);
+    const listener = (payload) => {
+      if(payload.box_chat_id === box_chat_id) {
+        setMessages([...messages, payload.msg]);
+      }
     };
     // console.log(box_chat_id);
-    socket.on(box_chat_id, listener);
-    return () => socket.off(box_chat_id);
+    socket.on(SOCKET_ACT.NEW_MESSAGE, listener);
+    return () => socket.off(SOCKET_ACT.NEW_MESSAGE);
   }, [messages]);
 
   return (
