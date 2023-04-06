@@ -6,6 +6,7 @@ import SOCKET_ACT from "~constants/socket_contant";
 import Typography from "~components/Typography";
 import { AuthContext } from "~contexts/AuthContext";
 import useAxios from "~hooks/useAxios";
+import useMessageModuleContext from "~hooks/useMessageModuleContext";
 import useSocket from "~hooks/useSocket";
 import useThemeStyles from "~hooks/useThemeStyles";
 
@@ -39,6 +40,7 @@ const NotificationTab = ({navigation}) => {
   const { authAxios } = useAxios();
   const [notifications, setNotifications] = useState([]);
   const { socket } = useSocket();
+  const {setHasUnreadNotification} = useMessageModuleContext();
   
   useEffect(() => {
     getNotification();
@@ -47,7 +49,6 @@ const NotificationTab = ({navigation}) => {
   useEffect(() => {
     const listener = (msg) => {
       console.log(msg.user_ids)
-      // const data = JSON.parse(msg);
       const user_id = authState.user.id;
       if (msg.user_ids.includes(user_id)) {
         getNotification();
@@ -55,7 +56,7 @@ const NotificationTab = ({navigation}) => {
     } 
     socket.on(SOCKET_ACT.NEW_NOTIFICATION, listener);
     return () => socket.off(SOCKET_ACT)
-  },[socket])
+  },[notifications])
 
   const getNotification = () => {
     authAxios
@@ -76,6 +77,13 @@ const NotificationTab = ({navigation}) => {
     const new_notification = [...notifications];
     new_notification[idx] = {...notifications[idx], is_view: true};
     setNotifications(new_notification);
+
+    const num_not_view = new_notification.filter(noti=>!noti.is_view).length;
+    console.log(num_not_view);
+    console.log(new_notification);
+    if (num_not_view == 0) {
+      setHasUnreadNotification(false);
+    }
   }
 
   const setViewAll = () =>{
@@ -90,6 +98,7 @@ const NotificationTab = ({navigation}) => {
         is_view: true,
       }
     })
+    setHasUnreadNotification(false);
     setNotifications(new_notifications);
   }
 

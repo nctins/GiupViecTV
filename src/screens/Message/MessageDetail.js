@@ -18,6 +18,8 @@ import { AuthContext } from "~contexts/AuthContext";
 import SafeView from "~components/SafeView";
 import StatusBar from "~components/StatusBar";
 import SOCKET_ACT from "~constants/socket_contant";
+import useMessageModuleContext from "~hooks/useMessageModuleContext";
+import Toast from "~utils/Toast";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -67,10 +69,11 @@ const styles = (theme) =>
 
 const MessageDetail = ({ navigation, route }) => {
   const style = useThemeStyles(styles);
-  const { box_chat_id, sender, avatar_url } = route.params;
+  const { box_chat_id, sender, avatar_url, sender_id, num_unread_message } = route.params;
   const { socket } = useContext(SocketContext);
   const { authAxios } = useContext(AxiosContext);
   const { authState } = useContext(AuthContext);
+  const { has_unread_message, checkUnreadMessage } = useMessageModuleContext();
 
   const [messages, setMessages] = useState([]);
   const [enterMsg, setEnterMsg] = useState("");
@@ -79,9 +82,15 @@ const MessageDetail = ({ navigation, route }) => {
   const scrollViewRef = useRef();
 
   const onSendMsg = () => {
+    if(!enterMsg) {
+      Toast.createToast("Vui lòng nhập tin nhắn");
+      Keyboard.dismiss();
+      return;
+    }
     authAxios
       .post(`/box-chat/${box_chat_id}/message`, {
         message: enterMsg,
+        to_user_id: sender_id,
       })
       .then((res) => {
         const resObj = res.data;
@@ -99,6 +108,29 @@ const MessageDetail = ({ navigation, route }) => {
   }, [messages]);
 
   useEffect(() => {
+    let is_mount = true;
+    if(is_mount) {
+      getMessages();
+      if(num_unread_message > 0) {
+        setViewAll();
+      }
+    }
+    return () => {is_mount=false;};
+  }, []);
+
+  useEffect(() => {
+    const listener = (payload) => {
+      if(payload.box_chat_id === box_chat_id) {
+        setMessages([...messages, payload.msg]);
+        setViewAll();
+      }
+    };
+    // console.log(box_chat_id);
+    socket.on(SOCKET_ACT.NEW_MESSAGE_ON_MESSAGE_DETAIL, listener);
+    return () => socket.off(SOCKET_ACT.NEW_MESSAGE_ON_MESSAGE_DETAIL);
+  }, [messages]);
+
+  const getMessages = () => {
     authAxios
       .get(`/box-chat/${box_chat_id}/messages`)
       .then((res) => {
@@ -109,18 +141,17 @@ const MessageDetail = ({ navigation, route }) => {
         console.log(err.response.data);
         setMessages([]);
       });
-  }, []);
+  }
 
-  useEffect(() => {
-    const listener = (payload) => {
-      if(payload.box_chat_id === box_chat_id) {
-        setMessages([...messages, payload.msg]);
-      }
-    };
-    // console.log(box_chat_id);
-    socket.on(SOCKET_ACT.NEW_MESSAGE, listener);
-    return () => socket.off(SOCKET_ACT.NEW_MESSAGE);
-  }, [messages]);
+  const setViewAll = () => {
+    authAxios
+      .put(`/box-chat/${box_chat_id}/set-view-all`, {})
+      .then(val=>{
+        if(has_unread_message){
+          checkUnreadMessage();
+        }
+      })
+  }
 
   return (
     <>

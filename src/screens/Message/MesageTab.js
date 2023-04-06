@@ -1,4 +1,5 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import React, { useCallback, useContext, useState } from "react";
 import { StyleSheet, View, ScrollView, TextInput, RefreshControl } from "react-native";
 import MessageItem from "~components/MessageItem";
 import { AxiosContext } from "~contexts/AxiosContext";
@@ -51,9 +52,11 @@ const MessageTab = ({ navigation }) => {
     });
   }, []);
 
-  useEffect(()=>{
-    getBoxChat();
-  },[]);
+  useFocusEffect(
+    useCallback(()=>{
+      getBoxChat();
+    },[])
+  )
 
   const getBoxChat = () => {
     authAxios
