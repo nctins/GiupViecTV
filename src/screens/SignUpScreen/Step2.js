@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { BgImageLayout } from "~components/Layout";
 import { SIGNUP_BG } from "assets/images";
-import { StyleSheet, View, Alert, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { StyleSheet, View, Alert, TouchableWithoutFeedback, Keyboard, Text } from "react-native";
 import { TextInput } from "~components/Inputs";
 import Button, { IconButton } from "~components/Button";
 import { BackIcon } from "~components/Icons";
@@ -14,6 +14,7 @@ import { AxiosContext } from "~contexts/AxiosContext";
 import LoadingScreen from "~screens/LoadingScreen";
 import SafeView from "~components/SafeView";
 import StatusBar from "~components/StatusBar";
+import Validation from "~utils/Validation";
 
 const Step2 = ({route,navigation}) => {
   const authContext = useContext(AuthContext);
@@ -25,16 +26,31 @@ const Step2 = ({route,navigation}) => {
   const { email, phone, name } = route.params;   
   const [isLoading, setIsLoading] = useState(false);
 
-  const onSignUp = async () => {
+  const checkinput = () => {
+    let result = "";
+    if(!Validation.isLegitPassword(password)){
+      result += result.length === 0 ? "Hãy nhập mật khẩu ít nhất 8 ký tự gồm chữ in hoa, chữ thường, số và ký tự đặc biệt!" 
+                                    : "\nHãy nhập mật khẩu ít nhất 8 ký tự gồm chữ in hoa, chữ thường, số và ký tự đặc biệt!";
+      setPassword("");
+      setPasswordConfirm("");
+    }
     if(password !== passwordConfirm){
+      result += result.length === 0 ? "Xác nhận mật khẩu không đúng!" : "\nXác nhận mật khẩu không đúng!";
+      setPasswordConfirm("");
+    }
+    return result;
+  }
+
+  const onSignUp = async () => {
+    let msg = checkinput();
+    if(msg.length > 0){
       Alert.alert(
-        "Đăng ký tài khoản không thành công!",
-        "Xác nhận mật khẩu không đúng!",
+        "Thông báo!",
+        msg,
         [
           { text: "OK"}
         ]
       );
-      setPasswordConfirm("");
       return;
     }
     setIsLoading(true);
@@ -47,9 +63,14 @@ const Step2 = ({route,navigation}) => {
       })
       .then(async (response) => {
         setIsLoading(false);
-        console.log("sign Up");
-        console.log(response.data);
-        navigation.popToTop();
+        Alert.alert(
+          "",
+          "Đăng ký tài khoản thành công",
+          [
+            { text: "OK", onPress:() => navigation.popToTop()}
+          ]
+        );
+        // console.log(response.data);
       })
       .catch(async (error) => {
         setIsLoading(false);
@@ -101,7 +122,7 @@ const Step2 = ({route,navigation}) => {
                 onChangeText={(value) => {setPassword(value)}}
               />
             </View>
-            <View>
+            <View style={{marginTop: 10}}>
               <Typography style={styled.label}>Confim Password:</Typography>
               <TextInput
                 secureTextEntry={true}
@@ -115,7 +136,7 @@ const Step2 = ({route,navigation}) => {
           <View style={{ flex: 2 }}>
             <View style={[{ flex: 3 }, styled.centerBox]}>
               <Button size="lg" isShadow onPress={onSignUp}>
-                Tiếp theo
+                Đăng ký
               </Button>
             </View>
             <View style={{ flex: 2, alignItems:"center" }}>
@@ -160,8 +181,14 @@ const styles = (theme) =>
     },
     label: {
       color: ObjMapper.getKeyValue(theme.colors, "Gray.0"),
+      fontSize: 15,
       marginBottom: 5
-    }
+    },
+    hint: {
+      color: ObjMapper.getKeyValue(theme.colors, "Gray.0"),
+      fontSize: 12,
+      marginTop: 5,
+    },
   });
 
 export default Step2;

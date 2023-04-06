@@ -77,6 +77,7 @@ const CouponScreen = ({navigation}) => {
   const style = useThemeStyles(styles);
   const authContext = useContext(AuthContext);
   const {authAxios} = useContext(AxiosContext);
+  const user = authContext.authState.user;
   const [voucherCode, setVoucherCode] = useState("");
   const [vouchers,setVouchers] = useState([]);
   const [message, setMessage] = useState("");
@@ -99,10 +100,10 @@ const CouponScreen = ({navigation}) => {
   const getCoupon = async () => {
     setIsLoading(true);
     authAxios
-      .get("customer/CUS_g2pcl14wl8rlwhcv/vouchers")
+      .get("customer/" + user.id + "/vouchers")
       .then(async (response) => {
+        // console.log(response.data.data);
         setVouchers(response.data.data);
-        // console.log(vouchers);
         setIsLoading(false);
       })
       .catch(async (error) => {
@@ -132,8 +133,8 @@ const CouponScreen = ({navigation}) => {
       .get("voucher/customer/" + voucherCode)
       .then(async (response) => {
         // setVouchers(response.data.data);
-        console.log("successful!");
-        console.log(response.data);
+        // console.log("successful!");
+        // console.log(response.data);
         setMessage(response.data.data);
         getCoupon();
       })

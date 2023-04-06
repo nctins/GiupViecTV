@@ -52,11 +52,19 @@ const SearchAddressComponent = ({onPlaceSelected, position, setPosition, goBackS
                         "Địa chỉ hiện tại của bạn là:",
                         address_obj.formatted_address,
                         [
-                          { text: "OK", onPress: () => {
-                            setOriginAddress(address_obj.formatted_address);
-                            setOriginPlaceID(address_obj.place_id);
-                            goBackScreen();
-                          }}
+                            { 
+                                text: "Cancel",
+                                onPress: () => console.log('Cancel Pressed'),
+                                style: "cancel"
+                            },
+                            { 
+                                text: "OK", 
+                                onPress: () => {
+                                    setOriginAddress(address_obj.formatted_address);
+                                    setOriginPlaceID(address_obj.place_id);
+                                    goBackScreen();
+                                }
+                            },
                         ]
                       );
                 }else{
