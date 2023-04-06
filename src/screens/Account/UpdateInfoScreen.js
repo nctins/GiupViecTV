@@ -10,6 +10,7 @@ import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
 import * as ImagePicker from 'expo-image-picker';
 import LoadingScreen from "~screens/LoadingScreen";
+import Validation from "~utils/Validation";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -146,10 +147,20 @@ const UpdateInfoScreen = ({navigation}) => {
       });
   }
 
+  const checkinput = () => {
+    let result = "";
+    if(!Validation.isVietnamesePhoneNumber(phone)){
+      result += result.length === 0 ? "Số điện thoại không đúng!" : "\nSố điện thoại không đúng!";
+    }
+    if(name.length === 0){
+      result += result.length === 0 ? "Hãy nhập họ và tên!" : "\nHãy nhập họ và tên!";
+    }
+    return result;
+  }
+
   const updateAccount = () => {
-    if(email.length > 0 && phone.length > 0 && name.length > 0){
-      setIsLoading(true);
-      authAxios
+    setIsLoading(true);
+    authAxios
       .put("customer/" + user.id,{
         email: email,
         name: name,
@@ -175,19 +186,20 @@ const UpdateInfoScreen = ({navigation}) => {
         }
         setIsLoading(false);
       });
-    }else{
+  }
+
+  const onPressButtonSave = () => {
+    let msg = checkinput();
+    if(msg.length > 0){
       Alert.alert(
         "Thông báo!",
-        "Cần nhập đầy đủ các mục để cập nhật!",
+        msg,
         [
           { text: "OK"}
         ]
       );
+      return;
     }
-    
-  }
-
-  const onPressButtonSave = () => {
     Alert.alert(
       "Thông báo!",
       "Bạn có muốn cập nhập không",

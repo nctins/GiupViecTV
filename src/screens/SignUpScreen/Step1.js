@@ -11,6 +11,7 @@ import ObjMapper from "object-mapper";
 import useThemeStyles from "~hooks/useThemeStyles";
 import SafeView from "~components/SafeView";
 import StatusBar from "~components/StatusBar";
+import Validation from "~utils/Validation";
 
 const Step1 = ({navigation}) => {
   const theme = useTheme();
@@ -19,17 +20,32 @@ const Step1 = ({navigation}) => {
   const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
 
+  const checkinput = () => {
+    let result = "";
+    if(!Validation.isEmail(email)){
+      result += result.length === 0 ? "Địa chỉ email không đúng!" : "\nĐịa chỉ email không đúng!";
+    }
+    if(!Validation.isVietnamesePhoneNumber(phone)){
+      result += result.length === 0 ? "Số điện thoại không đúng!" : "\nSố điện thoại không đúng!";
+    }
+    if(name.length === 0){
+      result += result.length === 0 ? "Hãy nhập họ và tên!" : "\nHãy nhập họ và tên!";
+    }
+    return result;
+  }
+
   const onPressNextButton = () => {
-    if(email.length > 0 && phone.length > 0 && name.length > 0){
-      navigation.push('Step2', {email: email, phone: phone, name: name})
-    }else{
+    let msg = checkinput();
+    if(msg.length > 0){
       Alert.alert(
         "Thông báo!",
-        "Cần nhập đầy đủ các mục để tiếp tục!",
+        msg,
         [
           { text: "OK"}
         ]
       );
+    }else{
+      navigation.push('Step2', {email: email, phone: phone, name: name});
     }
   }
   
@@ -78,23 +94,6 @@ const Step1 = ({navigation}) => {
             />
             </View>
           </View>
-          {/* 
-          <View style={{ alignItems: "center", marginTop:50 }}>
-            <View style={styled.card}>
-              <Typography style={styled.cardTitle}>Đăng ký với</Typography>
-              <View
-                style={{ flexDirection: "row", justifyContent: "space-around" }}
-              >
-                <View style={styled.circleIcon}>
-                  <FacebookIcon />
-                </View>
-                <View style={styled.circleIcon}>
-                  <GoogleIcon />
-                </View>
-              </View>
-            </View>
-          </View>
-          */}
           <View style={{ alignItems: "center", marginTop:200 }}>
             <Button size="lg" isShadow onPress={onPressNextButton}>
               Tiếp theo

@@ -8,6 +8,7 @@ import Button from "~components/Button";
 import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
 import LoadingScreen from "~screens/LoadingScreen";
+import Validation from "~utils/Validation";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -72,12 +73,26 @@ const ChangePasswordScreen = ({navigation}) => {
     }
   }
 
-  const updatePassword = () => {
-    if(newPassword !== newPasswordConfirm){
-      setMessage("Xác nhận mật khẩu không đúng!");
-      setNewPasswordConfirm("");
-      return;
+  const checkInput = () => {
+    let result = "";
+    if(oldPassword.length === 0){
+      result += result.length === 0 ? "Hãy nhập mật khẩu cũ!" : "\nHãy nhập mật khẩu cũ!";
+      // return result;
     }
+    if(!Validation.isLegitPassword(newPassword)){
+      result += result.length === 0 ? "Hãy nhập mật khẩu mới ít nhất 8 ký tự gồm chữ in hoa, chữ thường, số và ký tự đặc biệt!" 
+                                    : "\nHãy nhập mật khẩu mới ít nhất 8 ký tự gồm chữ in hoa, chữ thường, số và ký tự đặc biệt!";
+      setNewPassword("");
+      setNewPasswordConfirm("");
+    }
+    if(newPassword !== newPasswordConfirm){
+      result += result.length === 0 ? "Xác nhận mật khẩu không đúng!" : "\nXác nhận mật khẩu không đúng!";
+      setNewPasswordConfirm("");
+    }
+    return result;
+  }
+
+  const updatePassword = () => {
     setIsLoading(true);
     authAxios
       .put("customer/" + user.id + "/updatePassword",{
@@ -111,6 +126,17 @@ const ChangePasswordScreen = ({navigation}) => {
   }
 
   const onPressButtonUpdate = () => {
+    let msg = checkInput();
+    if(msg.length > 0){
+      Alert.alert(
+        "Thông báo!",
+        msg,
+        [
+          { text: "OK"}
+        ]
+      );
+      return;
+    }
     Alert.alert(
       "Thông báo!",
       "Bạn có muốn cập nhập mật khẩu không",
@@ -174,7 +200,9 @@ const ChangePasswordScreen = ({navigation}) => {
             onChangeText={(text) => setNewPasswordConfirm(text)}
           />
           </View>
-          {messageDisplay()}
+          <View style={{width: "70%", flexDirection: "row", justifyContent: "center"}}>
+            {messageDisplay()}
+          </View>
         </View>
         <View style={[{ flex: 2 }, style.form.button]}>
           <Button size="sm" radius={4} style={{ width: 130, padding: 10 }} onPress={onPressButtonUpdate}>
