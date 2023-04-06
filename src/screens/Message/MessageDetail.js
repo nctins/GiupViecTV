@@ -112,7 +112,11 @@ const MessageDetail = ({ navigation, route }) => {
     if(is_mount) {
       getMessages();
       if(num_unread_message > 0) {
-        setViewAll();
+        setViewAll().then((val)=>{
+          if(has_unread_message && is_mount) {
+            checkUnreadMessage();
+          }
+        });
       }
     }
     return () => {is_mount=false;};
@@ -122,7 +126,11 @@ const MessageDetail = ({ navigation, route }) => {
     const listener = (payload) => {
       if(payload.box_chat_id === box_chat_id) {
         setMessages([...messages, payload.msg]);
-        setViewAll();
+        setViewAll().then((val)=>{
+          if (has_unread_message) {
+            checkUnreadMessage();
+          }
+        });
       }
     };
     // console.log(box_chat_id);
@@ -144,13 +152,7 @@ const MessageDetail = ({ navigation, route }) => {
   }
 
   const setViewAll = () => {
-    authAxios
-      .put(`/box-chat/${box_chat_id}/set-view-all`, {})
-      .then(val=>{
-        if(has_unread_message){
-          checkUnreadMessage();
-        }
-      })
+    return authAxios.put(`/box-chat/${box_chat_id}/set-view-all`, {})
   }
 
   return (
