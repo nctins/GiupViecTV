@@ -25,6 +25,7 @@ const styles = (theme) =>
       justifyContent: "flex-start",
       alignItems: "center",
       marginTop: 10,
+      backgroundColor: theme.colors.Gray[0]
     },
     footer: {
       wrapper: {
