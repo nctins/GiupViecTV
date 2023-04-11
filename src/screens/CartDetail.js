@@ -97,11 +97,38 @@ const styles = (theme) =>
       backgroundColor: theme.colors.BackgroundBlue,
     },
     label: {
-      backgroundColor: theme.colors.ShinyOrange,
       marginLeft: 20,
       paddingHorizontal: 5,
       paddingVertical: 5,
-      borderRadius: 7,
+      borderRadius: 5,
+      borderWidth: 1,
+    },
+    processing_label: {
+      backgroundColor: theme.colors.Gray[0],
+      borderColor: theme.colors.ShinyOrange,
+      color: "ShinyOrange",
+    },
+    complete_label: {
+      backgroundColor: theme.colors.Gray[0],
+      borderColor: theme.colors.Verdepom,
+      color: "Verdepom",
+    },
+    incomplete_label: {
+      backgroundColor: theme.colors.Gray[0],
+      borderColor: theme.colors.ShinyOrange,
+      color: "ShinyOrange",
+    },
+    cancel_label: {
+      backgroundColor: theme.colors.Gray[0],
+      borderColor: theme.colors.StrawberryRed,
+      color: "StrawberryRed",
+    },
+    star_container: { 
+      width: 70, 
+      backgroundColor: theme.colors.BackgroundBlue, 
+      padding: 3, 
+      borderRadius: 2, 
+      marginLeft: 3,
     },
     btnGroup: {
       flexDirection: "row",
@@ -351,16 +378,39 @@ const CartDetail = (props) => {
       });
   };
 
-  const displayPostState = () => {
-    if (post_state === POST_STATE.PROCESSING) {
-      return POST_STATE.PROCESSING_NA;
-    } else if (post_state === POST_STATE.INCOMPLETE) {
-      return POST_STATE.INCOMPLETE_NA;
-    } else if (post_state === POST_STATE.COMPLETE) {
-      return POST_STATE.COMPLETE_NA;
-    } else {
-      return POST_STATE.CANCEL_NA;
+  const displayPostStateLabel = () => {
+    let label_style = {};
+    let state_name = "";
+    // let title_color = "Gray.8"
+    switch (post_state) {
+      case POST_STATE.PROCESSING:
+        label_style = style.processing_label;
+        state_name = POST_STATE.PROCESSING_NA;
+        break;
+
+      case POST_STATE.INCOMPLETE:
+        label_style = style.incomplete_label;
+        state_name = POST_STATE.INCOMPLETE_NA;
+        break;
+
+      case POST_STATE.COMPLETE:
+        label_style = style.complete_label;
+        state_name = POST_STATE.COMPLETE_NA;
+        break;
+    
+      default: // POST_STATE.CANCEL_NA
+        label_style = style.cancel_label;
+        state_name = POST_STATE.CANCEL_NA;
+        break;
     }
+    const title_color = label_style.color;
+    return (
+      <View style={[style.label, label_style]}>
+        <Typography variant="Description" color={title_color}>
+          {state_name}
+        </Typography>
+      </View>
+    )
   };
 
   const onCancel = () => {
@@ -732,11 +782,12 @@ const CartDetail = (props) => {
               <Typography variant="TextBold" style={style.title}>
                 Tình trạng
               </Typography>
-              <View style={style.label}>
+              {displayPostStateLabel()}
+              {/* <View style={style.label}>
                 <Typography variant="Description" style={{}}>
                   {displayPostState()}
                 </Typography>
-              </View>
+              </View> */}
             </View>
             <View style={[style.viewItemContent2]}>
               <View style={{ flexDirection: "row", justifyContent: "center" }}>
@@ -822,12 +873,12 @@ const CartDetail = (props) => {
                     <Typography variant="Description">
                       Hạng người giúp việc:
                     </Typography>
-                    <StarRatingComponent
-                      // buttonStyle={modalStyle.starStyle}
-                      containerStyle={{ maxWidth: 150 }}
-                      starSize={20}
-                      rating={post.helper.rank}
-                    />
+                    <View style={style.star_container}>
+                      <StarRatingComponent
+                        starSize={12}
+                        rating={post.helper.rank}
+                      />
+                    </View>
                   </View>
                   {post.helper.rank > 0 && (
                     <Pressable
