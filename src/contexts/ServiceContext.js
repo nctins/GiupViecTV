@@ -18,6 +18,7 @@ const ServiceProvider = ({
   children,
   navigation,
   post_type,
+  item,
   externalState,
 }) => {
   const { authAxios } = useContext(AxiosContext);
@@ -138,7 +139,7 @@ const ServiceProvider = ({
           }
 
           initServices[service.service_id] = {
-            is_select: false,
+            is_select: item && item.service_id === service.service_id ? true: false,
             service_init: service,
             service_value: initServiceValues,
           };
@@ -307,6 +308,7 @@ const ServiceProvider = ({
       value={{
         post,
         post_type,
+        item,
         setPostData,
         addresses,
         addressIds,

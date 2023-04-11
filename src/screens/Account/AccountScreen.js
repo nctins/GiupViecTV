@@ -22,6 +22,7 @@ const userInfoStyle = (theme) => {
       flexDirection: "row",
       alignContent: "center",
       justifyContent: "center",
+      backgroundColor: theme.colors.DarkGray[0],
     },
     avatar: {
       alignSelf: "center",
@@ -36,6 +37,10 @@ const userInfoStyle = (theme) => {
 
 const settingStyle = (theme) => {
   return {
+    wrapper:{
+      flex:3,
+      backgroundColor: theme.colors.DarkGray[0],
+    },
     settingItem: {
       display: "flex",
       flexDirection: "row",
@@ -87,36 +92,34 @@ const AccountScreen = ({navigation}) => {
       <StatusBar/>
       <SafeView>
         <Header title="Tài khoản" />
-        
         {/* user info */}
         <View style={[{ flex: 1 }, style.userInfo.wrapper]}>
           <AvatarComponent 
             img={user.avatar_url}
-            size="lg" 
+            size={80} 
             containerAvatarStyle ={style.userInfo.avatar} 
           />
           <View style={style.userInfo.account}>
-            <Typography variant="SubTitle">{user.name}</Typography>
-            <Typography variant="Description" color="Gray.3">
+            <Typography variant="TitleBold">{user.name}</Typography>
+            <Typography variant="Text" color="Gray.4">
             {user.email}
             </Typography>
           </View>
         </View>
 
         {/* setting menu */}
-        <View style={{ flex: 3 }}>
+        <View style={style.setting.wrapper}>
           <View style={style.setting.settingMenu}>
-            <Typography variant="TextBold">Tài khoản của tôi</Typography>
+            <Typography variant="SubtitleSemiBold">Tài khoản của tôi</Typography>
             <SettingItem
               title={"Chỉnh sửa thông tin cá nhân"}
               onTouch={() => {navigation.navigate("UpdateInfoScreen")}}
             />
             <SettingItem title={"Thay đổi mật khẩu"} onTouch={() => {navigation.navigate("ChangePasswordScreen")}} />
-            {/*<SettingItem title={"Liên kết tài khoản"} onTouch={() => {navigation.navigate("AccountLinkScreen")}} /> */}
             <SettingItem title={"Đăng xuất"} onTouch={() => onLogout()} />
           </View>
           <View style={style.setting.settingMenu}>
-            <Typography variant="TextBold">Tổng quát</Typography>
+            <Typography variant="SubtitleSemiBold">Tổng quát</Typography>
             <SwitchSettingItem
               title="Thông báo"
               onToggle={() => setIsNotice((previousState) => !previousState)}
@@ -135,7 +138,7 @@ const SwitchSettingItem = ({ icon, title, onToggle, value }) => {
   return (
     <View style={style.setting.settingItem}>
       <View style={style.setting.settingItemTitle}>
-        <Typography variant="Description">{title}</Typography>
+        <Typography variant="Text">{title}</Typography>
       </View>
       <Switch
         trackColor={style.setting.switch.trackColor}
@@ -155,7 +158,7 @@ const SettingItem = ({ title, onTouch }) => {
     <TouchableOpacity onPress={onTouch}>
     <View style={style.setting.settingItem}>
       <View style={style.setting.settingItemTitle}>
-        <Typography variant="Description">{title}</Typography>
+        <Typography variant="Text">{title}</Typography>
       </View>
       <RightArrowIcon />
     </View>

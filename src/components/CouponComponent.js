@@ -20,7 +20,6 @@ const styles = (theme) => StyleSheet.create({
     image:{
         flex:1,
         justifyContent: "flex-end",
-        // padding: 1
     },
     viewTitle:{
         width: "100%",
@@ -31,7 +30,6 @@ const styles = (theme) => StyleSheet.create({
         paddingVertical: 5,
         paddingHorizontal: 5,
         backgroundColor: "white",
-        // backgroundColor: "#FFFFFF90",
     },
     title:{
         width: "60%",

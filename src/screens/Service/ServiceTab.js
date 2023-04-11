@@ -45,7 +45,7 @@ const styles = (theme) =>
   });
 
 const ServiceTab = ({ route, navigation }) => {
-  const { post_type } = route.params;
+  const { post_type, item } = route.params;
   const style = useThemeStyles(styles);
   const [currentScreen, setCurrentScreen] = useState("AddressScreen");
   const contentComponent = {
@@ -65,6 +65,7 @@ const ServiceTab = ({ route, navigation }) => {
         <ServiceProvider
           navigation={navigation}
           post_type={post_type}
+          item={item}
           externalState={{ currentScreen: [currentScreen, setCurrentScreen] }}
         >
           <View style={style.default}>

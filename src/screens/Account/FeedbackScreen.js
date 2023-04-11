@@ -13,7 +13,7 @@ const styles = (theme) =>
   StyleSheet.create({
     default: {
       flex: 1,
-      backgroundColor: theme.colors.Gray[1],
+      backgroundColor: theme.colors.Gray[0],
       flexDirection: "column",
     },
     header: {
@@ -38,6 +38,7 @@ const styles = (theme) =>
       width: 350,
       borderWidth: 1,
       borderColor: theme.colors.BackgroundBlue,
+      fontSize: 15,
     },
   });
 

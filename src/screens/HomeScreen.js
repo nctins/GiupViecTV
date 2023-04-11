@@ -13,6 +13,7 @@ import { AxiosContext } from "~contexts/AxiosContext";
 import {DEFAULT_IMAGE_ERROR} from '../constants/app_contants';
 import SafeView from '~components/SafeView';
 import StatusBar from '~components/StatusBar';
+import { BackgroundBlue } from '~constants/colors';
 
 const styles = (theme) => StyleSheet.create({
   hiUserView:{
@@ -37,10 +38,12 @@ const styles = (theme) => StyleSheet.create({
   },
   AdsView:{
     width: "100%",
-    height: 200,
+    height: 250,
     marginTop: 20,
     flexDirection: "column",
     alignItems: "center",
+    borderWidth: 1,
+    borderColor: BackgroundBlue
   },
   couponView:{
     width: "100%",
@@ -175,7 +178,7 @@ const HomeScreen = ({navigation}) => {
         </View>
         <View style={style.couponView} >
           <View style={style.couponTittleView}>
-            <Typography variant="H7">Ưu đãi</Typography>
+            {vouchers && vouchers.length > 0 ? <Typography variant="H7">Ưu đãi</Typography> : null}
           </View> 
           <ScrollView horizontal={true} style={style.couponContentView}>
             {displayListCoupon()}

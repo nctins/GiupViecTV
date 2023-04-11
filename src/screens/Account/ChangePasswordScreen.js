@@ -14,7 +14,7 @@ const styles = (theme) =>
   StyleSheet.create({
     default: {
       flex: 1,
-      backgroundColor: theme.colors.Gray[1],
+      backgroundColor: theme.colors.Gray[0],
       flexDirection: "column",
     },
     header: {
@@ -38,6 +38,7 @@ const styles = (theme) =>
         marginBottom: 20,
         borderWidth: 1,
         borderColor: theme.colors.BackgroundBlue,
+        fontSize: 15,
       },
       wrapper: {
         justifyContent: "center",
@@ -165,7 +166,7 @@ const ChangePasswordScreen = ({navigation}) => {
         <View style={{ flex: 1 }}></View>
         <View style={[{ flex: 3 }, style.form.wrapper]}>
           <View>
-          <Typography style={style.label}>Mật khẩu hiện tại:</Typography>
+          <Typography variant="TextBold" style={style.label}>Mật khẩu hiện tại:</Typography>
           <TextInput
             style={style.form.field}
             placeholder="Nhập mật khẩu cũ"
@@ -177,7 +178,7 @@ const ChangePasswordScreen = ({navigation}) => {
           />
           </View>
           <View>
-          <Typography style={style.label}>Mật khẩu mới:</Typography>
+          <Typography variant="TextBold" style={style.label}>Mật khẩu mới:</Typography>
           <TextInput
             style={style.form.field}
             placeholder="Nhập mật khẩu mới"
@@ -189,10 +190,10 @@ const ChangePasswordScreen = ({navigation}) => {
           />
           </View>
           <View>
-          <Typography style={style.label}>Xác nhận mật khẩu mới:</Typography>
+          <Typography variant="TextBold" style={style.label}>Xác nhận mật khẩu mới:</Typography>
           <TextInput
             style={style.form.field}
-            placeholder="Nhập lại mật khẩu"
+            placeholder="Xác nhận mật khẩu"
             title={"Nhập lại mật khẩu mới"}
             titleStyle="blackTitle"
             isPassword
@@ -205,8 +206,8 @@ const ChangePasswordScreen = ({navigation}) => {
           </View>
         </View>
         <View style={[{ flex: 2 }, style.form.button]}>
-          <Button size="sm" radius={4} style={{ width: 130, padding: 10 }} onPress={onPressButtonUpdate}>
-            Lưu
+          <Button size="llg" radius={4} style={{ width: 180, padding: 15}} onPress={onPressButtonUpdate}>
+            Cập nhật
           </Button>
         </View>
       </View>
