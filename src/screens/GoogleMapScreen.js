@@ -21,6 +21,10 @@ const SearchAddressComponent = ({onPlaceSelected, position, setPosition, goBackS
     const {authAxios} = useContext(AxiosContext);
     const [address, setAddress] = useState("");
     const [placeID, setPlaceID] = useState("");
+    const [isPress, setIsPress] = useState(false);
+    const initSelection = {start: 0,end: 0};
+    const endSelection = {start: 1000,end: 1000};
+    const [selection,setSelection] = useState(initSelection);
 
     const reverseGeocodeGoogle = async () => {
         let UrlAPI = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + position.latitude + "," + position.longitude + "&key=" + API_GOOGLE;
@@ -84,6 +88,36 @@ const SearchAddressComponent = ({onPlaceSelected, position, setPosition, goBackS
             });
     }
 
+    const onBlurSearch = () => {
+        if(!isPress){
+            let queryAddress = address.replace(" ","%");
+            let UrlAPI = "https://maps.googleapis.com/maps/api/geocode/json?address=" + queryAddress + "&components=country:vn&key=" + API_GOOGLE;
+            authAxios
+            .get(UrlAPI)
+            .then(async (response) => {
+                let address_obj = response.data.results[0];
+                if(address_obj){
+                    onPlaceSelected(address_obj);
+                }else{
+                    Alert.alert(
+                        "Thông báo!",
+                        "Địa chỉ hiện tại không đúng! \\n Vui lòng chọn lại địa chỉ.",
+                        [
+                            { text: "OK", onPress: () => {
+                                setAddress("");
+                            }}
+                        ]
+                        );
+                }
+            })
+            .catch(async (error) => {
+                console.log(error);
+            });
+        }
+        setSelection(initSelection);
+        setIsPress(false);
+    }
+
     useEffect(() => {
         reverseGeocodeGoogle();
     }, [position]);
@@ -92,7 +126,7 @@ const SearchAddressComponent = ({onPlaceSelected, position, setPosition, goBackS
         return (
             <View style={{width: 120, flexDirection:"row", justifyContent:"center", alignItems:"center"}}>
                 {address.length > 0 ? <CancelIcon onPress={() => {setAddress("")}} /> : null}
-                <Button style={style.confirmButton} borderRadius={100} onPress={onConfirm}>xác nhận</Button>
+                <Button style={style.confirmButton} radius={100} onPress={onConfirm}>xác nhận</Button>
             </View>)
     }
 
@@ -106,11 +140,17 @@ const SearchAddressComponent = ({onPlaceSelected, position, setPosition, goBackS
                 // autoFillOnNotFound={true}
                 onPress={(data, details) => {
                     // 'details' is provided when fetchDetails = true
+                    console.log("press");
                     onPlaceSelected(details);
+                    setIsPress(true);
                 }}
                 textInputProps={{
                     value: address,
                     onChangeText: setAddress,
+                    onBlur: onBlurSearch,
+                    selection: selection,
+                    onSelectionChange: (e) => setSelection(e.nativeEvent.selection),
+                    onFocus:() => setSelection(endSelection)
                 }}
                 onTimeout={() => {console.log("time out")}}
                 onFail={error => console.error(error)}
@@ -146,37 +186,6 @@ const GoogleMap = ({setModalVisible, addressEdit, setOriginAddress, setOriginPla
                                             latitudeDelta: 0.01,
                                             longitudeDelta: cal_longitude_Delta(0.01)});
     const mapRef = useRef(null);
-
-    // useEffect(() => {
-    //     (async () => {
-
-    //         let { status } = await Location.requestForegroundPermissionsAsync();
-    //         if (status !== 'granted') {
-    //             setErrorMsg('Permission to access location was denied');
-    //             return;
-    //         }
-          
-    //         let location = await Location.getCurrentPositionAsync({});
-    //     //   console.log(location);
-    //       setPosition({...position, latitude: location.coords.latitude, longitude: location.coords.longitude});
-    //     })();
-
-    //     if(addressEdit && addressEdit.length > 0){
-    //         let queryAddress = addressEdit.replace(" ","%");
-    //         let UrlAPI = "https://maps.googleapis.com/maps/api/geocode/json?address=" + queryAddress + "&key=" + API_GOOGLE;
-
-    //         authAxios
-    //             .get(UrlAPI)
-    //             .then(async (response) => {
-    //                 let address_obj = response.data.results[0];
-    //                 // console.log(address_obj);
-    //                 setPosition({...position,latitude: address_obj.geometry.location.lat, longitude: address_obj.geometry.location.lng});
-    //             })
-    //             .catch(async (error) => {
-    //                 console.log(error);
-    //             });
-    //     }
-    // }, []);
 
     useEffect(() => {
         const requestLocationPermission = async () => {
