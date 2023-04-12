@@ -46,6 +46,7 @@ const styles = (theme) => StyleSheet.create({
   },
   viewMessage:{
     backgroundColor: "white",
+    paddingBottom: 10,
   },
   textInput: {
     width: "70%",
@@ -58,7 +59,8 @@ const styles = (theme) => StyleSheet.create({
     marginBottom: 10,
   },
   button:{
-    minWidth:  80,
+    width:  90,
+    minWidth:  90,
     height: 40,
     paddingHorizontal: 0,
     paddingVertical: 0,
@@ -129,14 +131,14 @@ const CouponScreen = ({navigation}) => {
   }
 
   const onPressGetCoupon = () => {
+    setIsLoading(true);
     authAxios
       .get("voucher/customer/" + voucherCode)
       .then(async (response) => {
         // setVouchers(response.data.data);
-        // console.log("successful!");
-        // console.log(response.data);
         setMessage(response.data.data);
         getCoupon();
+        setIsLoading(false);
       })
       .catch(async (error) => {
         if (error.response) {
@@ -144,6 +146,7 @@ const CouponScreen = ({navigation}) => {
           console.log(error.response.data);
           setMessage(error.response.data.msg);
         }
+        setIsLoading(false);
       });
   }
 
@@ -151,9 +154,16 @@ const CouponScreen = ({navigation}) => {
     if(message && message.length > 0){
       return (
         <View style={style.viewMessage}>
-          <Typography variant="Text" style={{ alignSelf: "center" }}>
-          {message}
-          </Typography>
+          {message.includes("thành công") ? 
+            (<Typography variant="Text" style={{ alignSelf: "center" }}>
+              {message}
+            </Typography>)
+          : (
+            <Typography variant="Text" style={{ alignSelf: "center", color: "red" }}>
+              {message}
+            </Typography>
+          )}
+          
         </View>
       )
     }else{

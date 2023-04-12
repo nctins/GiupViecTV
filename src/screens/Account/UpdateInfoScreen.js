@@ -18,7 +18,7 @@ const styles = (theme) =>
   StyleSheet.create({
     default: {
       flex: 1,
-      backgroundColor: theme.colors.Gray[1],
+      backgroundColor: theme.colors.Gray[0],
       flexDirection: "column",
     },
     header: {
@@ -39,7 +39,7 @@ const styles = (theme) =>
     },
     avatar: {
       wrapper: {
-        display: "flex",
+        flex: 3,
         flexDirection: "column",
         alignContent: "center",
         justifyContent: "center",
@@ -48,7 +48,7 @@ const styles = (theme) =>
         alignSelf: "center",
         borderWidth: 3,
         borderColor: theme.colors.BackgroundBlue,
-        borderRadius: 120,
+        borderRadius: 150,
       },
       textButton: {
         alignSelf: "center",
@@ -60,6 +60,7 @@ const styles = (theme) =>
         marginBottom: 20,
         borderWidth: 1,
         borderColor: theme.colors.BackgroundBlue,
+        fontSize: 15,
       },
       wrapper: {
         justifyContent: "center",
@@ -226,13 +227,13 @@ const UpdateInfoScreen = ({navigation}) => {
             {/* avatar */}
             <View style={[{ flex: 2 }, style.avatar.wrapper]}>
               <AvatarComponent
-                size="llg"
+                size={150}
                 containerAvatarStyle={style.avatar.border}
                 img={selectedImage}
               />
               <View style={style.avatar.textButton}>
                 <TouchableOpacity onPress={openImagePickerAsync}>
-                  <Typography color="Gray.5">Thay đổi</Typography>
+                  <Typography variant="Text" color="Gray.6">Thay đổi</Typography>
                 </TouchableOpacity>
               </View>
             </View>
@@ -269,7 +270,7 @@ const UpdateInfoScreen = ({navigation}) => {
             </View>
 
             <View style={[{ flex: 2 }, style.form.button]}>
-              <Button size="sm" radius={4} style={{ width: 130, padding: 10 }} onPress={onPressButtonSave}>
+              <Button size="lg" radius={4} style={{ width: 130, padding: 10 }} onPress={onPressButtonSave}>
                 Lưu
               </Button>
             </View>
