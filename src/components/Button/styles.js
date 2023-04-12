@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 const styles = (theme) =>
   StyleSheet.create({
     primary: {
-      backgroundColor: theme.colors.FrostySkies,
+      backgroundColor: theme.colors.Azure,
       color: theme.colors.Gray[0],
     },
     secondary: {
@@ -15,26 +15,31 @@ const styles = (theme) =>
       color: theme.colors.Gray[0],
     },
     lg: {
-      width: 304,
-      padding: 15,
-    },
-    md: {
-      width: 250,
-      padding: 15,
-    },
-    sm: {
-      width: 150,
-      padding: 15,
-    },
-    modalSize: {
-      width: 70,
+      minWidth: 304,
       padding: 8,
     },
+    md: {
+      minWidth: 250,
+      padding: 8,
+    },
+    sm: {
+      minWidth: 175,
+      padding: 5,
+    },
+    modalSize: {
+      minWidth: 70,
+      padding: 5,
+    },
     modalBtn: {
-      width: 115,
-      padding: 10,
+      minWidth: 115,
+      padding: 7,
     },
     shadow: theme.shadow,
+    typography_style: {
+      textAlign:"center",
+      minHeight: 24,
+      padding: 5,
+    }
   });
 
 export default styles;

@@ -134,7 +134,7 @@ const MessageItem = ({ navigation, ...props }) => {
       <View style={style.default}>
         <View style={style.avatar_wrapper}>
           <AvatarComponent
-            containerAvatarStyle={{borderWidth: 1, borderColor: "#0062FF", borderRadius: 120}}
+            containerAvatarStyle={{borderWidth: 2, borderColor: "#0062FF", borderRadius: 120}}
             avatarStyle={{}}
             img={data.avatar_url}
             size={70}

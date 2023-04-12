@@ -17,10 +17,10 @@ const StartScreen = ({navigation}) => {
   return (
     <BgImageLayout background={START_BG}>
       <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
-        <Typography variant='H2' color='Gray.0'>Giúp việc T&V</Typography>
+        {/* <Typography variant='H2' color='Gray.0'>Giúp việc T&V</Typography> */}
       </View>
       <View style={{flex:4, alignItems:'center'}}>
-        <Image source={START_IMG}/>
+        {/* <Image source={START_IMG}/> */}
       </View>
       <View style={{flex:2, alignItems:'center', justifyContent:'center'}}>
         <Button size='lg' isShadow variant='secondary' onPress={() => {navigation.push('LoginScreen', { params: 'example' })}} >

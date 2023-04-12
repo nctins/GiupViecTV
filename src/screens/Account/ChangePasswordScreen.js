@@ -9,6 +9,8 @@ import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
 import LoadingScreen from "~screens/LoadingScreen";
 import Validation from "~utils/Validation";
+import SafeView from "~components/SafeView";
+import DetailHeader from "~components/DetailHeader";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -151,67 +153,63 @@ const ChangePasswordScreen = ({navigation}) => {
   }
 
   return (
-    <TouchableWithoutFeedback style={{flex:1}} onPress={() => {Keyboard.dismiss();}}>
-    <View style={style.default}>
-      {isLoading ? <LoadingScreen /> : null}
-      <StatusBar backgroundColor={style.statusBar.backgroundColor} />
-      <View style={style.header}>
-        <BackIcon color="Gray.0" onPress={() => {navigation.navigate("AccountScreen")}} />
-        <Typography variant="H5" style={style.title}>
-          Thay đổi mật khẩu
-        </Typography>
-      </View>
-      <View style={{ flex: 7 }}>
-        <View style={{ flex: 1 }}></View>
-        <View style={[{ flex: 3 }, style.form.wrapper]}>
-          <View>
-          <Typography style={style.label}>Mật khẩu hiện tại:</Typography>
-          <TextInput
-            style={style.form.field}
-            placeholder="Nhập mật khẩu cũ"
-            title={"Mật khẩu cũ"}
-            titleStyle="blackTitle"
-            isPassword
-            value={oldPassword}
-            onChangeText={(text) => setOldPassword(text)}
-          />
-          </View>
-          <View>
-          <Typography style={style.label}>Mật khẩu mới:</Typography>
-          <TextInput
-            style={style.form.field}
-            placeholder="Nhập mật khẩu mới"
-            title={"Mật khẩu mới"}
-            titleStyle="blackTitle"
-            isPassword
-            value={newPassword}
-            onChangeText={(text) => setNewPassword(text)}
-          />
-          </View>
-          <View>
-          <Typography style={style.label}>Xác nhận mật khẩu mới:</Typography>
-          <TextInput
-            style={style.form.field}
-            placeholder="Nhập lại mật khẩu"
-            title={"Nhập lại mật khẩu mới"}
-            titleStyle="blackTitle"
-            isPassword
-            value={newPasswordConfirm}
-            onChangeText={(text) => setNewPasswordConfirm(text)}
-          />
-          </View>
-          <View style={{width: "70%", flexDirection: "row", justifyContent: "center"}}>
-            {messageDisplay()}
+    <SafeView>
+      <TouchableWithoutFeedback style={{flex:1}} onPress={() => {Keyboard.dismiss();}}>
+        <View style={style.default}>
+          {isLoading ? <LoadingScreen /> : null}
+          <DetailHeader title="Thay đổi mật khẩu" navigation={navigation} />
+          <View style={{ flex: 7 }}>
+            <View style={{ flex: 1 }}></View>
+            <View style={[{ flex: 3 }, style.form.wrapper]}>
+              <View>
+              <Typography style={style.label}>Mật khẩu hiện tại:</Typography>
+              <TextInput
+                style={style.form.field}
+                placeholder="Nhập mật khẩu cũ"
+                title={"Mật khẩu cũ"}
+                titleStyle="blackTitle"
+                isPassword
+                value={oldPassword}
+                onChangeText={(text) => setOldPassword(text)}
+              />
+              </View>
+              <View>
+              <Typography style={style.label}>Mật khẩu mới:</Typography>
+              <TextInput
+                style={style.form.field}
+                placeholder="Nhập mật khẩu mới"
+                title={"Mật khẩu mới"}
+                titleStyle="blackTitle"
+                isPassword
+                value={newPassword}
+                onChangeText={(text) => setNewPassword(text)}
+              />
+              </View>
+              <View>
+              <Typography style={style.label}>Xác nhận mật khẩu mới:</Typography>
+              <TextInput
+                style={style.form.field}
+                placeholder="Nhập lại mật khẩu"
+                title={"Nhập lại mật khẩu mới"}
+                titleStyle="blackTitle"
+                isPassword
+                value={newPasswordConfirm}
+                onChangeText={(text) => setNewPasswordConfirm(text)}
+              />
+              </View>
+              <View style={{width: "70%", flexDirection: "row", justifyContent: "center"}}>
+                {messageDisplay()}
+              </View>
+            </View>
+            <View style={[{ flex: 2 }, style.form.button]}>
+              <Button size="sm" radius={4} style={{ width: 130, padding: 10 }} onPress={onPressButtonUpdate}>
+                Lưu
+              </Button>
+            </View>
           </View>
         </View>
-        <View style={[{ flex: 2 }, style.form.button]}>
-          <Button size="sm" radius={4} style={{ width: 130, padding: 10 }} onPress={onPressButtonUpdate}>
-            Lưu
-          </Button>
-        </View>
-      </View>
-    </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+    </SafeView>
   );
 };
 

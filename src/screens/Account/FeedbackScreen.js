@@ -8,6 +8,8 @@ import Button from "~components/Button";
 import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
 import LoadingScreen from "~screens/LoadingScreen";
+import SafeView from "~components/SafeView";
+import DetailHeader from "~components/DetailHeader";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -92,47 +94,44 @@ const FeedbackScreen = ({navigation}) => {
   }
 
   return (
-    <TouchableWithoutFeedback style={{flex:1}} onPress={() => {Keyboard.dismiss();}}>
-    <View style={style.default}>
-      {isLoading ? <LoadingScreen /> : null}
-      <StatusBar backgroundColor={style.statusBar.backgroundColor} />
-      <View style={style.header}>
-        <BackIcon color="Gray.0" onPress={() => {navigation.navigate("AccountScreen")}} />
-        <Typography variant="H5" style={style.title}>
-          Phản hồi
-        </Typography>
-      </View>
-      <View style={{ flex: 7 }}>
-        <View style={{ flex: 1 }}></View>
-        <View
-          style={{ flex: 3, justifyContent: "center", alignItems: "center" }}
-        >
-          <TextInput
-            style={style.textArea}
-            placeholder="Vui lòng nhập phản hồi của bạn. Chúng tôi sẽ trả lời sớm nhất có thể."
-            title={"Phản hồi của bạn"}
-            titleStyle="blackTitle"
-            multiline
-            numberOfLines={10}
-            textAlignVertical="top"
-            value={content}
-            onChangeText={(text) => setContent(text)}
-          />
+    <SafeView>
+      <TouchableWithoutFeedback style={{flex:1}} onPress={() => {Keyboard.dismiss();}}>
+        <View style={style.default}>
+          {isLoading ? <LoadingScreen /> : null}
+          <DetailHeader title="Phản hồi" navigation={navigation} />
+          
+          <View style={{ flex: 7 }}>
+            <View style={{ flex: 1 }}></View>
+            <View
+              style={{ flex: 3, justifyContent: "center", alignItems: "center" }}
+            >
+              <TextInput
+                style={style.textArea}
+                placeholder="Vui lòng nhập phản hồi của bạn. Chúng tôi sẽ trả lời sớm nhất có thể."
+                title={"Phản hồi của bạn"}
+                titleStyle="blackTitle"
+                multiline
+                numberOfLines={10}
+                textAlignVertical="top"
+                value={content}
+                onChangeText={(text) => setContent(text)}
+              />
+            </View>
+            <View
+              style={{
+                flex: 2,
+                justifyContent: "flex-start",
+                alignItems: "center",
+              }}
+            >
+              <Button size="sm" radius={4} style={{ width: 130, padding: 10 }} onPress={createFeedback}>
+                Lưu
+              </Button>
+            </View>
+          </View>
         </View>
-        <View
-          style={{
-            flex: 2,
-            justifyContent: "flex-start",
-            alignItems: "center",
-          }}
-        >
-          <Button size="sm" radius={4} style={{ width: 130, padding: 10 }} onPress={createFeedback}>
-            Lưu
-          </Button>
-        </View>
-      </View>
-    </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+    </SafeView>
   );
 };
 

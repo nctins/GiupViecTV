@@ -1,9 +1,11 @@
 // background images
-export const HOME_BG = require("./backgrounds/homeScreen.png");
-export const LOGIN_BG = require("./backgrounds/loginScreen.png");
-export const SIGNUP_BG = require("./backgrounds/signupScreen.png");
-export const START_BG = require("./backgrounds/startScreen.png");
-export const DEFAULT_BG = require("./backgrounds/default.png");
+// export const HOME_BG = require("./backgrounds/homeScreen.png");
+const BG_FOLDER = "./backgrounds/v2"
+export const HOME_BG = require(`${BG_FOLDER}/homeScreen.png`);
+export const LOGIN_BG = require(`${BG_FOLDER}/loginScreen.png`);
+export const SIGNUP_BG = require(`${BG_FOLDER}/signupScreen.png`);
+export const START_BG = require(`${BG_FOLDER}/startScreen.png`);
+export const DEFAULT_BG = require(`${BG_FOLDER}/default.png`);
 
 // Icon
 export const LOGO = require("./icons/logo.png");

@@ -11,6 +11,8 @@ import { AxiosContext } from "~contexts/AxiosContext";
 import * as ImagePicker from 'expo-image-picker';
 import LoadingScreen from "~screens/LoadingScreen";
 import Validation from "~utils/Validation";
+import SafeView from "~components/SafeView";
+import DetailHeader from "~components/DetailHeader";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -215,70 +217,66 @@ const UpdateInfoScreen = ({navigation}) => {
   }
 
   return (
-    <TouchableWithoutFeedback style={{flex:1}} onPress={() => {Keyboard.dismiss();}}>
-    <View style={style.default}>
-      {isLoading ? <LoadingScreen /> : null}
-      <StatusBar backgroundColor={style.statusBar.backgroundColor} />
-      <View style={style.header}>
-        <BackIcon color="Gray.0" onPress={() => {navigation.navigate("AccountScreen")}} />
-        <Typography variant="H5" style={style.title}>
-          Chỉnh sửa thông tin cá nhân
-        </Typography>
-      </View>
-      <View style={{ flex: 7 }}>
-        {/* avatar */}
-        <View style={[{ flex: 2 }, style.avatar.wrapper]}>
-          <AvatarComponent
-            size="llg"
-            containerAvatarStyle={style.avatar.border}
-            img={selectedImage}
-          />
-          <View style={style.avatar.textButton}>
-            <TouchableOpacity onPress={openImagePickerAsync}>
-              <Typography color="Gray.5">Thay đổi</Typography>
-            </TouchableOpacity>
+    <SafeView>
+      <TouchableWithoutFeedback style={{flex:1}} onPress={() => {Keyboard.dismiss();}}>
+        <View style={style.default}>
+          {isLoading ? <LoadingScreen /> : null}
+          <DetailHeader title="Chỉnh sửa thông tin cá nhân" navigation={navigation}/>
+          <View style={{ flex: 7 }}>
+            {/* avatar */}
+            <View style={[{ flex: 2 }, style.avatar.wrapper]}>
+              <AvatarComponent
+                size="llg"
+                containerAvatarStyle={style.avatar.border}
+                img={selectedImage}
+              />
+              <View style={style.avatar.textButton}>
+                <TouchableOpacity onPress={openImagePickerAsync}>
+                  <Typography color="Gray.5">Thay đổi</Typography>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            {/* form */}
+            <View style={[{ flex: 3 }, style.form.wrapper]}>
+              <TextInput
+                style={style.form.field}
+                placeholder=""
+                title={"Email"}
+                titleStyle="blackTitle"
+                value={email}
+                onChangeText={(text) => setEmail(text)}
+                editable = {false}
+              />
+              <TextInput
+                style={style.form.field}
+                placeholder=""
+                title={"Họ và tên"}
+                titleStyle="blackTitle"
+                value={name}
+                onChangeText={(text) => setName(text)}
+              />
+              <TextInput
+                style={style.form.field}
+                placeholder=""
+                title={"Số điện thoại"}
+                titleStyle="blackTitle"
+                value={phone}
+                onChangeText={(text) => setPhone(text)}
+              />
+
+              {messageDisplay()}
+            </View>
+
+            <View style={[{ flex: 2 }, style.form.button]}>
+              <Button size="sm" radius={4} style={{ width: 130, padding: 10 }} onPress={onPressButtonSave}>
+                Lưu
+              </Button>
+            </View>
           </View>
         </View>
-
-        {/* form */}
-        <View style={[{ flex: 3 }, style.form.wrapper]}>
-          <TextInput
-            style={style.form.field}
-            placeholder=""
-            title={"Email"}
-            titleStyle="blackTitle"
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-            editable = {false}
-          />
-          <TextInput
-            style={style.form.field}
-            placeholder=""
-            title={"Họ và tên"}
-            titleStyle="blackTitle"
-            value={name}
-            onChangeText={(text) => setName(text)}
-          />
-          <TextInput
-            style={style.form.field}
-            placeholder=""
-            title={"Số điện thoại"}
-            titleStyle="blackTitle"
-            value={phone}
-            onChangeText={(text) => setPhone(text)}
-          />
-
-          {messageDisplay()}
-        </View>
-
-        <View style={[{ flex: 2 }, style.form.button]}>
-          <Button size="sm" radius={4} style={{ width: 130, padding: 10 }} onPress={onPressButtonSave}>
-            Lưu
-          </Button>
-        </View>
-      </View>
-    </View>
-    </TouchableWithoutFeedback>
+      </TouchableWithoutFeedback>
+    </SafeView>
   );
 };
 

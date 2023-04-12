@@ -22,6 +22,11 @@ const styles = (theme) => StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
   },
+  avatar: {
+    borderWidth: 2,
+    borderColor: theme.colors.FrostySkies,
+    borderRadius: 100,
+  },
   nameAndAddressView:{
     flexDirection: "column",
     justifyContent: "space-between",
@@ -154,11 +159,11 @@ const HomeScreen = ({navigation}) => {
       <StatusBar />
       <SafeView>
         <View style={style.hiUserView}>
-          <AvatarComponent img={user.avatar_url} size='lg' />
+          <AvatarComponent img={user.avatar_url} size='lg' containerAvatarStyle={style.avatar} />
           <View style={style.nameAndAddressView}>
-            <Typography variant="H7">Xin chào, {user.name}</Typography>
-            <Typography variant="Description" style={{marginLeft: 0}}>{user.email}</Typography>
-            <Typography variant="Description" style={{marginLeft: 0}}>{user.phone}</Typography>
+            <Typography color='Gray.0' variant="H7">Xin chào, {user.name}</Typography>
+            <Typography color='Gray.0' variant="Text" style={{marginLeft: 0}}>{user.email}</Typography>
+            <Typography color='Gray.0' variant="Text" style={{marginLeft: 0}}>{user.phone}</Typography>
           </View>
         </View>
         <View style={style.ItemView} >

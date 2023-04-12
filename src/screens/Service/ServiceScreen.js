@@ -167,7 +167,7 @@ const ServiceScreen = () => {
           <CurrencyText value={post.total} variant="H6" color="Gray.0" style={{height: 30, padding: 5}}/>
         </View>
         <View style={style.footer.button}>
-          <Button variant="secondary" size="sm" onPress={()=>controller.goToPaymentScreen()}>
+          <Button variant="secondary" size="modalBtn" onPress={()=>controller.goToPaymentScreen()}>
             Tiếp theo
           </Button>
         </View>

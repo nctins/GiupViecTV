@@ -26,7 +26,7 @@ const Button = ({
   
   return (
     <TouchableOpacity style={buttonStyle} {...otherProps}>
-      <Typography variant="ButtonLabel" style={{ color: textColor, textAlign:"center" }}>
+      <Typography variant="ButtonLabel" style={[styled.typography_style,{color: textColor}]}>
         {children}
       </Typography>
     </TouchableOpacity>

@@ -58,7 +58,7 @@ const styles = (theme) => StyleSheet.create({
     marginBottom: 10,
   },
   button:{
-    width:  80,
+    minWidth:  80,
     height: 40,
     paddingHorizontal: 0,
     paddingVertical: 0,
@@ -176,7 +176,7 @@ const CouponScreen = ({navigation}) => {
               value={voucherCode}
               onChangeText={(text) => {setVoucherCode(text)}}
             />
-            <Button style = {style.button} radius={5} onPress={onPressGetCoupon}>Áp dụng</Button>
+            <Button style={style.button} radius={5} onPress={onPressGetCoupon}>Áp dụng</Button>
           </View>
           {displayMessage()}
         </View>

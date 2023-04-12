@@ -26,7 +26,7 @@ export const DarkGray = {
   10: "#0F0F13",
   11: "#000000",
 };
-export const BackgroundBlue = "#4DABF5";
+export const BackgroundBlue = "#0062FF";
 export const Azure = "#0062FF"
 export const  SpringGreen = "#62F783";
 export const  Amethyst = "#A162F7";

@@ -349,7 +349,7 @@ const PaymentScreen = () => {
           >
             Tìm người giúp việc
           </Button>
-          <Button size="sm" onPress={() => controller.backToHomeScreen()}>
+          <Button size="sm" variant="cancel" onPress={() => controller.backToHomeScreen()}>
             Hủy
           </Button>
         </View>

@@ -29,6 +29,12 @@ const styles = (theme) =>
       flexDirection: "column",
       justifyContent: "center",
     },
+    avatar_border: {
+      marginLeft: 5,
+      borderRadius: 100,
+      borderWidth: 1,
+      borderColor: theme.colors.FrostySkies,
+    },
     header: {
       width: "100%",
       height: 60,
@@ -163,7 +169,7 @@ const MessageDetail = ({ navigation, route }) => {
           <View style={style.header}>
             <BackIcon color="Gray.0" onPress={() => navigation.goBack()} size={16}/>
             <AvatarComponent
-              containerAvatarStyle={{ marginLeft: 10 }}
+              containerAvatarStyle={style.avatar_border}
               avatarStyle={{}}
               img={avatar_url}
               size={"md"}

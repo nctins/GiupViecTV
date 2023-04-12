@@ -25,7 +25,7 @@ const userInfoStyle = (theme) => {
     },
     avatar: {
       alignSelf: "center",
-      borderWidth: 3,
+      borderWidth: 2,
       borderRadius: 50,
       marginRight: 10,
       borderColor: theme.colors.BackgroundBlue,
@@ -97,7 +97,7 @@ const AccountScreen = ({navigation}) => {
           />
           <View style={style.userInfo.account}>
             <Typography variant="SubTitle">{user.name}</Typography>
-            <Typography variant="Description" color="Gray.3">
+            <Typography variant="Description" color="Gray.4">
             {user.email}
             </Typography>
           </View>

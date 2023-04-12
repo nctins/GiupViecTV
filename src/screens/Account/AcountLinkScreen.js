@@ -6,6 +6,8 @@ import { BackIcon } from "~components/Icons";
 import { TextInput } from "~components/Inputs";
 import Button from "~components/Button";
 import { FacebookIcon, GoogleIcon } from "~components/Icons";
+import SafeView from "~components/SafeView";
+import DetailHeader from "~components/DetailHeader";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -60,29 +62,25 @@ const AccountLinkScreen = ({navigation}) => {
   const [linkFacebook, setLinkFacebook] = useState(false);
   const [linkGoogle, setLinkGoogle] = useState(false);
   return (
-    <View style={style.default}>
-      <StatusBar backgroundColor={style.statusBar.backgroundColor} />
-      <View style={style.header}>
-        <BackIcon color="Gray.0" onPress={() => {navigation.navigate("AccountScreen")}} />
-        <Typography variant="H5" style={style.title}>
-          Liên kết tài khoản
-        </Typography>
+    <SafeView>
+      <View style={style.default}>
+        <DetailHeader title="Liên kết tài khoản" navigation={navigation} />
+        <View style={{ flex: 7 }}>
+          <SettingItem
+            icon={<FacebookIcon />}
+            title="Facebook"
+            onToggle={() => setLinkFacebook((previousState) => !previousState)}
+            value={linkFacebook}
+          />
+          <SettingItem
+            icon={<GoogleIcon />}
+            title="Facebook"
+            onToggle={() => setLinkGoogle((previousState) => !previousState)}
+            value={linkGoogle}
+          />
+        </View>
       </View>
-      <View style={{ flex: 7 }}>
-        <SettingItem
-          icon={<FacebookIcon />}
-          title="Facebook"
-          onToggle={() => setLinkFacebook((previousState) => !previousState)}
-          value={linkFacebook}
-        />
-        <SettingItem
-          icon={<GoogleIcon />}
-          title="Facebook"
-          onToggle={() => setLinkGoogle((previousState) => !previousState)}
-          value={linkGoogle}
-        />
-      </View>
-    </View>
+    </SafeView>
   );
 };
 
