@@ -50,30 +50,44 @@ export const Text = {
 
 export const TextBold = {
   fontFamily: "Inter",
-  fontWeight: "600",
+  fontWeight: "800",
   fontSize: 14,
   lineHeight: 16,
+};
+
+export const Title = {
+  fontFamily: "Inter",
+  fontWeight: "500",
+  fontSize: 18,
+  lineHeight: 22,
+};
+
+export const TitleBold = {
+  fontFamily: "Inter",
+  fontWeight: "800",
+  fontSize: 18,
+  lineHeight: 22,
 };
 
 export const Subtitle = {
   fontFamily: "Inter",
   fontWeight: "500",
   fontSize: 16,
-  lineHeight: 16,
+  lineHeight: 20,
 };
 
 export const SubtitleSemiBold = {
   fontFamily: "Inter",
-  fontWeight: "600",
+  fontWeight: "800",
   fontSize: 16,
   lineHeight: 20,
 };
 
 export const ButtonLabel = {
   fontFamily: "Inter",
-  fontWeight: "700",
+  fontWeight: "800",
   fontSize: 16,
-  lineHeight: 16,
+  lineHeight: 20,
 };
 
 export const MiniButtonLabel = {
