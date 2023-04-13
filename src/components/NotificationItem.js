@@ -11,10 +11,12 @@ const styles = (theme) =>
     default: {
       width: "100%",
       height: 110,
-      backgroundColor: theme.colors.DarkGray[1],
+      backgroundColor: "#f0faff",
       flexDirection: "column",
       marginTop: 10,
       borderRadius: 10,
+      borderColor: theme.colors.BackgroundBlue,
+      borderWidth: 2,
     },
     title: {
       width: "100%",
@@ -24,7 +26,7 @@ const styles = (theme) =>
       alignItems: "center",
       paddingVertical: 5,
       paddingHorizontal: 15,
-      borderBottomColor: "white",
+      borderBottomColor: theme.colors.BackgroundBlue,
       borderBottomWidth: 2,
     },
     content: {
@@ -88,16 +90,16 @@ const NotificationItem = (props) => {
                 {genderIcon(icon_code)} 
                 {!is_view && <View style={style.dot_not_view}/>}
               </View>
-              <Typography variant="Subtitle" style={{ marginLeft: 8 }}>{title}</Typography>
+              <Typography variant="Title" style={{ marginLeft: 8 }}>{title}</Typography>
             </View>
             <View>
-              <Typography variant="MiniDescription" style={{ marginLeft: 0 }}>
+              <Typography variant="Text" style={{ marginLeft: 0 }}>
                 {DateFormater(create_date)}
               </Typography>
             </View>
           </View>
           <View style={style.content}>
-            <Typography variant="Description">{content}</Typography>
+            <Typography variant="Text">{content}</Typography>
           </View>
         </Pressable>
       </View>

@@ -2,14 +2,14 @@ import React from 'react'
 import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import useThemeStyles from '~hooks/useThemeStyles';
 import Typography from "~components/Typography";
-import { LIMIT_ADDRESS_LENGTH, PAYMENT_METHOD_CONDITION, POST_STATE } from "../constants/app_contants";
+import { LIMIT_ADDRESS_LENGTH, LIMIT_REASON_CANCAL_LENGTH, PAYMENT_METHOD_CONDITION, POST_STATE } from "../constants/app_contants";
 import DateFormater from '~utils/Dateformater';
 import { currencyWithDot } from '~utils/StringFormat';
 
 const styles = (theme) => StyleSheet.create({
     wrapper: {
         width: "100%",
-        height: 100,
+        height: 120,
         backgroundColor: "#f0faff",
         flexDirection: "row",
         alignItems: "center",
@@ -24,9 +24,9 @@ const styles = (theme) => StyleSheet.create({
         height: "100%",
         flexDirection: "column",
         justifyContent: "space-around",
-        padding: 8,
+        padding: 10,
         borderEndWidth: 1,
-        borderEndColor: theme.colors.Gray[3]
+        borderEndColor: theme.colors.Gray[3],
     },
     rightContainer: {
         flex: 1,
@@ -44,7 +44,6 @@ const styles = (theme) => StyleSheet.create({
 
 const CartItem = ({ navigation, post }) => {
     const style = useThemeStyles(styles);
-    console.log(post);
 
     const onPressCart = () => {
         navigation.navigate("CartDetail", { post: post });
@@ -55,6 +54,14 @@ const CartItem = ({ navigation, post }) => {
             return post.address.substring(0, LIMIT_ADDRESS_LENGTH.LENGTH).concat("...");
         } else {
             return post.address;
+        }
+    }
+
+    const displayReasonCancal = () => {
+        if (post.reason_cancel.length > LIMIT_REASON_CANCAL_LENGTH) {
+            return post.reason_cancel.substring(0, LIMIT_REASON_CANCAL_LENGTH).concat("...");
+        } else {
+            return post.reason_cancel;
         }
     }
 
@@ -89,15 +96,15 @@ const CartItem = ({ navigation, post }) => {
         <TouchableOpacity onPress={onPressCart}>
             <View style={style.wrapper}>
                 <View style={style.leftContainer}>
-                    <Typography style={style.textItem} variant="H8">{post.helper_na}</Typography>
-                    <Typography style={style.textItem} color="Azure" variant="Description">{displayDateTime()}</Typography>
-                    <Typography style={style.textItem} variant="Description">{displayAddress()}</Typography>
+                    <Typography style={style.textItem} variant="Title">{post.helper_na}</Typography>
+                    <Typography style={style.textItem} color="Azure" variant="Text">{displayDateTime()}</Typography>
+                    <Typography style={style.textItem} variant="Text">{displayAddress()}</Typography>
                 </View>
                 <View style={style.rightContainer}>
                     {displayCurrency()}
-                    <Typography variant="MiniDescription">{displayPaymentMethod()}</Typography>
+                    <Typography variant="Description">{displayPaymentMethod()}</Typography>
                     {post.post_state === POST_STATE.CANCEL && (
-                        <Typography color='StrawberryRed' style={{marginTop:5}} variant='MiniDescription'>Lý do hủy: "{post.reason_cancel}"</Typography>
+                        <Typography color='StrawberryRed' style={{marginTop:5}} variant='Description'>{displayReasonCancal()}</Typography>
                     )}
                 </View>
             </View>

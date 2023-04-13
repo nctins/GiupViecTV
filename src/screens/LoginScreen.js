@@ -79,12 +79,12 @@ const LoginScreen = ({navigation}) => {
           {isLoading ? <LoadingScreen /> : null}
           <View style={{ flex: 3 }}></View>
           <View style={{ flex: 3, alignItems: "center", justifyContent: "center" }}>
-            <Typography variant="H4" color="Gray.8" style={{ marginBottom: 10 }}>
+            <Typography variant="H3" color="BackgroundBlue" style={{ marginBottom: 25 }}>
               Đăng nhập
             </Typography>
             <View style={{ marginBottom: 20 }}>
               <TextInput
-                style={{ marginBottom: 20 }}
+                style={{ marginBottom: 20, fontSize: 15, }}
                 placeholder="Nhập email"
                 title={"Email"}
                 titleStyle="blackTitle"
@@ -92,6 +92,7 @@ const LoginScreen = ({navigation}) => {
                 onChangeText={(text) => setEmail(text)}
               />
               <TextInput
+                style={{ marginBottom: 10, fontSize: 15, }}
                 placeholder="Nhập mật khẩu"
                 title={"Mật khẩu"}
                 titleStyle="blackTitle"

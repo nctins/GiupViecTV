@@ -53,10 +53,12 @@ const BoxItemComponent = (props) => {
         {
             name: "Tìm người giúp việc",
             service_id: "0",
+            url: "https://play-lh.googleusercontent.com/FYiHY7EwFbWAQz0ZD6TE16nvySV3inupNECw2KmbCt8KOnZentLp6irf5rbEInG1jg=w240-h480-rw"
         },
         {
             name: "Dọn nhà bếp",
             service_id: "SER_g2pcl714l8sxxdfr",
+            url: "https://media.istockphoto.com/id/1448081540/vi/vec-to/d%E1%BB%8Dn-d%E1%BA%B9p-nh%C3%A0-b%E1%BA%BFp-thi%E1%BA%BFt-k%E1%BA%BF-kh%C3%A1i-ni%E1%BB%87m-hi%E1%BB%87n-%C4%91%E1%BA%A1i-kh%C3%A1i-ni%E1%BB%87m-minh-h%E1%BB%8Da-vector-ch%E1%BA%A5t-l%C6%B0%E1%BB%A3ng-cao-bi%E1%BB%83u.jpg?s=1024x1024&w=is&k=20&c=kTXB_iSCN0KiV-3xKkyNUSMpLeMYrUEZucBEShAClKs="
         },
         
     ]
@@ -70,7 +72,7 @@ const BoxItemComponent = (props) => {
                     return (
                         <TouchableOpacity onPress={() => onPressItem(item)}>
                             <View style={style.viewItem}>
-                                <AvatarComponent size='md' type='square' />
+                                <AvatarComponent size='md' type='square' img={item.url} />
                                 <Typography variant="Description">{item.name}</Typography>
                             </View>
                         </TouchableOpacity>

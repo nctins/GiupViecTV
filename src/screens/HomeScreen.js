@@ -160,8 +160,8 @@ const HomeScreen = ({navigation}) => {
           <AvatarComponent img={user.avatar_url} size='lg' />
           <View style={style.nameAndAddressView}>
             <Typography variant="H7">Xin chào, {user.name}</Typography>
-            <Typography variant="Description" style={{marginLeft: 0}}>{user.email}</Typography>
-            <Typography variant="Description" style={{marginLeft: 0}}>{user.phone}</Typography>
+            <Typography variant="Text" style={{marginLeft: 0}}>{user.email}</Typography>
+            <Typography variant="Text" style={{marginLeft: 0}}>{user.phone}</Typography>
           </View>
         </View>
         <View style={style.ItemView} >

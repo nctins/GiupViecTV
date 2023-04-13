@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 const styles = (theme) =>
   StyleSheet.create({
     primary: {
-      backgroundColor: theme.colors.FrostySkies,
+      backgroundColor: theme.colors.BackgroundBlue,
       color: theme.colors.Gray[0],
     },
     secondary: {
