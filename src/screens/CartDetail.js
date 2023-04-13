@@ -365,12 +365,19 @@ const CartDetail = (props) => {
       }),
       authAxios.get(`helper/${post.helper.id}`),
     ])
-      .then(([box_chat_res, customer_res]) => {
+      .then(([box_chat_res, helper_res]) => {
         const box_chat_id = box_chat_res.data.box_chat_id;
-        const sender = customer_res.data.data.name;
+        const num_unread_message = box_chat_res.data.num_unread_message;
+        
+        const sender = helper_res.data.data.name;
+        const avatar_url = helper_res.data.data.avatar_url;
+
         navigation.navigate("MessageScreen", {
           box_chat_id: box_chat_id,
           sender: sender,
+          avatar_url: avatar_url,
+          sender_id: post.helper.id,
+          num_unread_message: num_unread_message,
         });
       })
       .catch((err) => {
