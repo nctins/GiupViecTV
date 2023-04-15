@@ -14,7 +14,7 @@ const styles = (theme) =>
   StyleSheet.create({
     default: {
       flex: 1,
-      backgroundColor: "white",
+      backgroundColor: theme.colors.Gray[0],
       paddingHorizontal: 15,
       paddingTop: 5,
       flexDirection: "column",
@@ -24,7 +24,6 @@ const styles = (theme) =>
       flexGrow: 1,
       flexDirection: "column",
       alignItems: "center",
-      backgroundColor: "white",
     },
     toolbar: {
       flexDirection: "row",
@@ -106,7 +105,7 @@ const NotificationTab = ({navigation}) => {
     <View style={style.default}>
       <Pressable style={style.toolbar} onPress={()=>setViewAll()}>
         <CheckAllIcon size={16}/>
-        <Typography style={{marginLeft: 5}} variant="Description">Đánh dấu tất cả đã đọc</Typography>
+        <Typography style={{marginLeft: 5}} variant="Text">Đánh dấu tất cả đã đọc</Typography>
       </Pressable>
       <ScrollView contentContainerStyle={style.content}>
         {

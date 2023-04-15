@@ -10,12 +10,13 @@ const styles = (theme) => StyleSheet.create({
         width: "85%",
         height: 165,
         backgroundColor: theme.colors.BackgroundBlue,
-        // marginTop: 10,
         marginVertical: 10,
         borderRadius: 5,
         flexDirection: "column",
         justifyContent: "flex-end",
-        overflow: "hidden"
+        overflow: "hidden",
+        borderColor: theme.colors.Gray[2],
+        borderWidth: 1,
     },
     image:{
         flex:1,

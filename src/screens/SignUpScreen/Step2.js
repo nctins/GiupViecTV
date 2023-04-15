@@ -111,10 +111,16 @@ const Step2 = ({route,navigation}) => {
           <View style={{ flex: 1, alignItems: "flex-start", margin: 20 }}>
             <BackIcon color="Gray.0" onPress={() => {navigation.pop()}} />
           </View>
+          <View style={{flex: 1, alignItems: "center", justifyContent: "center" }}>
+            <Typography variant="H1" color="Gray.0">
+              Đăng ký
+            </Typography>
+          </View>
           <View style={[{ flex: 5 }, styled.centerBox]}>
             <View>
-              <Typography style={styled.label}>Password:</Typography>
+              <Typography variant="TextBold" style={styled.label}>Password:</Typography>
               <TextInput 
+                style={styled.input}
                 secureTextEntry={true}
                 placeholder="Nhập mật khẩu" 
                 title={"Mật khẩu"} 
@@ -123,8 +129,9 @@ const Step2 = ({route,navigation}) => {
               />
             </View>
             <View style={{marginTop: 10}}>
-              <Typography style={styled.label}>Confim Password:</Typography>
+              <Typography variant="TextBold" style={styled.label}>Confim Password:</Typography>
               <TextInput
+                style={styled.input}
                 secureTextEntry={true}
                 placeholder="Nhập lại mật khẩu"
                 title={"Xác nhận mật khẩu"}
@@ -133,7 +140,7 @@ const Step2 = ({route,navigation}) => {
               />
             </View>
           </View>
-          <View style={{ flex: 2 }}>
+          <View style={{ flex: 3 }}>
             <View style={[{ flex: 3 }, styled.centerBox]}>
               <Button size="lg" isShadow onPress={onSignUp}>
                 Đăng ký
@@ -189,6 +196,10 @@ const styles = (theme) =>
       fontSize: 12,
       marginTop: 5,
     },
+    input:{
+      fontSize: 15,
+      marginBottom: 20,
+    }
   });
 
 export default Step2;

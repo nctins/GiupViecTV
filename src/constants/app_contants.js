@@ -49,9 +49,10 @@ export const POST_STATE = {
 };
 
 export const LIMIT_ADDRESS_LENGTH = {
-  LENGTH: 60,
+  LENGTH: 73,
 };
 export const LIMIT_MESSAGE_LENGTH = 50;
+export const LIMIT_REASON_CANCAL_LENGTH = 40;
 
 // constant for notification table
 export const ICON_CODE = {
