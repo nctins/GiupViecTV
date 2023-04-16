@@ -351,8 +351,8 @@ const styles = (theme) => StyleSheet.create({
         borderRadius: 100,
     },
     confirmButton:{
-        width: 90,
-        height: 30,
+        minWidth: 90,
+        height: 40,
         paddingHorizontal: 5,
         paddingVertical: 5,
         backgroundColor: theme.colors.BackgroundBlue,
@@ -363,7 +363,7 @@ const styles = (theme) => StyleSheet.create({
     },
     zoomInButton:{
         position: "absolute",
-        width:  40, 
+        minWidth:  40, 
         height: 40,
         paddingHorizontal: 0,
         paddingVertical: 0,
@@ -374,7 +374,7 @@ const styles = (theme) => StyleSheet.create({
     },
     zoomOutButton:{
         position: "absolute",
-        width:  40,
+        minWidth:  40,
         height: 40,
         paddingHorizontal: 0,
         paddingVertical: 0,
