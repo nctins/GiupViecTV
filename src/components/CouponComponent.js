@@ -48,7 +48,7 @@ const styles = (theme) => StyleSheet.create({
         alignItems: "center",
     },
     button:{
-        width:  100,
+        minWidth:  100,
         height: 40,
         paddingHorizontal: 0,
         paddingVertical: 0,

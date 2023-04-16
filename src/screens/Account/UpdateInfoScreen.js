@@ -270,7 +270,7 @@ const UpdateInfoScreen = ({navigation}) => {
             </View>
 
             <View style={[{ flex: 2 }, style.form.button]}>
-              <Button size="lg" radius={4} style={{ width: 130, padding: 10 }} onPress={onPressButtonSave}>
+              <Button size="md" radius={4} onPress={onPressButtonSave}>
                 Lưu
               </Button>
             </View>

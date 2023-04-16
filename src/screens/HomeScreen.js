@@ -45,8 +45,8 @@ const styles = (theme) => StyleSheet.create({
     width: "100%",
     height: 250,
     marginTop: 20,
-    flexDirection: "column",
-    alignItems: "center",
+    // flexDirection: "column",
+    // alignItems: "center",
     borderWidth: 1,
     borderColor: BackgroundBlue
   },
@@ -179,6 +179,7 @@ const HomeScreen = ({navigation}) => {
             autoplay={true}
             circleLoop={true}
             autoplayInterval={5000}
+            sliderBoxHeight={250}
           />
         </View>
         <View style={style.couponView} >

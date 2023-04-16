@@ -203,7 +203,7 @@ const ChangePasswordScreen = ({navigation}) => {
               </View>
             </View>
             <View style={[{ flex: 2 }, style.form.button]}>
-              <Button size="llg" radius={4} style={{ width: 130, padding: 10 }} onPress={onPressButtonUpdate}>
+              <Button size="md" radius={4} onPress={onPressButtonUpdate}>
                 Lưu
               </Button>
             </View>

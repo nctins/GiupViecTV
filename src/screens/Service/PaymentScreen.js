@@ -245,27 +245,27 @@ const PaymentScreen = () => {
     return (
       <View style={style.wrapper}>
         <View style={style.header}>
-          <Typography variant="Subtitle" color="Gray.0">
+          <Typography variant="Title" color="Gray.0">
             Thông tin dịch vụ
           </Typography>
         </View>
         <View style={style.info}>
-          <Typography variant="Description" color="Gray.0">
-            Khách hàng: {customer_name}
+          <Typography variant="Text" color="Gray.0" style={{marginBottom: 5}}>
+          <Typography variant="TextBold" color="Gray.0">Khách hàng: </Typography>{customer_name}
           </Typography>
-          <Typography variant="Description" color="Gray.0">
-            Địa chỉ: {address}
+          <Typography variant="Text" color="Gray.0" style={{marginBottom: 5}}>
+            <Typography variant="TextBold" color="Gray.0">Địa chỉ: </Typography>{address}
           </Typography>
-          <Typography variant="Description" color="Gray.0">
-            Số điện thoại: {phone_number}
+          <Typography variant="Text" color="Gray.0" style={{marginBottom: 5}}>
+            <Typography variant="TextBold" color="Gray.0">Số điện thoại: </Typography>{phone_number}
           </Typography>
         </View>
         <View style={style.detail}>
           <View style={style.spaceBetween}>
-            <Typography variant="MiniDescription" color="Gray.0">
+            <Typography variant="SubtitleSemiBold" color="Gray.0">
               Dịch vụ
             </Typography>
-            <Typography variant="MiniDescription" color="Gray.0">
+            <Typography variant="SubtitleSemiBold" color="Gray.0">
               Số tiền
             </Typography>
           </View>
@@ -274,12 +274,12 @@ const PaymentScreen = () => {
               if (is_select) {
                 return (
                   <View style={style.spaceBetween} key={service_id}>
-                    <Typography variant="Description" color="Gray.0">
+                    <Typography variant="Text" color="Gray.0" style={{marginBottom: 2}}>
                       {service_init.name}
                     </Typography>
                     <CurrencyText
                       value={service_value.total}
-                      variant="Description"
+                      variant="Text"
                       color="Gray.0"
                       currency="vnđ"
                     />
@@ -291,20 +291,20 @@ const PaymentScreen = () => {
         </View>
         <View style={style.coupon}>
           <View style={style.spaceBetween}>
-            <Typography variant="Description" color="Gray.0">
+            <Typography variant="TextBold" color="Gray.0" style={{marginBottom: 3}}>
               Ưu đãi
             </Typography>
             <Pressable onPress={() => setVoucherModal(true)}>
               {post.coupon_price > 0 ? (
                 <CurrencyText
                   prefix="-"
-                  variant="Description"
+                  variant="TextBold"
                   value={post.coupon_price}
                   currency="vnđ"
                   color="Gray.0"
                 />
               ) : (
-                <Typography variant="Description" color="Gray.0">
+                <Typography variant="TextBold" color="Gray.0">
                   Chọn mã ưu đãi {">"}
                 </Typography>
               )}
@@ -313,13 +313,13 @@ const PaymentScreen = () => {
         </View>
         <View style={style.total}>
           <View style={style.spaceBetween}>
-            <Typography variant="Description" color="Gray.0">
+            <Typography variant="TextBold" color="Gray.0">
               Tổng cộng
             </Typography>
             <CurrencyText
               value={Caculator.calcTotalOrder(post)}
               currency="vnđ"
-              variant="Description"
+              variant="TextBold"
               color="Gray.0"
             />
           </View>
@@ -441,7 +441,7 @@ const PaymentMethod = () => {
 
   return (
     <View style={style.wrapper}>
-      <Typography variant="Description">Phương thức thanh toán:</Typography>
+      <Typography variant="TextBold">Phương thức thanh toán:</Typography>
       <View style={style.option}>
         <TouchableOpacity
           style={[
@@ -456,8 +456,8 @@ const PaymentMethod = () => {
           }}
         >
           <CashIcon />
-          <Typography variant="MiniDescription" style={{ width: 60 }}>
-            Thanh toán bằng tiền mặt
+          <Typography variant="Text" style={{ width: 60 }}>
+            Tiền mặt
           </Typography>
         </TouchableOpacity>
         <TouchableOpacity
@@ -475,11 +475,10 @@ const PaymentMethod = () => {
         >
           <VNPayIcon />
           <Typography
-            variant="MiniDescription"
-            color="Gray.4"
+            variant="Text"
             style={{ width: 60 }}
           >
-            Thanh toán bằng VNPay
+            VNPay
           </Typography>
         </TouchableOpacity>
       </View>
