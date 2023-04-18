@@ -266,10 +266,11 @@ const CartDetail = (props) => {
             text: "OK",
             onPress: () => {
               authAxios
-                .put(`post`, {post_id: post_id, post_state: POST_STATE.COMPLETE, helper_id: post.helper.id})
+                .put(`post`, {post_id: post_id, post_state: POST_STATE.COMPLETE})
                 .then((res) => {
                   console.log(res.data.data);
                   getPostDetail();
+                  onReview();
                 })
                 .catch((err) => {
                   console.log(err);
