@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, StyleSheet, Pressable } from "react-native";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
-import { GiftIcon, LogoIcon, OrderIcon } from "./Icons";
+import { GiftIcon, LogoIcon, OrderCancelIcon, OrderCompleteIcon, OrderIcon } from "./Icons";
 import DateFormater from "~utils/Dateformater";
 import { ICON_CODE } from "~constants/app_contants";
 
@@ -16,7 +16,7 @@ const styles = (theme) =>
       marginTop: 10,
       borderRadius: 10,
       borderColor: theme.colors.BackgroundBlue,
-      borderWidth: 2,
+      borderWidth: 1,
     },
     title: {
       width: "100%",
@@ -27,7 +27,7 @@ const styles = (theme) =>
       paddingVertical: 5,
       paddingHorizontal: 15,
       borderBottomColor: theme.colors.BackgroundBlue,
-      borderBottomWidth: 2,
+      borderBottomWidth: 1,
     },
     content: {
       width: "100%",
@@ -69,7 +69,12 @@ const NotificationItem = (props) => {
       case ICON_CODE.COUPON:
         return <GiftIcon />;
       case ICON_CODE.ORDER:
-        return <OrderIcon />;
+      case ICON_CODE.ORDER_MATCH:
+        return <OrderIcon color="BackgroundBlue" />;
+      case ICON_CODE.ORDER_COMPLETE: 
+        return <OrderCompleteIcon color="ModerateAquamarine" />;
+      case ICON_CODE.ORDER_CANCEL: 
+        return <OrderCancelIcon color="StrawberryRed"/>;
       default:
         return <LogoIcon />;
     }

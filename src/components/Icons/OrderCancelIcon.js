@@ -1,15 +1,14 @@
 import React from "react";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import styles from "./styles";
 import useTheme from "~hooks/useTheme";
 import * as ObjMapper from "object-mapper";
 
-
-const OrderIcon = ({ size = "md", color = "Gray.4", ...otherProps }) => {
+const OrderCancelIcon = ({ size = "md", color = "Gray.4", ...otherProps }) => {
   const colors = useTheme().colors;
   return (
-    <MaterialCommunityIcons
-      name="calendar-clock"
+    <MaterialIcons
+      name="event-busy"
       size={styles[size]||size}
       color={ObjMapper.getKeyValue(colors, color)}
       {...otherProps}
@@ -17,4 +16,4 @@ const OrderIcon = ({ size = "md", color = "Gray.4", ...otherProps }) => {
   );
 };
 
-export default OrderIcon;
+export default OrderCancelIcon;

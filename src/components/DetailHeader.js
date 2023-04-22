@@ -22,11 +22,19 @@ const styles = (theme) => StyleSheet.create({
   },
 })
 
-const DetailHeader = ({navigation, title}) => {
+const DetailHeader = ({navigation, title, onBack = null}) => {
   const style = useThemeStyles(styles);
+
+  const goBack = () => {
+    if (onBack) {
+      return onBack();
+    }
+    return navigation.goBack();
+  }
+
   return (
     <View style={style.wrapper}>
-      <BackIcon color="Gray.0" onPress={() => navigation.goBack()} size={16}/>
+      <BackIcon color="Gray.0" onPress={() => goBack()} size={16}/>
       <View style={style.title}>
         <Typography variant="H6" style={style.title_text}>{title}</Typography>
       </View>

@@ -17,6 +17,8 @@ import DateFormater from "~utils/Dateformater";
 import DetailHeader from "~components/DetailHeader";
 import StatusBar from "~components/StatusBar";
 import SafeView from "~components/SafeView";
+import BottomTabNavigaton from "~utils/BottomTabNavigation";
+import { BOTTOM_TAB_NAME } from "~constants/screen_name";
 
 const dateTimeFormater = (date, time) => {
   const time_string = time.slice(0, 5);
@@ -257,6 +259,10 @@ const CartDetail = (props) => {
   useEffect(() => {
     getPostDetail();
   }, []);
+
+  const onBack = () => {
+    return BottomTabNavigaton({navigation, tabName: BOTTOM_TAB_NAME.ORDER});
+  }
 
   useEffect(() => {
     const listener = (data) => {
@@ -783,7 +789,7 @@ const CartDetail = (props) => {
     <>
       <StatusBar/>
       <SafeView>
-        <DetailHeader title="Chi tiết lịch hẹn" navigation={navigation}/>
+        <DetailHeader title="Chi tiết lịch hẹn" navigation={navigation} onBack={onBack}/>
         <View style={style.default}>
           <ScrollView style={style.viewContent}>
             <View style={style.viewItemContent1}>

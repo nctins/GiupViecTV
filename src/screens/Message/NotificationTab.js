@@ -9,6 +9,9 @@ import useAxios from "~hooks/useAxios";
 import useMessageModuleContext from "~hooks/useMessageModuleContext";
 import useSocket from "~hooks/useSocket";
 import useThemeStyles from "~hooks/useThemeStyles";
+import { NOTIFICATION_MODULE, POST_STATE } from "~constants/app_contants";
+import { BOTTOM_TAB_NAME, ORDER_DETAIL_SCREEN } from "~constants/screen_name";
+import BottomTabNavigaton from "~utils/BottomTabNavigation";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -66,6 +69,56 @@ const NotificationTab = ({navigation}) => {
       })
   };
 
+
+  const onPressNotificationItem = (idx) => {
+    const item_data = notifications[idx];
+    if (!item_data.is_view) {
+      onViewNotification(idx);
+    }
+    onNavigate(item_data);
+    return;
+  }
+
+  const onNavigate = ({notification_module, module_object_id}) => {
+    if (!module_object_id) {
+      return;
+    }
+    switch (notification_module) {
+      case NOTIFICATION_MODULE.ADVS:
+        return BottomTabNavigaton({navigation, tabName: BOTTOM_TAB_NAME.HOME});
+
+      case NOTIFICATION_MODULE.COUPON:
+        return BottomTabNavigaton({navigation, tabName: BOTTOM_TAB_NAME.COUPON});
+
+      case NOTIFICATION_MODULE.POST:
+        return authAxios
+          .get(`post`, { params: { post_id: module_object_id } })
+          .then((res)=>{
+            const res_obj = res.data.data;
+            const post_state = res_obj.post_state;
+            const post_detail_screen_params = {
+              post: {
+                post_id: module_object_id, 
+                post_state: post_state,
+              }
+            };
+            return BottomTabNavigaton({
+              navigation,
+              tabName: BOTTOM_TAB_NAME.ORDER,
+              screenName: ORDER_DETAIL_SCREEN,
+              screenParams: post_detail_screen_params,
+            })
+          })
+          .catch((err)=>{
+            console.log(err);
+          })
+        
+      default: // notification_module = none
+        break;
+    }
+
+  }
+
   const onViewNotification = (idx) =>{
     const notification = notifications[idx];
     if (notification.is_view) {
@@ -110,7 +163,7 @@ const NotificationTab = ({navigation}) => {
       <ScrollView contentContainerStyle={style.content}>
         {
           notifications.map((noti, idx)=>{
-            return <NotificationItem key={idx} data={noti} onPress={()=>onViewNotification(idx)}/>
+            return <NotificationItem key={idx} data={noti} onPress={()=>onPressNotificationItem(idx)}/>
           })
         }
         <View style={{height: 20}}></View>

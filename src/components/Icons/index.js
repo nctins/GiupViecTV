@@ -25,6 +25,8 @@ import CrossIcon from "./CrossIcon";
 import ClockEditIcon from "./ClockEditIcon";
 import ClockRemoveIcon from "./ClockRemoveIcon";
 import CheckAllIcon from "./CheckAllIcon";
+import OrderCancelIcon from "./OrderCancelIcon";
+import OrderCompleteIcon from "./OrderCompleteIcon";
 
 export {
   HomeIcon,
@@ -54,4 +56,6 @@ export {
   ClockEditIcon,
   ClockRemoveIcon,
   CheckAllIcon,
+  OrderCancelIcon,
+  OrderCompleteIcon,
 };

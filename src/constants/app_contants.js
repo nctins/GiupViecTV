@@ -59,7 +59,17 @@ export const ICON_CODE = {
   LOGO: "logoIcon", // icon hiển thị là logo khi thông báo loại hệ thống (do admin tạo)
   ORDER: "order", // icon đơn hàng khi thông báo loại cập nhật đơn hàng 
   COUPON: "coupon", // icon khuyến mãi khi thông báo loại khuyến mãi (do admin tạo)
+  ORDER_COMPLETE: "order_complete", // icon khi thông báo đơn hàng hoàn thành
+  ORDER_CANCEL: "order_cancel", // icon khi thông báo đơn hàng hủy
+  ORDER_MATCH: "order_matcch", // icon khi thông báo đơn hàng đả được ghép nối
 };
+
+export const NOTIFICATION_MODULE = {
+  NONE: "NONE",
+  POST: "POST",
+  ADVS: "ADVS",
+  COUPON: "COUPON",
+}
 
 // ranking name
 
