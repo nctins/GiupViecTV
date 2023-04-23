@@ -68,9 +68,9 @@ const BoxItemComponent = (props) => {
                 <Typography variant="TitleBold">Dịch vụ</Typography>
             </View> 
             <ScrollView horizontal={true} style={style.viewContent}>
-                {lstItem && lstItem.map((item) => {
+                {lstItem && lstItem.map((item, idx) => {
                     return (
-                        <TouchableOpacity onPress={() => onPressItem(item)}>
+                        <TouchableOpacity onPress={() => onPressItem(item)} key={idx}>
                             <View style={style.viewItem}>
                                 <AvatarComponent size='md' type='square' img={item.url} />
                                 <Typography variant="Description">{item.name}</Typography>
