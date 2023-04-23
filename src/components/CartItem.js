@@ -5,6 +5,7 @@ import Typography from "~components/Typography";
 import { LIMIT_ADDRESS_LENGTH, LIMIT_REASON_CANCAL_LENGTH, PAYMENT_METHOD_CONDITION, POST_STATE } from "../constants/app_contants";
 import DateFormater from '~utils/Dateformater';
 import { currencyWithDot } from '~utils/StringFormat';
+import { ORDER_DETAIL_SCREEN } from '~constants/screen_name';
 
 const styles = (theme) => StyleSheet.create({
     wrapper: {
@@ -46,7 +47,7 @@ const CartItem = ({ navigation, post }) => {
     const style = useThemeStyles(styles);
 
     const onPressCart = () => {
-        navigation.navigate("CartDetail", { post: post });
+        navigation.navigate(ORDER_DETAIL_SCREEN, { post: post });
     }
 
     const displayAddress = () => {

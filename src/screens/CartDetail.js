@@ -31,6 +31,7 @@ const init_post = {
   address: "",
   date: "0000-00-00T00:00:00.000Z",
   time: "00:00:00",
+  state: POST_STATE.PROCESSING,
   services: [],
   customer: {
     id: "",
@@ -239,13 +240,11 @@ const styles = (theme) =>
 
 const CartDetail = (props) => {
   const style = useThemeStyles(styles);
-  const { authState } = useContext(AuthContext);
   const { authAxios } = useContext(AxiosContext);
   const { socket } = useContext(SocketContext);
   const navigation = props.navigation;
   const route = props.route;
   const { post_id } = route.params.post;
-  const [post_state, setPostState] = useState(route.params.post.post_state);
   const [cancel_modal, setCancelModal] = useState(false);
   const [review_modal, setReviewModal] = useState(false);
   const [user_review_modal, setUserReviewModal] = useState(false);
@@ -314,6 +313,7 @@ const CartDetail = (props) => {
           address: res_obj.address,
           date: res_obj.date,
           time: res_obj.time,
+          state: res_obj.post_state,
           services: res_obj.services,
           customer: {
             id: res_obj.customer_id,
@@ -333,7 +333,6 @@ const CartDetail = (props) => {
           coupon_price: res_obj.coupon_price,
         };
         setPost(new_post);
-        setPostState(res_obj.post_state);
         setIsOverdue(checkOverdue(res_obj));
 
         if (res_obj.post_state == POST_STATE.COMPLETE) {
@@ -395,8 +394,7 @@ const CartDetail = (props) => {
   const displayPostStateLabel = () => {
     let label_style = {};
     let state_name = "";
-    // let title_color = "Gray.8"
-    switch (post_state) {
+    switch (post.state) {
       case POST_STATE.PROCESSING:
         label_style = style.processing_label;
         state_name = POST_STATE.PROCESSING_NA;
@@ -910,7 +908,7 @@ const CartDetail = (props) => {
               </View>
             )}
             <View style={style.btnGroup}>
-              {post_state == POST_STATE.INCOMPLETE && (
+              {post.state == POST_STATE.INCOMPLETE && (
                 <Button
                   style={style.cancelBtn}
                   size="modalBtn"
@@ -919,7 +917,7 @@ const CartDetail = (props) => {
                   Hủy
                 </Button>
               )}
-              {post_state == POST_STATE.PROCESSING && (
+              {post.state == POST_STATE.PROCESSING && (
                 <Button
                   style={style.cancelBtn}
                   size="modalBtn"
@@ -928,7 +926,7 @@ const CartDetail = (props) => {
                   Xóa
                 </Button>
               )}
-              {post_state == POST_STATE.COMPLETE && !rating_detail && (
+              {post.state == POST_STATE.COMPLETE && !rating_detail && (
                 <Button
                   style={style.reviewBtn}
                   size="modalBtn"

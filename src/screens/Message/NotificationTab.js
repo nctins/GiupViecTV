@@ -91,27 +91,17 @@ const NotificationTab = ({navigation}) => {
         return BottomTabNavigaton({navigation, tabName: BOTTOM_TAB_NAME.COUPON});
 
       case NOTIFICATION_MODULE.POST:
-        return authAxios
-          .get(`post`, { params: { post_id: module_object_id } })
-          .then((res)=>{
-            const res_obj = res.data.data;
-            const post_state = res_obj.post_state;
-            const post_detail_screen_params = {
-              post: {
-                post_id: module_object_id, 
-                post_state: post_state,
-              }
-            };
-            return BottomTabNavigaton({
-              navigation,
-              tabName: BOTTOM_TAB_NAME.ORDER,
-              screenName: ORDER_DETAIL_SCREEN,
-              screenParams: post_detail_screen_params,
-            })
-          })
-          .catch((err)=>{
-            console.log(err);
-          })
+        const post_detail_screen_params = {
+          post: {
+            post_id: module_object_id, 
+          }
+        };
+        return BottomTabNavigaton({
+          navigation,
+          tabName: BOTTOM_TAB_NAME.ORDER,
+          screenName: ORDER_DETAIL_SCREEN,
+          screenParams: post_detail_screen_params,
+        })
         
       default: // notification_module = none
         break;
