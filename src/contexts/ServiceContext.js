@@ -5,6 +5,8 @@ import {
   PAYMENT_METHOD,
   POST_TYPE,
 } from "~constants/app_contants";
+import { BOTTOM_TAB_NAME, ORDER_DETAIL_SCREEN, ORDER_SCREEN } from "~constants/screen_name";
+import BottomTabNavigaton from "~utils/BottomTabNavigation";
 import Caculator from "~utils/Caculator";
 import { DateObj2String } from "~utils/Dateformater";
 import Toast from "~utils/Toast";
@@ -202,16 +204,31 @@ const ServiceProvider = ({
       .post("/post", data)
       .then((res) => {
         console.log(res.data.data);
+        const {post_id} = res.data.data;
         if(res.data.data){
-          Alert.alert("", "Đã tìm được người giúp việc!");
-          navigation.navigate("Lịch hẹn");
+          Alert.alert("", "Đã tìm được người giúp việc!", [
+            {
+              text: "Xem chi tiết", 
+              onPress: () => BottomTabNavigaton({
+                  navigation, 
+                  tabName: BOTTOM_TAB_NAME.ORDER, 
+                  screenName: ORDER_DETAIL_SCREEN,
+                  screenParams: { post: {post_id} }
+              })
+            },
+            {
+              text: "Trang chủ",
+              onPress: () => BottomTabNavigaton({navigation, tabName: BOTTOM_TAB_NAME.HOME})
+            }
+          ]);
+          // navigation.navigate("Lịch hẹn");
         }else{
           Alert.alert("", "Không có người giúp việc nào rảnh trong thời gian này, vui lòng thay đổi thời gian khác!");
           setCurrentScreen("ServiceScreen");
         }
       })
       .catch((err) => {
-        console.log(err.response.data);
+        console.log(err);
       });
   };
 
