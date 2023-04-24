@@ -80,9 +80,6 @@ const NotificationTab = ({navigation}) => {
   }
 
   const onNavigate = ({notification_module, module_object_id}) => {
-    if (!module_object_id) {
-      return;
-    }
     switch (notification_module) {
       case NOTIFICATION_MODULE.ADVS:
         return BottomTabNavigaton({navigation, tabName: BOTTOM_TAB_NAME.HOME});
@@ -91,6 +88,9 @@ const NotificationTab = ({navigation}) => {
         return BottomTabNavigaton({navigation, tabName: BOTTOM_TAB_NAME.COUPON});
 
       case NOTIFICATION_MODULE.POST:
+        if (!module_object_id) {
+          return;
+        }
         const post_detail_screen_params = {
           post: {
             post_id: module_object_id, 
