@@ -24,7 +24,7 @@ const TextInput = ({
         <DefaultTextInput
           style={[styled[variant], styled[theme], style]}
           secureTextEntry={isPassword}
-          placeholderTextColor={styled.placeholder.color}
+          placeholderTextColor={ otherProps.placeholderTextColor ? otherProps.placeholderTextColor : styled.placeholder.color}
           selection={selection}
           onSelectionChange={(e) => setSelection(e.nativeEvent.selection)}
           onBlur={() => setSelection(initSelection)}
@@ -40,7 +40,7 @@ const TextInput = ({
         <DefaultTextInput
           style={[styled[variant], styled[theme], style]}
           secureTextEntry={isPassword}
-          placeholderTextColor={styled.placeholder.color}
+          placeholderTextColor={ otherProps.placeholderTextColor ? otherProps.placeholderTextColor : styled.placeholder.color}
           selection={selection}
           onSelectionChange={(e) => setSelection(e.nativeEvent.selection)}
           onBlur={() => setSelection(initSelection)}

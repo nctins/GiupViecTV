@@ -17,6 +17,7 @@ import { AxiosContext } from "~contexts/AxiosContext";
 import { SERVICE_TYPE, INPUT_FORMAT, POST_TYPE } from "~constants/app_contants";
 import useServiceContext from "~hooks/useServiceContext";
 import CurrencyText from "~components/CurrencyText";
+import DateFormater from "~utils/Dateformater";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -49,13 +50,18 @@ const styles = (theme) =>
     },
     dateTimeInput: {
       flex: 1,
+      justifyContent: "space-between",
+      flexDirection: "row",
+    },
+    dateTimeItem: {
       justifyContent: "flex-start",
+      marginVertical: 3,
     },
     sectionBody: {
       marginTop: 10,
       marginBottom: 10,
       marginHorizontal: 20,
-      flexDirection: "row",
+      flexDirection: "column",
     },
     textArea: {
       borderWidth: 1,
@@ -88,6 +94,14 @@ const ServiceScreen = () => {
     );
   };
 
+  const displayEndTime = () => {
+    const end_time = post.end_time;
+    if(!end_time) {
+      return "";
+    } 
+    return `${end_time.toTimeString().substring(0, 5)}, ${DateFormater(end_time)}`
+  }
+
   return (
     <View style={style.content}>
       <View
@@ -116,30 +130,49 @@ const ServiceScreen = () => {
           >
             <ServiceItems serviceType={SERVICE_TYPE.BONUS} />
           </Section>
-          {post_type == POST_TYPE.HOURLY && (
-            <Section title="Thời gian" showBtn={false}>
+          <Section title="Thời gian" showBtn={false}>
               <View style={style.sectionBody}>
-                <View style={style.dateTimeInput}>
-                  <Typography style={{ marginBottom: 5 }}>Ngày:</Typography>
-                  <DateInput
-                    value={post.date}
-                    onChange={(selectedTime) => {
-                      setPostData({ date: selectedTime });
-                    }}
-                  />
+                <View style={style.dateTimeItem}>
+                  <Typography style={{ marginBottom: 5 }}>Bắt đầu vào lúc:</Typography>
+                  <View style={style.dateTimeInput}>
+                    <TimeInput
+                      value={post.time}
+                      onChange={(selectedTime) => {
+                        setPostData({ time: selectedTime });
+                      }}
+                      containerStyle={{ flex: 1, marginEnd: 20 }}
+                    />
+                    <DateInput
+                      value={post.date}
+                      onChange={(selectedTime) => {
+                        setPostData({ date: selectedTime });
+                      }}
+                      containerStyle={{flex: 2}}
+                    />
+                  </View>
                 </View>
-                <View style={style.dateTimeInput}>
-                  <Typography style={{ marginBottom: 5 }}>Giờ:</Typography>
-                  <TimeInput
-                    value={post.time}
-                    onChange={(selectedTime) => {
-                      setPostData({ time: selectedTime });
-                    }}
-                  />
+                <View style={style.dateTimeItem}>
+                  <Typography style={{ marginBottom: 5 }}>Dự kiến kết thúc vào lúc :</Typography>
+                  <View
+                    style={[
+                      style.textArea,
+                      { 
+                        height: 35, 
+                        backgroundColor: "#f0f0f0", 
+                        justifyContent: "center",
+                        borderRadius: 5,
+                        padding: 5
+                      }
+                    ]} 
+                  >
+                    <Typography>{displayEndTime()}</Typography>
+                  </View>
+                </View>
+                <View style={style.dateTimeItem}>
+                  <Typography style={{ marginBottom: 5 }}>Tổng thời gian làm việc (dự kiến) : {post.total_estimate_time} phút</Typography>
                 </View>
               </View>
-            </Section>
-          )}
+          </Section>
           <Section title="Ghi chú" showBtn={false}>
             <View style={[style.sectionBody]}>
               <TextInput

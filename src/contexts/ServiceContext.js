@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState, useMemo } from "react";
 import { Alert } from "react-native";
 import {
   INPUT_FORMAT,
@@ -15,6 +15,16 @@ import { AxiosContext } from "./AxiosContext";
 
 const ServiceContext = createContext();
 const { Provider } = ServiceContext;
+
+const calculateEndTime = (date, time, estimate_time) => {
+  // console.log(date ,'\n', time, '\n', estimate_time);
+  let post_date_time = new Date();
+  post_date_time.setHours(time.getHours(), time.getMinutes(), 0, 0);
+  post_date_time.setFullYear(date.getFullYear());
+  post_date_time.setDate(date.getDate());
+  post_date_time.setMonth(date.getMonth())
+  return new Date(post_date_time.valueOf() + (estimate_time * 60 * 1000));
+}
 
 const ServiceProvider = ({
   children,
@@ -39,11 +49,13 @@ const ServiceProvider = ({
     phone_number: authState.user.phone,
     date: initdatetime,
     time: initdatetime,
+    end_time: initdatetime,
     note: "",
     services: {},
     voucher_code: "",
     payment_method: PAYMENT_METHOD.COD,
     total: 0,
+    total_estimate_time: 0,
     coupon_price: 0,
   });
   const [addresses, setAddresses] = useState({});
@@ -58,11 +70,13 @@ const ServiceProvider = ({
     phone_number,
     date,
     time,
+    end_time,
     note,
     services,
     voucher_code,
     payment_method,
     total,
+    total_estimate_time,
     coupon_price,
   }) => {
     let new_post = post;
@@ -81,6 +95,9 @@ const ServiceProvider = ({
     if (isNotEmpty(time)) {
       new_post = { ...new_post, time: time };
     }
+    if (isNotEmpty(end_time)) {
+      new_post = { ...new_post, end_time: end_time };
+    }
     if (isNotEmpty(note)) {
       new_post = { ...new_post, note: note };
     }
@@ -96,6 +113,9 @@ const ServiceProvider = ({
     if (isNotEmpty(total)) {
       new_post = { ...new_post, total: total };
     }
+    if (isNotEmpty(total_estimate_time)) {
+      new_post = { ...new_post, total_estimate_time: total_estimate_time };
+    }
     if (isNotEmpty(coupon_price)) {
       new_post = { ...new_post, coupon_price: coupon_price };
     }
@@ -106,6 +126,14 @@ const ServiceProvider = ({
     getPostData();
     getVouchers();
   }, []);
+
+  useMemo(
+    () => {
+      const new_end_time = calculateEndTime(post.date, post.time, post.total_estimate_time);
+      setPostData({end_time: new_end_time});
+    },
+    [post.date, post.time, post.total_estimate_time]
+  )
 
   const getVouchers = () => {
     authAxios.get(`/customer/${authState.user.id}/vouchers`).then((res) => {
@@ -129,6 +157,7 @@ const ServiceProvider = ({
               seq_nb: 0,
               value: 0,
               multie_field_value: 1,
+              estimate_time: 0,
               total: 0,
             };
           } else {
@@ -136,6 +165,7 @@ const ServiceProvider = ({
               seq_nb: service.items[0].seq_nb,
               value: 1,
               multie_field_value: 1,
+              estimate_time: parseInt(service.items[0].estimate_time),
               total: parseInt(service.items[0].unit_price),
             };
           }
@@ -193,7 +223,9 @@ const ServiceProvider = ({
       address: post.address,
       date: DateObj2String(post.date),
       time: post.time.toLocaleTimeString(),
+      end_time: post.end_time,
       note: post.note,
+      total_estimate_time: post.total_estimate_time,
       total: Caculator.calcTotalOrder(post),
       coupon_price: post.coupon_price,
       voucher_id: post.voucher_code,
@@ -203,9 +235,8 @@ const ServiceProvider = ({
     authAxios
       .post("/post", data)
       .then((res) => {
-        console.log(res.data.data);
-        const {post_id} = res.data.data;
         if(res.data.data){
+          const {post_id} = res.data.data;
           Alert.alert("", "Đã tìm được người giúp việc!", [
             {
               text: "Xem chi tiết", 

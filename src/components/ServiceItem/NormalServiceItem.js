@@ -61,11 +61,14 @@ const NormalServiceItem = ({ serviceId }) => {
   const multiValue = parseInt(service_value.multie_field_value);
   const value = parseInt(service_value.value);
   const total = parseInt(service_value.total);
+  const estimate_time = parseInt(service_value.estimate_time);
   const unit_price = parseInt(service_init.unit_price);
+  const unit_estimate_time = parseInt(service_init.estimate_time); 
 
   const onChangeValue = (arg) => {
     const new_value = parseInt(arg);
     const new_total = new_value * multiValue * unit_price;
+    const new_estimate_time = new_value * multiValue * unit_estimate_time;
     const new_services = {
       ...services,
       [serviceId]: {
@@ -74,17 +77,24 @@ const NormalServiceItem = ({ serviceId }) => {
           seq_nb: 0,
           value: new_value,
           multie_field_value: multiValue,
+          estimate_time: new_estimate_time,
           total: new_total,
         },
       },
     };
     const new_post_total = post.total - total + new_total;
-    setPostData({ services: new_services, total: new_post_total });
+    const new_post_estimate_time = post.total_estimate_time - estimate_time + new_estimate_time;
+    setPostData({ 
+      services: new_services, 
+      total: new_post_total, 
+      total_estimate_time: new_post_estimate_time 
+    });
   };
 
   const onChangeMultiValue = (arg) => {
     const new_multi_value = parseInt(arg);
-    const new_total = value * parseInt(new_multi_value) * unit_price;
+    const new_total = value * new_multi_value * unit_price;
+    const new_estimate_time = value * new_multi_value * unit_estimate_time;
     const new_services = {
       ...services,
       [serviceId]: {
@@ -93,12 +103,18 @@ const NormalServiceItem = ({ serviceId }) => {
           seq_nb: 0,
           value: value,
           multie_field_value: new_multi_value,
+          estimate_time: new_estimate_time,
           total: new_total,
         },
       },
     };
     const new_post_total = post.total - total + new_total;
-    setPostData({ services: new_services, total: new_post_total });
+    const new_post_estimate_time = post.total_estimate_time - estimate_time + new_estimate_time;
+    setPostData({ 
+      services: new_services, 
+      total: new_post_total,
+      total_estimate_time: new_post_estimate_time,
+    });
   };
 
   const PriceItem = ({ title, unitTitle = "", onEndEditing, initValue }) => {
@@ -116,7 +132,7 @@ const NormalServiceItem = ({ serviceId }) => {
           }}
           keyboardType="numeric"
         />
-        {unitTitle == "" && (
+        {unitTitle != "" && (
           <Typography variant="Description">{unitTitle}</Typography>
         )}
       </View>
@@ -140,14 +156,16 @@ const NormalServiceItem = ({ serviceId }) => {
       )}
       <View style={style.detail}>
         <View style={style.price}>
-          <PriceItem
-            title={service_init.multiple_field_title}
-            initValue={multiValue}
-            onEndEditing={(text) => onChangeMultiValue(text)}
-          />
+          {service_init.multiple_field_title != "" &&
+            <PriceItem
+              title={service_init.multiple_field_title}
+              initValue={multiValue}
+              onEndEditing={(text) => onChangeMultiValue(text)}
+            /> 
+          }
           <PriceItem
             title={service_init.dram}
-            unitTitle={service_init.unit_price_title}
+            unitTitle={`${service_init.dram_unit}`}
             initValue={value}
             onEndEditing={(text) => onChangeValue(text)}
           />

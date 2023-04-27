@@ -313,6 +313,7 @@ const CartDetail = (props) => {
           address: res_obj.address,
           date: res_obj.date,
           time: res_obj.time,
+          end_time: new Date(res_obj.end_time),
           state: res_obj.post_state,
           services: res_obj.services,
           customer: {
@@ -330,6 +331,7 @@ const CartDetail = (props) => {
           payment_method: res_obj.payment_method,
           post_id: res_obj.post_id,
           total: res_obj.total,
+          total_estimate_time: res_obj.total_estimate_time,
           coupon_price: res_obj.coupon_price,
         };
         setPost(new_post);
@@ -804,7 +806,7 @@ const CartDetail = (props) => {
             <View style={[style.viewItemContent2]}>
               <View style={{ flexDirection: "row", justifyContent: "center" }}>
                 <Typography variant="TextBold" style={style.title}>
-                  Thông tin khách hàng
+                  Thông tin lịch hẹn
                 </Typography>
               </View>
               <Typography variant="Description">
@@ -814,7 +816,10 @@ const CartDetail = (props) => {
                 Địa chỉ: {post.address}{" "}
               </Typography>
               <Typography variant="Description">
-                Thời gian: {dateTimeFormater(post.date, post.time)}
+                Thời gian: {dateTimeFormater(post.date, post.time)} {post.end_time ? `---> ${post.end_time.toTimeString().substring(0, 5)}, ${DateFormater(post.end_time)}` : ""}
+              </Typography>
+              <Typography variant="Description">
+                Tổng thời gian làm việc (dự kiến): {post.total_estimate_time} phút
               </Typography>
               <Typography variant="Description">
                 Số điện thoại: {post.customer.phone}

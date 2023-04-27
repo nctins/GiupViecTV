@@ -85,6 +85,7 @@ const RadioServiceItem = ({ serviceId }) => {
   const value = 1;
   const items = service_init.items;
   const total = parseInt(service_value.total);
+  const estimate_time = parseInt(service_value.estimate_time);
   const selectItem = service_value.seq_nb;
   const unit_price = parseInt(items[selectItem].unit_price);
 
@@ -97,6 +98,7 @@ const RadioServiceItem = ({ serviceId }) => {
         onPress={() => {
           const new_unit_price = parseInt(items[data.seq_nb].unit_price);
           const new_total = value * multiValue * new_unit_price;
+          const new_estimate_time = parseInt(items[data.seq_nb].estimate_time)
           const new_services = {
             ...services,
             [serviceId]: {
@@ -105,12 +107,18 @@ const RadioServiceItem = ({ serviceId }) => {
                 seq_nb: data.seq_nb,
                 value: value,
                 multie_field_value: multiValue,
+                estimate_time: new_estimate_time,
                 total: new_total,
               },
             },
           };
           const new_post_total = post.total - total + new_total;
-          setPostData({ services: new_services, total: new_post_total });
+          const new_post_estimate_time = post.total_estimate_time - estimate_time + new_estimate_time;
+          setPostData({ 
+            services: new_services, 
+            total: new_post_total,
+            total_estimate_time: new_post_estimate_time,
+          });
         }}
       >
         <Typography variant="Description">{data.string_value}</Typography>
