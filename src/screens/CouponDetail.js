@@ -1,10 +1,13 @@
 import React from 'react'
-import { StyleSheet, View, ScrollView,StatusBar, ImageBackground } from "react-native";
+import { StyleSheet, View, ScrollView, ImageBackground } from "react-native";
 import useThemeStyles from '~hooks/useThemeStyles';
 import Typography from "~components/Typography";
 import { BackIcon } from '~components/Icons';
 import Button from '~components/Button';
 import {DEFAULT_IMAGE_ERROR} from "../constants/app_contants";
+import StatusBar from '~components/StatusBar';
+import SafeView from '~components/SafeView';
+import DetailHeader from '~components/DetailHeader';
 
 const styles = (theme) => StyleSheet.create({
   default: {
@@ -98,32 +101,33 @@ const CouponDetail = ({route,navigation}) => {
   }
 
   return (
-    <View style={style.default}>
-        <StatusBar backgroundColor={style.statusBar.backgroundColor}/>
-        <View style={style.header}>
-            <BackIcon color='white' onPress={() => {navigation.navigate("CouponScreen")}} />
-            <Typography variant = "H5" style={style.title}>Chi tiết quà tặng</Typography>
-        </View>
-        <View style={style.viewMainContent}>
-          <ImageBackground source={{uri: getImageUrl()}} resizeMode="stretch" style={style.image}>
-          </ImageBackground>
-        </View>
-        <View style={style.viewDetail}>
-            <ScrollView  contentContainerStyle={style.detail}>
-                <Typography variant = "TextBold" style={style.detailHeader}>Ưu đãi</Typography>
-                <Typography variant = "Description" style={{}}>{voucher_info.voucher_name}</Typography>
-                <Typography variant = "TextBold" style={style.detailHeader}>Có hiệu lực</Typography>
-                <Typography variant = "Description" style={{}}>{formatDate(voucher_info.start_date)} - {formatDate(voucher_info.end_date)}</Typography>
-                <Typography variant = "TextBold" style={style.detailHeader}>Phương thức thanh toán</Typography>
-                <Typography variant = "Description" style={{}}>Mọi hình thức thanh toán</Typography>
-                <Typography variant = "TextBold" style={style.detailHeader}>Điều kiện</Typography>
-                <Typography variant = "Description" style={{}}>{voucher_info.voucher_description}</Typography>
-            </ScrollView>
-            <View style={style.viewButton}>
-                <Button style={style.button} radius={5} onPress={() => {navigation.navigate("Trang chủ")}}>Sử dụng</Button>
+    <>
+      <StatusBar/>
+      <SafeView>
+        <View style={style.default}>
+            <DetailHeader navigation={navigation} title="Chi tiết quà tặng"/>
+            <View style={style.viewMainContent}>
+              <ImageBackground source={{uri: getImageUrl()}} resizeMode="stretch" style={style.image}>
+              </ImageBackground>
             </View>
-        </View>
-    </View >
+            <View style={style.viewDetail}>
+                <ScrollView  contentContainerStyle={style.detail}>
+                    <Typography variant = "TextBold" style={style.detailHeader}>Ưu đãi</Typography>
+                    <Typography variant = "Description" style={{}}>{voucher_info.voucher_name}</Typography>
+                    <Typography variant = "TextBold" style={style.detailHeader}>Có hiệu lực</Typography>
+                    <Typography variant = "Description" style={{}}>{formatDate(voucher_info.start_date)} - {formatDate(voucher_info.end_date)}</Typography>
+                    <Typography variant = "TextBold" style={style.detailHeader}>Phương thức thanh toán</Typography>
+                    <Typography variant = "Description" style={{}}>Mọi hình thức thanh toán</Typography>
+                    <Typography variant = "TextBold" style={style.detailHeader}>Điều kiện</Typography>
+                    <Typography variant = "Description" style={{}}>{voucher_info.voucher_description}</Typography>
+                </ScrollView>
+                <View style={style.viewButton}>
+                    <Button style={style.button} radius={5} onPress={() => {navigation.navigate("Trang chủ")}}>Sử dụng</Button>
+                </View>
+            </View>
+        </View >
+      </SafeView>
+    </>
   )
 }
 export default CouponDetail

@@ -43,7 +43,7 @@ const styles = (theme) => StyleSheet.create({
   },
   AdsView:{
     width: "100%",
-    height: 250,
+    height: 200,
     marginTop: 20,
     // flexDirection: "column",
     // alignItems: "center",
@@ -161,35 +161,37 @@ const HomeScreen = ({navigation}) => {
     <BgImageLayout background={HOME_BG}>
       <StatusBar />
       <SafeView>
-        <View style={style.hiUserView}>
-          <AvatarComponent img={user.avatar_url} size='lg' containerAvatarStyle={style.avatar} />
-          <View style={style.nameAndAddressView}>
-            <Typography color='Gray.0' variant="H7">Xin chào, {user.name}</Typography>
-            <Typography color='Gray.0' variant="Text" style={{marginLeft: 0}}>{user.email}</Typography>
-            <Typography color='Gray.0' variant="Text" style={{marginLeft: 0}}>{user.phone}</Typography>
+        <ScrollView>
+          <View style={style.hiUserView}>
+            <AvatarComponent img={user.avatar_url} size='lg' containerAvatarStyle={style.avatar} />
+            <View style={style.nameAndAddressView}>
+              <Typography color='Gray.0' variant="H7">Xin chào, {user.name}</Typography>
+              <Typography color='Gray.0' variant="Text" style={{marginLeft: 0}}>{user.email}</Typography>
+              <Typography color='Gray.0' variant="Text" style={{marginLeft: 0}}>{user.phone}</Typography>
+            </View>
           </View>
-        </View>
-        <View style={style.ItemView} >
-          <BoxItemComponent navigation={navigation} />
-        </View>
-        <View style={style.AdsView} >
-          <SliderBox
-            images={imagesAds}
-            onCurrentImagePressed={index => console.log(`image ${index} pressed`)}
-            autoplay={true}
-            circleLoop={true}
-            autoplayInterval={5000}
-            sliderBoxHeight={250}
-          />
-        </View>
-        <View style={style.couponView} >
-          <View style={style.couponTittleView}>
-            {vouchers && vouchers.length > 0 ? <Typography variant="H7">Ưu đãi</Typography> : null}
-          </View> 
-          <ScrollView horizontal={true} style={style.couponContentView}>
-            {displayListCoupon()}
-          </ScrollView>
-        </View>
+          <View style={style.ItemView} >
+            <BoxItemComponent navigation={navigation} />
+          </View>
+          <View style={style.AdsView} >
+            <SliderBox
+              images={imagesAds}
+              onCurrentImagePressed={index => console.log(`image ${index} pressed`)}
+              autoplay={true}
+              circleLoop={true}
+              autoplayInterval={5000}
+              sliderBoxHeight={200}
+            />
+          </View>
+          <View style={style.couponView} >
+            <View style={style.couponTittleView}>
+              {vouchers && vouchers.length > 0 ? <Typography variant="H7">Ưu đãi</Typography> : null}
+            </View> 
+            <ScrollView horizontal={true} style={style.couponContentView}>
+              {displayListCoupon()}
+            </ScrollView>
+          </View>
+        </ScrollView>
       </SafeView>
     </BgImageLayout>
   )

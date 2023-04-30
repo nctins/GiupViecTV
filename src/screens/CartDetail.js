@@ -139,7 +139,7 @@ const styles = (theme) =>
       marginTop: 20,
     },
     completeBtn: {
-      backgroundColor: theme.colors.Verdepom,
+      backgroundColor: theme.colors.Azure,
       margin: 10,
     },
     reviewBtn: {
@@ -193,7 +193,7 @@ const styles = (theme) =>
         marginTop: 15,
       },
       acceptBtn: {
-        backgroundColor: theme.colors.SpringGreen,
+        backgroundColor: theme.colors.Azure,
         marginRight: 10,
       },
       cancelBtn: {
