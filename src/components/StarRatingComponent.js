@@ -8,14 +8,16 @@ const StarRatingComponent = ({
   disabled= true,
   rating,
   selectedStar = (star)=>{},
+  starColor = null,
 }) => {
-    const style = useThemeStyles(styles);
+  const style = useThemeStyles(styles);
+  const star_color = starColor ? starColor : style.starColor;
   return (
     <StarRating
       // buttonStyle={modalStyle.starStyle}
       containerStyle={containerStyle}
-      fullStarColor={style.starColor}
-      emptyStarColor={style.starColor}
+      fullStarColor={star_color}
+      emptyStarColor={star_color}
       starSize={starSize}
       disabled={disabled}
       maxStars={5}

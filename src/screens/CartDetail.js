@@ -108,8 +108,8 @@ const styles = (theme) =>
     },
     processing_label: {
       backgroundColor: theme.colors.Gray[0],
-      borderColor: theme.colors.ShinyOrange,
-      color: "ShinyOrange",
+      borderColor: theme.colors.Azure,
+      color: "Azure",
     },
     complete_label: {
       backgroundColor: theme.colors.Gray[0],
@@ -118,8 +118,8 @@ const styles = (theme) =>
     },
     incomplete_label: {
       backgroundColor: theme.colors.Gray[0],
-      borderColor: theme.colors.ShinyOrange,
-      color: "ShinyOrange",
+      borderColor: theme.colors.Azure,
+      color: "Azure",
     },
     cancel_label: {
       backgroundColor: theme.colors.Gray[0],
@@ -210,8 +210,8 @@ const styles = (theme) =>
         // flexDirection: "row",
         // justifyContent: "space-between",
       },
-      starColor: theme.colors.ZincYellow,
     },
+    starColor: theme.colors.ZincYellow,
     paymentModal: {
       container: {
         flex: 1,
@@ -890,8 +890,9 @@ const CartDetail = (props) => {
                     <Typography variant="Description">
                       Hạng người giúp việc:
                     </Typography>
-                    <View style={style.star_container}>
+                    <View style={{marginLeft: 10}}>
                       <StarRatingComponent
+                        starColor={style.starColor}
                         starSize={12}
                         rating={post.helper.rank}
                       />
