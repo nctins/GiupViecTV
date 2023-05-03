@@ -224,7 +224,7 @@ const styles = (theme) =>
         height: "100%",
       },
       cancelButton: {
-        width: 60,
+        minWidth: 60,
         height: 60,
         position: "absolute",
         top: height - 200,
