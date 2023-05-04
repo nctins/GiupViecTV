@@ -57,8 +57,10 @@ const ForgotPassScreen = ({ navigation }) => {
 
   const onChangePassword = () => {
     console.log({ email, otp, new_password });
-    if (new_password.length < 6) {
-      Alert.alert("", "Mật khẩu phải ít nhất 6 ký tự");
+    if (!Validation.isLegitPassword(new_password)) {
+      Alert.alert("", "Hãy nhập mật khẩu ít nhất 8 ký tự gồm chữ in hoa, chữ thường, số và ký tự đặc biệt!");
+      setNewPassword("");
+      return;
     }
     publicAxios.post(
       "auth/change-password",

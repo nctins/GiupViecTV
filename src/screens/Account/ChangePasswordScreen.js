@@ -197,6 +197,7 @@ const ChangePasswordScreen = ({navigation}) => {
                 value={newPasswordConfirm}
                 onChangeText={(text) => setNewPasswordConfirm(text)}
               />
+              <Typography variant="Text" style={{width: 250, marginTop: 10}}> * Mật khẩu có ít nhất 8 ký tự gồm chữ in hoa, chữ thường, số và ký tự đặc biệt</Typography>
               </View>
               <View style={{width: "70%", flexDirection: "row", justifyContent: "center"}}>
                 {messageDisplay()}

@@ -139,6 +139,7 @@ const Step2 = ({route,navigation}) => {
                 onChangeText={(value) => {setPasswordConfirm(value)}}
               />
             </View>
+            <Typography variant="Text" style={[styled.label, {width: 250, marginTop: 10}]}> * Mật khẩu có ít nhất 8 ký tự gồm chữ in hoa, chữ thường, số và ký tự đặc biệt</Typography>
           </View>
           <View style={{ flex: 3 }}>
             <View style={[{ flex: 3 }, styled.centerBox]}>
