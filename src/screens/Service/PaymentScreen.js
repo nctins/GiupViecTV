@@ -1,24 +1,13 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  StatusBar,
-  TouchableOpacity,
-  Pressable,
-  TouchableWithoutFeedback,
-  Modal,
-} from "react-native";
+import {StyleSheet, View, ScrollView, StatusBar, TouchableOpacity, Pressable, TouchableWithoutFeedback, Modal} from "react-native";
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
-import ProcessNavComponent from "~components/ProcessNavComponent";
 import { VNPayIcon, CashIcon } from "~components/Icons";
 import Button from "~components/Button";
 import useServiceContext from "~hooks/useServiceContext";
 import CurrencyText from "~components/CurrencyText";
 import { PAYMENT_METHOD, VOUCHER_TYPE } from "~constants/app_contants";
 import Caculator from "~utils/Caculator";
-import Toast from "~utils/Toast";
 
 const styles = (theme) =>
   StyleSheet.create({
