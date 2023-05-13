@@ -37,6 +37,9 @@ const styles = (theme) =>
       marginBottom: 10,
     },
   });
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
 
 const MessageTab = ({ navigation }) => {
   const style = useThemeStyles(styles);

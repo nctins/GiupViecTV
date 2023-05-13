@@ -26,7 +26,7 @@ const CommentComponent = (props) => {
   const style = useThemeStyles(styles);
   const data = props.data;
   return (
-    <View style={style.wrapper}>
+    <View style={style.wrapper} onStartShouldSetResponder={() => true}>
       <View style={style.header}>
         <StarRatingComponent
           containerStyle={{ width: 100 }}
