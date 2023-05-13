@@ -50,7 +50,7 @@ const NotificationTab = ({navigation}) => {
 
   useEffect(() => {
     const listener = (msg) => {
-      console.log(msg.user_ids)
+      // console.log(msg.user_ids)
       const user_id = authState.user.id;
       if (msg.user_ids.includes(user_id)) {
         getNotification();
