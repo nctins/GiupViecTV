@@ -97,6 +97,7 @@ const ForgotPassScreen = ({ navigation }) => {
           titleStyle="blackTitle"
           value={new_password}
           onChangeText={(text) => setNewPassword(text)}
+          isPassword
         />
       );
     }
