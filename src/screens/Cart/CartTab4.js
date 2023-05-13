@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState, useEffect, useContext, useCallback} from 'react'
 import { StyleSheet, View, ScrollView,TextInput, RefreshControl } from "react-native";
 import CartItem from '~components/CartItem';
 import useThemeStyles from '~hooks/useThemeStyles';
@@ -6,6 +6,7 @@ import { AuthContext } from "~contexts/AuthContext";
 import { AxiosContext } from "~contexts/AxiosContext";
 import LoadingScreen from '../LoadingScreen';
 import {POST_STATE} from "../../constants/app_contants";
+import { useFocusEffect } from '@react-navigation/native';
 
 const styles = (theme) => StyleSheet.create({
   default: {
@@ -59,12 +60,17 @@ const CartTab4 = ({navigation}) => {
     });
   }, []);
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   getPosts();
+  // },[]);
+
+  useFocusEffect(useCallback(()=>{
     getPosts();
-  },[]);
+  },[]))
 
   const getPosts = () => {
-    setIsLoading(true);
+    // setIsLoading(true);
+    setRefreshing(true);
     authAxios
       .get("posts")
       .then(async (response) => {
@@ -73,12 +79,14 @@ const CartTab4 = ({navigation}) => {
           return e.post_state === POST_STATE.CANCEL
         })
         setPosts(arrPost);
-        setIsLoading(false);
+        // setIsLoading(false);
+        setRefreshing(false);
       })
       .catch(async (error) => {
         if (error.response) {
           console.log(error.response.data);
         }
+        // setIsLoading(false);
         setIsLoading(false);
       });
   }
