@@ -269,6 +269,15 @@ const ServiceProvider = ({
   };
 
   controller.goToPaymentScreen = () => {
+    const moment = new Date();
+    const post_date_time = new Date(post.date.toISOString());
+    post_date_time.setHours(post.time.getHours(), post.time.getMinutes(), 0, 0);
+    
+    if (post_date_time.valueOf() < moment.valueOf()) {
+      Alert.alert("", "Vui lòng chọn thời gian lịch hẹn trong tương lai.");
+      return;
+    }
+   
     if (post.total == 0) {
       Alert.alert("", "Vui lòng chọn ít nhất 1 dịch vụ");
       return;
