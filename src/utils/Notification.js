@@ -1,4 +1,4 @@
-import { Platform } from "react-native";
+import { Alert, Platform } from "react-native";
 import Constants from "expo-constants";
 import * as ExpoNotifications from "expo-notifications";
 
@@ -42,10 +42,10 @@ Notifications.registerForPushNotifications = async function () {
   }
 };
 
-Notifications.setNotificationHandler = () =>
+Notifications.setNotificationHandler = (isShow) =>
   ExpoNotifications.setNotificationHandler({
     handleNotification: async () => ({
-      shouldShowAlert: true,
+      shouldShowAlert: isShow,
       shouldPlaySound: false,
       shouldSetBadge: false,
     }),

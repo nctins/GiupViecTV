@@ -9,6 +9,7 @@ import { AuthContext } from "~contexts/AuthContext";
 import useAxios from "~hooks/useAxios";
 import SafeView from "~components/SafeView";
 import StatusBar from "~components/StatusBar";
+import useNotificationContext from "~hooks/useNotificationContext";
 
 const styles = (theme) => StyleSheet.create({
     setting: settingStyle(theme),
@@ -74,8 +75,9 @@ const AccountScreen = ({navigation}) => {
   const style = useThemeStyles(styles);
   const authContext = useContext(AuthContext);
   const user = authContext.authState.user;
-  const [isNotice, setIsNotice] = useState(false);
+  // const [isNotice, setIsNotice] = useState(false);
   const { authAxios } = useAxios();
+  const {isShowNotification, toggleShowNotificaion} = useNotificationContext();
   const onLogout = async () => {
     await authAxios.post("auth/signout")
       .then((res)=>{
@@ -122,8 +124,8 @@ const AccountScreen = ({navigation}) => {
             <Typography variant="SubtitleSemiBold">Tổng quát</Typography>
             <SwitchSettingItem
               title="Thông báo"
-              onToggle={() => setIsNotice((previousState) => !previousState)}
-              value={isNotice}
+              onToggle={() => {toggleShowNotificaion();}}
+              value={isShowNotification}
             />
             <SettingItem title={"Phản hồi"} onTouch={() => {navigation.navigate("FeedbackScreen")}} />
           </View>

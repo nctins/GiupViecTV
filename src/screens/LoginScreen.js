@@ -12,6 +12,7 @@ import LoadingScreen from "./LoadingScreen";
 import Toast from "~utils/Toast";
 import SafeView from "~components/SafeView";
 import StatusBar from "~components/StatusBar";
+import useNotificationContext from "~hooks/useNotificationContext";
 
 const LoginScreen = ({navigation}) => {
   const authContext = useContext(AuthContext);
@@ -23,6 +24,8 @@ const LoginScreen = ({navigation}) => {
   const setToken = async (value) => {
     await SecureStore.setItemAsync("customer_auth_info", value);
   };
+
+  const {notificationToken} = useNotificationContext();
   
   const onLogin = async () => {
     setIsLoading(true);
@@ -30,6 +33,7 @@ const LoginScreen = ({navigation}) => {
       .post("auth/customer/signin", {
         email: email,
         password: password,
+        notificationToken: notificationToken,
       })
       .then(async (response) => {
         const { token, refreshToken, user } = response.data;
