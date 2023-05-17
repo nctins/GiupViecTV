@@ -328,18 +328,6 @@ const ServiceProvider = ({
       });
   };
 
-  controller.deleteService = (service_id) => {
-    const services = post.services;
-    const new_services = {
-      ...services,
-      [service_id]: {
-        ...services[service_id],
-        is_select: false,
-      },
-    };
-    setPostData({ services: new_services });
-  };
-
   controller.updateAddress = ({ address_id, title, address, place_id }) => {
     authAxios
       .put(`/customer/${authState.user.id}/address/${address_id}`, {

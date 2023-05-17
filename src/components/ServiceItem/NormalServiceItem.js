@@ -65,23 +65,28 @@ const NormalServiceItem = ({ serviceId }) => {
   const unit_price = parseInt(service_init.unit_price);
   const unit_estimate_time = parseInt(service_init.estimate_time); 
 
+  const createNewServices = (service, is_select=true) => {
+    const new_services = {...services};
+    new_services[serviceId] = {...service, is_select};
+    return new_services;
+  }
+
   const onChangeValue = (arg) => {
     const new_value = parseInt(arg);
     const new_total = new_value * multiValue * unit_price;
     const new_estimate_time = new_value * multiValue * unit_estimate_time;
-    const new_services = {
-      ...services,
-      [serviceId]: {
-        ...services[serviceId],
-        service_value: {
-          seq_nb: 0,
-          value: new_value,
-          multie_field_value: multiValue,
-          estimate_time: new_estimate_time,
-          total: new_total,
-        },
+
+    const new_services = createNewServices({
+      ...services[serviceId],
+      service_value: {
+        seq_nb: 0,
+        value: new_value,
+        multie_field_value: multiValue,
+        estimate_time: new_estimate_time,
+        total: new_total,
       },
-    };
+    });
+
     const new_post_total = post.total - total + new_total;
     const new_post_estimate_time = post.total_estimate_time - estimate_time + new_estimate_time;
     setPostData({ 
@@ -95,19 +100,18 @@ const NormalServiceItem = ({ serviceId }) => {
     const new_multi_value = parseInt(arg);
     const new_total = value * new_multi_value * unit_price;
     const new_estimate_time = value * new_multi_value * unit_estimate_time;
-    const new_services = {
-      ...services,
-      [serviceId]: {
-        ...services[serviceId],
-        service_value: {
-          seq_nb: 0,
-          value: value,
-          multie_field_value: new_multi_value,
-          estimate_time: new_estimate_time,
-          total: new_total,
-        },
+
+    const new_services = createNewServices({
+      ...services[serviceId],
+      service_value: {
+        seq_nb: 0,
+        value: value,
+        multie_field_value: new_multi_value,
+        estimate_time: new_estimate_time,
+        total: new_total,
       },
-    };
+    });
+
     const new_post_total = post.total - total + new_total;
     const new_post_estimate_time = post.total_estimate_time - estimate_time + new_estimate_time;
     setPostData({ 
@@ -116,6 +120,28 @@ const NormalServiceItem = ({ serviceId }) => {
       total_estimate_time: new_post_estimate_time,
     });
   };
+
+  const onDelete = () => {
+    const new_services = createNewServices({
+      ...services[serviceId],
+      service_value: {
+        seq_nb: 0,
+        value: 0,
+        multie_field_value: 1,
+        estimate_time: 0,
+        total: 0,
+      },
+    }, false);
+
+    const new_post_total = post.total - total;
+    const new_post_estimate_time = post.total_estimate_time - estimate_time;
+
+    setPostData({ 
+      services: new_services, 
+      total: new_post_total,
+      total_estimate_time: new_post_estimate_time,
+    });
+  }
 
   const PriceItem = ({ title, unitTitle = "", onEndEditing, initValue }) => {
     const [itemValue, setItemValue] = useState(initValue);
@@ -143,7 +169,7 @@ const NormalServiceItem = ({ serviceId }) => {
     <View style={style.wrapper}>
       <View style={style.title}>
         <Typography>{service_init.name}</Typography>
-        <Pressable onPress={()=>controller.deleteService(serviceId)}>
+        <Pressable onPress={()=>onDelete()}>
           <TrashIcon size="sm"/>
         </Pressable>
       </View>

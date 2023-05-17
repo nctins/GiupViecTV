@@ -221,7 +221,12 @@ const ServiceScreen = () => {
           const { service_init } = services[service_id];
           if (service_init.input_format == INPUT_FORMAT.RADIO) {
             const new_total = post.total + service_init.items[0].unit_price;
-            setPostData({ services: new_services, total: new_total });
+            const new_post_estimate_time = post.total_estimate_time + service_init.items[0].estimate_time;
+            setPostData({ 
+              services: new_services, 
+              total: new_total, 
+              total_estimate_time: new_post_estimate_time 
+            });
           } else {
             setPostData({ services: new_services });
           }
