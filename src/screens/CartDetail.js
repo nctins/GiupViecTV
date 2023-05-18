@@ -211,7 +211,7 @@ const styles = (theme) =>
         // justifyContent: "space-between",
       },
     },
-    starColor: theme.colors.ZincYellow,
+    starColor: theme.colors.Azure,
     paymentModal: {
       container: {
         flex: 1,
@@ -420,7 +420,7 @@ const CartDetail = (props) => {
     const title_color = label_style.color;
     return (
       <View style={[style.label, label_style]}>
-        <Typography variant="Description" color={title_color}>
+        <Typography variant="Text" color={title_color}>
           {state_name}
         </Typography>
       </View>
@@ -457,20 +457,20 @@ const CartDetail = (props) => {
 
   const PriceItem = ({ title, value }) => {
     return (
-      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <Typography variant="Description">{title}</Typography>
-        <CurrencyText variant="Description" value={value} currency="VNĐ" />
+      <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 5, }}>
+        <Typography variant="Text">{title}</Typography>
+        <CurrencyText variant="Text" value={value} currency="VNĐ" />
       </View>
     );
   };
 
   const CouponItem = ({ title, value }) => {
     return (
-      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <Typography variant="Description">{title}</Typography>
+      <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 5, }}>
+        <Typography variant="Text">{title}</Typography>
         <CurrencyText
           prefix="-"
-          variant="Description"
+          variant="Text"
           value={value}
           currency="VNĐ"
         />
@@ -480,12 +480,12 @@ const CartDetail = (props) => {
 
   const PaymentMethodItem = ({ value }) => {
     return (
-      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <Typography variant="Description">Phương thức thanh toán</Typography>
+      <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 5, }}>
+        <Typography variant="Text">Phương thức thanh toán</Typography>
         {value == PAYMENT_METHOD.VNPAY ? (
-          <Typography variant="Description">VNPAY</Typography>
+          <Typography variant="Text">VNPAY</Typography>
         ) : (
-          <Typography variant="Description">Tiền mặt</Typography>
+          <Typography variant="Text">Tiền mặt</Typography>
         )}
       </View>
     );
@@ -793,41 +793,41 @@ const CartDetail = (props) => {
         <View style={style.default}>
           <ScrollView style={style.viewContent}>
             <View style={style.viewItemContent1}>
-              <Typography variant="TextBold" style={style.title}>
+              <Typography variant="TitleBold" style={style.title}>
                 Tình trạng
               </Typography>
               {displayPostStateLabel()}
               {/* <View style={style.label}>
-                <Typography variant="Description" style={{}}>
+                <Typography variant="Text" style={{}}>
                   {displayPostState()}
                 </Typography>
               </View> */}
             </View>
             <View style={[style.viewItemContent2]}>
               <View style={{ flexDirection: "row", justifyContent: "center" }}>
-                <Typography variant="TextBold" style={style.title}>
+                <Typography variant="TitleBold" style={style.title}>
                   Thông tin lịch hẹn
                 </Typography>
               </View>
-              <Typography variant="Description">
+              <Typography variant="Text" style={{marginTop:5}}>
                 Họ và tên: {post.customer.name}{" "}
               </Typography>
-              <Typography variant="Description">
+              <Typography variant="Text" style={{marginTop:5}}>
                 Địa chỉ: {post.address}{" "}
               </Typography>
-              <Typography variant="Description">
+              <Typography variant="Text" style={{marginTop:5}}>
                 Thời gian: {dateTimeFormater(post.date, post.time)} {post.end_time ? `---> ${post.end_time.toTimeString().substring(0, 5)}, ${DateFormater(post.end_time)}` : ""}
               </Typography>
-              <Typography variant="Description">
+              <Typography variant="Text" style={{marginTop:5}}>
                 Tổng thời gian làm việc (dự kiến): {post.total_estimate_time} phút
               </Typography>
-              <Typography variant="Description">
+              <Typography variant="Text" style={{marginTop:5}}>
                 Số điện thoại: {post.customer.phone}
               </Typography>
             </View>
             <View style={[style.viewItemContent2]}>
               <View style={{ flexDirection: "row", justifyContent: "center" }}>
-                <Typography variant="TextBold" style={style.title}>
+                <Typography variant="TitleBold" style={style.title}>
                   Dịch vụ
                 </Typography>
               </View>
@@ -847,20 +847,21 @@ const CartDetail = (props) => {
             {post.helper.id != "" && (
               <View style={[style.viewItemContent2]}>
                 <View style={{ flexDirection: "row", justifyContent: "center" }}>
-                  <Typography variant="TextBold" style={style.title}>
+                  <Typography variant="TitleBold" style={style.title}>
                     Thông tin người giúp việc
                   </Typography>
                 </View>
-                <Typography variant="Description">
+                <Typography variant="Text" style={{marginTop:5}}>
                   Họ và tên: {post.helper.name}
                 </Typography>
                 <View
                   style={{
                     flexDirection: "row",
                     justifyContent: "space-between",
+                    marginTop: 5
                   }}
                 >
-                  <Typography variant="Description">
+                  <Typography variant="Text">
                     Số điện thoại: {post.helper.phone}
                   </Typography>
                   <View style={{ flexDirection: "row" }}>
@@ -868,13 +869,13 @@ const CartDetail = (props) => {
                       style={{ marginRight: 8 }}
                       onPress={() => onCall(post.helper.phone)}
                     >
-                      <Typography variant="Description" color="PersianBlue">
-                        [gọi điện]
+                      <Typography variant="Text" color="PersianBlue">
+                        [Gọi điện]
                       </Typography>
                     </Pressable>
                     <Pressable onPress={() => onChat()}>
-                      <Typography variant="Description" color="PersianBlue">
-                        [nhắn tin]
+                      <Typography variant="Text" color="PersianBlue">
+                        [Nhắn tin]
                       </Typography>
                     </Pressable>
                   </View>
@@ -884,10 +885,11 @@ const CartDetail = (props) => {
                     flexDirection: "row",
                     justifyContent: "space-between",
                     alignItems: "center",
+                    marginTop: 5,
                   }}
                 >
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <Typography variant="Description">
+                    <Typography variant="Text">
                       Hạng người giúp việc:
                     </Typography>
                     <View style={{marginLeft: 10}}>
@@ -905,7 +907,7 @@ const CartDetail = (props) => {
                         setUserReviewModal(true);
                       }}
                     >
-                      <Typography variant="Description" color="PersianBlue">
+                      <Typography variant="Text" color="PersianBlue">
                         [Xem chi tiết]
                       </Typography>
                     </Pressable>
