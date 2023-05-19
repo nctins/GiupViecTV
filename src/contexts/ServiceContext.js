@@ -202,7 +202,7 @@ const ServiceProvider = ({
   };
 
   const controller = {};
-  controller.createPost = () => {
+  controller.createPost = (onSuccess=null) => {
     const post_detail = Object.entries(post.services)
       .map(([service_id, { is_select, service_value }]) => {
         if (is_select) {
@@ -235,6 +235,9 @@ const ServiceProvider = ({
     authAxios
       .post("/post", data)
       .then((res) => {
+        if (onSuccess) {
+          onSuccess();
+        }
         if(res.data.data){
           const {post_id} = res.data.data;
           Alert.alert("", "Đã tìm được người giúp việc!", [
@@ -259,6 +262,10 @@ const ServiceProvider = ({
         }
       })
       .catch((err) => {
+        if (onSuccess) {
+          onSuccess();
+        }
+        Alert.alert("", "Có lỗi xảy ra vui lòng thử lại");
         console.log(err);
       });
   };

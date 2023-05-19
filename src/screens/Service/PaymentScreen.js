@@ -8,6 +8,7 @@ import useServiceContext from "~hooks/useServiceContext";
 import CurrencyText from "~components/CurrencyText";
 import { PAYMENT_METHOD, VOUCHER_TYPE } from "~constants/app_contants";
 import Caculator from "~utils/Caculator";
+import LoadingScreen from "~screens/LoadingScreen";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -128,6 +129,7 @@ const PaymentScreen = () => {
   const style = useThemeStyles(styles);
   const { controller, vouchers, post, setPostData } = useServiceContext();
   const [voucher_modal, setVoucherModal] = useState(false);
+  const [is_loading, setIsLoading] = useState(false);
 
   const VoucherItem = ({ data }) => {
     const voucherStyle = style.voucher;
@@ -319,6 +321,7 @@ const PaymentScreen = () => {
 
   return (
     <View style={style.content}>
+      {is_loading ? <LoadingScreen /> : null}
       <ScrollView style={{ width: "100%" }}>
         <ServiceDetail />
         <PaymentMethod />
@@ -333,7 +336,10 @@ const PaymentScreen = () => {
             size="sm"
             style={{ marginBottom: 20 }}
             onPress={() => {
-              controller.createPost();
+              setIsLoading(true);
+              controller.createPost(
+                () => {setIsLoading(false)}
+              );
             }}
           >
             Tìm người giúp việc
