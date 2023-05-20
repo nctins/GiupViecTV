@@ -3,6 +3,9 @@
     "name": "GiupViecTV",
     "slug": "GiupViecTV",
     "version": "1.0.0",
+    "notification":{
+      "icon":"./assets/images/icons/logo.png"
+    },
     "assetBundlePatterns": [
       "**/*"
     ],
