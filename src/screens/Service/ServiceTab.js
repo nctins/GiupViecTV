@@ -75,7 +75,7 @@ const ServiceTab = ({ route, navigation }) => {
             </View> */}
             <DetailHeader navigation={navigation} title="Tìm người giúp việc"/>
             <View style={{ flex: 1 }}>
-              <View style={{ flex: 1, marginTop: 20 }}>
+              <View style={{ marginTop: 20, minHeight: 64 }}>
                 <ProcessNavComponent
                   lstItem={[
                     "AddressScreen",

@@ -66,7 +66,7 @@ const styles = (theme) =>
     textArea: {
       borderWidth: 1,
       borderColor: theme.colors.BackgroundBlue,
-      width: 340,
+      minWidth: "100%",
     },
   });
 

@@ -53,7 +53,8 @@ const styles = (theme) =>
       },
       content: {
         width: 90,
-        marginTop: 5,
+        minHeight: 35,
+        marginTop: 10,
         flexDirection: "row",
         justifyContent: "center",
         textAlignVertical: "center",
