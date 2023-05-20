@@ -16,6 +16,7 @@ buck-out/
 \.buckd/
 *.keystore
 !debug.keystore
+!giupviectv-release-key.keystore
 
 # Bundle artifacts
 *.jsbundle
