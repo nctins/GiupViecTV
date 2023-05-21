@@ -4,6 +4,7 @@ import {
   INPUT_FORMAT,
   PAYMENT_METHOD,
   POST_TYPE,
+  SERVICE_TYPE,
 } from "~constants/app_contants";
 import { BOTTOM_TAB_NAME, ORDER_DETAIL_SCREEN, ORDER_SCREEN } from "~constants/screen_name";
 import BottomTabNavigaton from "~utils/BottomTabNavigation";
@@ -195,6 +196,7 @@ const ServiceProvider = ({
         });
         setAddresses(initAddresses);
         setAddressIds(Object.keys(initAddresses));
+        console.log(initServices);
       })
       .catch((err) => {
         console.log(err);
@@ -276,12 +278,40 @@ const ServiceProvider = ({
   };
 
   controller.goToPaymentScreen = () => {
+    // check date time is future
     const moment = new Date();
     const post_date_time = new Date(post.date.toISOString());
     post_date_time.setHours(post.time.getHours(), post.time.getMinutes(), 0, 0);
     
     if (post_date_time.valueOf() < moment.valueOf()) {
       Alert.alert("", "Vui lòng chọn thời gian lịch hẹn trong tương lai.");
+      return;
+    }
+
+    // check num normal service and value of text_box service
+    let num_selected_normal_service = 0;
+    for (const { is_select, service_init, service_value } of Object.values(post.services)) {
+        // check has least one normal service
+        if (is_select && service_init.service_type === SERVICE_TYPE.NORMAL) {
+          num_selected_normal_service += 1;
+        }
+        
+        // check input textbox service
+        if (
+          is_select 
+          && service_init.input_format === INPUT_FORMAT.TEXTBOX 
+          && service_value.total === 0 
+        ) {
+          const err_msg = service_value.value === 0 ? 
+            `Vui lòng nhập thông tin ${service_init.dram} của dịch vụ ${service_init.name}.`
+            : `Vui lòng nhập thông tin ${service_init.multiple_field_title} của dịch vụ ${service_init.name}.`;
+          Alert.alert("", err_msg);
+          return;
+        }
+    }
+
+    if (num_selected_normal_service === 0) {
+      Alert.alert("", "Vui lòng chọn ít nhất một dịch vụ thông thường.");
       return;
     }
    
