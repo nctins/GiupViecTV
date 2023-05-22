@@ -37,23 +37,14 @@ const styles = (theme) =>
       marginBottom: 10,
     },
   });
-  const wait = (timeout) => {
-    return new Promise(resolve => setTimeout(resolve, timeout));
-  }
 
 const MessageTab = ({ navigation }) => {
   const style = useThemeStyles(styles);
   const { authAxios } = useContext(AxiosContext);
   const [boxChats, setBoxChats] = useState([]);
-  // const [isLoading, setIsLoading] = useState(false);
+
   const [refreshing, setRefreshing] = React.useState(false);
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    wait(2000).then(() => {
-      setRefreshing(false);
-      getBoxChat();
-    });
-  }, []);
+  const onRefresh = React.useCallback(() => {getBoxChat();}, []);
 
   useFocusEffect(
     useCallback(()=>{
@@ -62,17 +53,20 @@ const MessageTab = ({ navigation }) => {
   )
 
   const getBoxChat = () => {
+    setRefreshing(true);
     authAxios
     .get("/box-chats")
     .then((res) => {
       const resObj = res.data;
       setBoxChats(resObj.data);
       // setIsLoading(false);
+      setRefreshing(false);
     })
     .catch((err) => {
       console.log(err.response.data);
       setBoxChats([]);
       // setIsLoading(false);
+      setRefreshing(false);
     });
   }
 

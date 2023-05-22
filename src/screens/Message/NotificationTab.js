@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { StyleSheet, View, ScrollView, Pressable } from "react-native";
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import { StyleSheet, View, ScrollView, Pressable, RefreshControl } from "react-native";
 import NotificationItem from "~components/NotificationItem";
 import { CheckAllIcon } from "~components/Icons";
 import SOCKET_ACT from "~constants/socket_contant";
@@ -12,6 +12,7 @@ import useThemeStyles from "~hooks/useThemeStyles";
 import { NOTIFICATION_MODULE, POST_STATE } from "~constants/app_contants";
 import { BOTTOM_TAB_NAME, ORDER_DETAIL_SCREEN } from "~constants/screen_name";
 import BottomTabNavigaton from "~utils/BottomTabNavigation";
+import { useFocusEffect } from "@react-navigation/native";
 
 const styles = (theme) =>
   StyleSheet.create({
@@ -44,9 +45,14 @@ const NotificationTab = ({navigation}) => {
   const { socket } = useSocket();
   const {setHasUnreadNotification} = useMessageModuleContext();
   
-  useEffect(() => {
-    getNotification();
-  }, []);
+  const [refreshing, setRefreshing] = React.useState(false);
+  const onRefresh = React.useCallback(() => {getNotification();}, []);
+  
+  useFocusEffect(
+    useCallback(()=>{
+      getNotification();
+    },[])
+  )
 
   useEffect(() => {
     const listener = (msg) => {
@@ -61,11 +67,14 @@ const NotificationTab = ({navigation}) => {
   },[notifications])
 
   const getNotification = () => {
+    setRefreshing(true);
     authAxios
       .get("notifications").then((res)=>{
         setNotifications(res.data.data);
+        setRefreshing(false);
       }).catch((err)=>{
         console.log(err);
+        setRefreshing(false);
       })
   };
 
@@ -150,7 +159,10 @@ const NotificationTab = ({navigation}) => {
         <CheckAllIcon size={16}/>
         <Typography style={{marginLeft: 5}} variant="Text">Đánh dấu tất cả đã đọc</Typography>
       </Pressable>
-      <ScrollView contentContainerStyle={style.content}>
+      <ScrollView 
+        contentContainerStyle={style.content}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      >
         {
           notifications.map((noti, idx)=>{
             return <NotificationItem key={idx} data={noti} onPress={()=>onPressNotificationItem(idx)}/>

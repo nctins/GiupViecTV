@@ -39,10 +39,6 @@ const styles = (theme) => StyleSheet.create({
   },
 })
 
-const wait = (timeout) => {
-  return new Promise(resolve => setTimeout(resolve, timeout));
-}
-
 const CartTab1 = ({navigation}) => {
   const style = useThemeStyles(styles);
   const authContext = useContext(AuthContext);
@@ -51,17 +47,8 @@ const CartTab1 = ({navigation}) => {
   const [refreshing, setRefreshing] = React.useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    wait(2000).then(() => {
-      setRefreshing(false);
-      getPosts();
-    });
-  }, []);
+  const onRefresh = React.useCallback(() => {getPosts();}, []);
 
-  // useEffect(() => {
-  //   getPosts();
-  // },[]);
   useFocusEffect(useCallback(()=>{
     getPosts();
   },[]))

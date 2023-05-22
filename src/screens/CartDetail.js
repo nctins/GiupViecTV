@@ -19,6 +19,7 @@ import StatusBar from "~components/StatusBar";
 import SafeView from "~components/SafeView";
 import BottomTabNavigaton from "~utils/BottomTabNavigation";
 import { BOTTOM_TAB_NAME } from "~constants/screen_name";
+import LoadingScreen from './LoadingScreen';
 
 const dateTimeFormater = (date, time) => {
   const time_string = time.slice(0, 5);
@@ -254,6 +255,7 @@ const CartDetail = (props) => {
   const [post, setPost] = useState(init_post);
   const [rating_detail, setRatingDetail] = useState(null);
   const [is_overdue, setIsOverdue] = useState(false);
+  const [is_loading, setIsLoading] = useState(false);
 
   useEffect(() => {
     getPostDetail();
@@ -305,6 +307,7 @@ const CartDetail = (props) => {
 
   const getPostDetail = () => {
     // console.log(`post/${post.post_id}`);
+    setIsLoading(true);
     authAxios
       .get(`post`, { params: { post_id: post_id } })
       .then((res) => {
@@ -340,8 +343,10 @@ const CartDetail = (props) => {
         if (res_obj.post_state == POST_STATE.COMPLETE) {
           getRatingDetail(post_id);
         }
+        setIsLoading(false);
       })
       .catch((err) => {
+        setIsLoading(false);
         console.log(err);
       });
   };
@@ -788,6 +793,7 @@ const CartDetail = (props) => {
   return (
     <>
       <StatusBar/>
+      {is_loading ? <LoadingScreen /> : null}
       <SafeView>
         <DetailHeader title="Chi tiết lịch hẹn" navigation={navigation} onBack={onBack}/>
         <View style={style.default}>
@@ -925,7 +931,7 @@ const CartDetail = (props) => {
                   Hủy
                 </Button>
               )}
-              {post.state == POST_STATE.PROCESSING && (
+              {/* {post.state == POST_STATE.PROCESSING && (
                 <Button
                   style={style.cancelBtn}
                   size="modalBtn"
@@ -933,7 +939,7 @@ const CartDetail = (props) => {
                 >
                   Xóa
                 </Button>
-              )}
+              )} */}
               {post.state == POST_STATE.COMPLETE && !rating_detail && (
                 <Button
                   style={style.reviewBtn}
