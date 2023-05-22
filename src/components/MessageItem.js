@@ -119,7 +119,7 @@ const MessageItem = ({ navigation, ...props }) => {
   };
 
   const is_mine = () => {
-    return message.from_user_id.slice(0,3) === "HEL";
+    return message.from_user_id.slice(0,3) === "CUS";
   }
   const displayMsg = () => {
     const msg = message.last_msg ? (is_mine() ? "Bạn: " : `${data.sender}: `) + message.last_msg : `Bạn và ${data.sender} chưa có tin nhắn nào.`
