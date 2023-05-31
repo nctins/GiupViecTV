@@ -63,8 +63,8 @@ const styles = (theme) =>
         marginRight: 10,
       },
       content: {
-        paddingVertical: 15,
         maxHeight: 300,
+        marginTop: 10,
       },
       cancelBtn: {
         backgroundColor: theme.colors.AlizarinRed,
@@ -176,7 +176,7 @@ const PaymentScreen = () => {
             <Typography color="Gray.0">{data.voucher_name}</Typography>
           </View>
         </View>
-        <Typography variant="MiniDescription" color="AlizarinRed">
+        <Typography variant="Description" color="AlizarinRed">
           Cần thêm {Caculator.toCharMonney(price_miss)} để sử dụng mã
           này
         </Typography>
@@ -188,7 +188,7 @@ const PaymentScreen = () => {
     return vouchers.map((voucher, idx) => {
       const price_miss =
         parseInt(voucher.min_post_price) - parseInt(post.total);
-      if (price_miss >= 0) {
+      if (price_miss > 0) {
         return <DisableVoucherItem key={idx} data={voucher} price_miss={price_miss} />;
       }
       return <VoucherItem key={idx} data={voucher} />;
