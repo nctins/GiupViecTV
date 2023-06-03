@@ -133,7 +133,7 @@ const ServiceScreen = () => {
           <Section title="Thời gian" showBtn={false}>
               <View style={style.sectionBody}>
                 <View style={style.dateTimeItem}>
-                  <Typography style={{ marginBottom: 5 }}>Bắt đầu vào lúc:</Typography>
+                  <Typography variant="Text" style={{ marginBottom: 5 }}>Bắt đầu vào lúc:</Typography>
                   <View style={style.dateTimeInput}>
                     <TimeInput
                       value={post.time}
@@ -152,7 +152,7 @@ const ServiceScreen = () => {
                   </View>
                 </View>
                 <View style={style.dateTimeItem}>
-                  <Typography style={{ marginBottom: 5 }}>Dự kiến kết thúc vào lúc :</Typography>
+                  <Typography variant="Text" style={{ marginBottom: 5 }}>Dự kiến kết thúc vào lúc :</Typography>
                   <View
                     style={[
                       style.textArea,
@@ -169,7 +169,9 @@ const ServiceScreen = () => {
                   </View>
                 </View>
                 <View style={style.dateTimeItem}>
-                  <Typography style={{ marginBottom: 5 }}>Tổng thời gian làm việc (dự kiến) : {post.total_estimate_time} phút</Typography>
+                  <Typography variant="Text" style={{ marginBottom: 5 }}>Tổng thời gian làm việc (dự kiến): 
+                    <Typography variant="TextBold"> {post.total_estimate_time} phút</Typography>
+                  </Typography>
                 </View>
               </View>
           </Section>
@@ -362,7 +364,7 @@ const Section = ({
     return (
       <View style={style.wrapper}>
         <View style={style.header}>
-          <Typography variant="Subtitle">{title}</Typography>
+          <Typography variant="TitleBold">{title}</Typography>
           <Pressable
             onPress={() => {
               onPressBtn();
@@ -378,7 +380,7 @@ const Section = ({
     return (
       <View style={style.wrapper}>
         <View style={style.header}>
-          <Typography variant="Subtitle">{title}</Typography>
+          <Typography variant="TitleBold">{title}</Typography>
           <View />
         </View>
         <View style={style.body}>{children}</View>

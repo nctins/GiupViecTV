@@ -30,6 +30,7 @@ const styles = (theme) =>
     },
     detail: {
       flexDirection: "row",
+      marginBottom: 5,
     },
     price: {
       flex: 3,
@@ -147,7 +148,7 @@ const NormalServiceItem = ({ serviceId }) => {
     const [itemValue, setItemValue] = useState(initValue);
     return (
       <View style={style.priceItem}>
-        <Typography variant="Description">{title}:</Typography>
+        <Typography variant="Text">{title}:</Typography>
         <TextInput
           variant="sm"
           style={style.textBox}
@@ -159,7 +160,7 @@ const NormalServiceItem = ({ serviceId }) => {
           keyboardType="numeric"
         />
         {unitTitle != "" && (
-          <Typography variant="Description">{unitTitle}</Typography>
+          <Typography variant="Text">{unitTitle}</Typography>
         )}
       </View>
     );
@@ -168,14 +169,14 @@ const NormalServiceItem = ({ serviceId }) => {
   return (
     <View style={style.wrapper}>
       <View style={style.title}>
-        <Typography>{service_init.name}</Typography>
+        <Typography variant="SubtitleSemiBold">{service_init.name}</Typography>
         <Pressable onPress={()=>onDelete()}>
           <TrashIcon size="sm"/>
         </Pressable>
       </View>
       {service_init.description && (
         <View style={style.description}>
-          <Typography variant="Description">
+          <Typography variant="Text">
             {service_init.description}
           </Typography>
         </View>
@@ -196,17 +197,8 @@ const NormalServiceItem = ({ serviceId }) => {
             onEndEditing={(text) => onChangeValue(text)}
           />
           <View style={style.priceItem}>
-            <Typography variant="Description">Đơn giá:</Typography>
-            <TextInput
-              variant="sm"
-              style={style.textBox}
-              editable={false}
-              selectTextOnFocus={false}
-              value={`${service_init.unit_price}`}
-            />
-            <Typography variant="Description">
-              {service_init.unit_price_title}
-            </Typography>
+            <Typography variant="Text">Đơn giá:</Typography>
+            <Typography variant="Text"> {service_init.unit_price} {service_init.unit_price_title}</Typography>
           </View>
         </View>
 

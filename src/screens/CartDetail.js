@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import {StyleSheet, View, ScrollView, Linking, Modal, Pressable, TouchableWithoutFeedback, Alert, Dimensions} from "react-native";
+import {StyleSheet, View, ScrollView, Linking, Modal, Pressable, TouchableWithoutFeedback, Alert, Dimensions, Keyboard} from "react-native";
 import { WebView } from 'react-native-webview';
 import useThemeStyles from "~hooks/useThemeStyles";
 import Typography from "~components/Typography";
@@ -212,7 +212,7 @@ const styles = (theme) =>
         // justifyContent: "space-between",
       },
     },
-    starColor: theme.colors.Azure,
+    starColor: theme.colors.Gold,
     paymentModal: {
       container: {
         flex: 1,
@@ -641,6 +641,7 @@ const CartDetail = (props) => {
     };
     return (
       <Modal animationType="none" transparent={true} visible={review_modal}>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={modalStyle.centeredView}>
           <View style={modalStyle.modalView}>
             <View style={modalStyle.wrapper}>
@@ -690,6 +691,7 @@ const CartDetail = (props) => {
             </View>
           </View>
         </View>
+        </TouchableWithoutFeedback>
       </Modal>
     );
   };

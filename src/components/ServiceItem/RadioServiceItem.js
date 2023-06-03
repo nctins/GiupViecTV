@@ -151,7 +151,7 @@ const RadioServiceItem = ({ serviceId }) => {
           });
         }}
       >
-        <Typography variant="Description">{data.string_value}</Typography>
+        <Typography variant="Text">{data.string_value}</Typography>
       </Pressable>
     );
   };
@@ -159,14 +159,14 @@ const RadioServiceItem = ({ serviceId }) => {
   return (
     <View style={style.wrapper}>
       <View style={style.title}>
-        <Typography>{service_init.name}</Typography>
+        <Typography variant="SubtitleSemiBold">{service_init.name}</Typography>
         <Pressable onPress={()=>onDelete()}>
           <TrashIcon size="sm"/>
         </Pressable>
       </View>
       {service_init.description && (
         <View style={style.description}>
-          <Typography variant="Description">
+          <Typography variant="Text">
             {service_init.description}
           </Typography>
         </View>
@@ -174,7 +174,7 @@ const RadioServiceItem = ({ serviceId }) => {
       <View style={style.detail}>
         <View style={style.price}>
           <View style={style.priceItem}>
-            <Typography variant="Description">{service_init.dram}:</Typography>
+            <Typography variant="Text">{service_init.dram}:</Typography>
           </View>
           <ScrollView horizontal={true} style={style.radioBox}>
             {items.map((ele, idx) => (

@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import StarRating from "react-native-star-rating";
 import useThemeStyles from "~hooks/useThemeStyles";
-const styles = (theme) => StyleSheet.create({starColor: theme.colors.ZincYellow});
+const styles = (theme) => StyleSheet.create({starColor: theme.colors.Gold});
 const StarRatingComponent = ({
   containerStyle,
   starSize,

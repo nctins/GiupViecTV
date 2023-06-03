@@ -42,6 +42,7 @@ export const  FrostySkies = "#06D7F6";
 export const  CrayolaWildStrawberries = "#FF5CAA";
 export const  Verdepom = "#24CA49";
 export const  ShinyOrange = "#FFB443";
+export const  Gold = "#ffd700";
 export const  Thistle = "#C2B7CD";
 export const  ASpunkyRedOrange = "#FF7A2F";
 export const  ModerateAquamarine = "#3DD598";
