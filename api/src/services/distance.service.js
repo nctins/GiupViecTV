@@ -1,5 +1,5 @@
 var DistanceConfig = require('google-distance-matrix');
-DistanceConfig.key('AIzaSyDxX01Qp1r3Yb5uVFZcstsY88FmKYPjqNA');
+DistanceConfig.key(process.env.API_GOOGLE_MAP_KEY);
 DistanceConfig.mode('driving');
 
 const DistanceService = {};
