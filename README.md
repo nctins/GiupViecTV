@@ -1,7 +1,6 @@
-# Luận văn tốt nghiệp
+# Hệ thống tìm kiếm và kết nối cho dịch vụ giúp việc nhà theo giờ
 
 ## Giới thiệu
-Hệ thống tìm kiếm và kết nối cho dịch vụ giúp việc nhà theo giờ.
 
 Đây là đề tài cho luận văn tốt nghiệp của chúng tôi.
 
