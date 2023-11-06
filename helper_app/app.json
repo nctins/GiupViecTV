@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "GiupViecTV_NGV",
+    "slug": "GiupViecTV_NGV",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/icons/logo.png",
+          "color": "#0062FF"
+        }
+      ]
+    ]
+  }
+}
