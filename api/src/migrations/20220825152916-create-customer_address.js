@@ -1,0 +1,36 @@
+"use strict";
+module.exports = {
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable("customer_address", {
+      customer_address_id: {
+        type: Sequelize.CHAR(22),
+        primaryKey: true,
+      },
+      customer_id: {
+        type: Sequelize.CHAR(22),
+      },
+      address_title: {
+        type: Sequelize.STRING(50),
+        comment: "tên địa chỉ. vd: nhà riêng, công ty,...",
+      },
+      address: {
+        type: Sequelize.TEXT,
+      },
+      create_user: {
+        type: Sequelize.CHAR(22),
+      },
+      create_date: {
+        type: Sequelize.DATE,
+      },
+      update_user: {
+        type: Sequelize.CHAR(22),
+      },
+      update_date: {
+        type: Sequelize.DATE,
+      },
+    });
+  },
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable("customer_address");
+  },
+};
